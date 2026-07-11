@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/backend/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/backend/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/backend",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "backend": {
+      "type": "application",
+      "root": "apps/backend",
+      "entryFile": "main",
+      "sourceRoot": "apps/backend/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/backend/tsconfig.app.json"
+      }
+    },
+    "favorites-service": {
+      "type": "application",
+      "root": "apps/favorites-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/favorites-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/favorites-service/tsconfig.app.json"
+      }
+    },
+    "places-service": {
+      "type": "application",
+      "root": "apps/places-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/places-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/places-service/tsconfig.app.json"
+      }
+    },
+    "users-service": {
+      "type": "application",
+      "root": "apps/users-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/users-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users-service/tsconfig.app.json"
+      }
+    },
+    "weather-service": {
+      "type": "application",
+      "root": "apps/weather-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/weather-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/weather-service/tsconfig.app.json"
+      }
+    }
+  }
+}
