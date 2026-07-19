@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Region {
+  id          Int      @id @default(autoincrement())
+  nom         String   @unique
+  slug        String   @unique
+  description String?
+
+  places      Place[]
+}
+
+model Category {
+  id      Int     @id @default(autoincrement())
+  nom     String  @unique
+  icone   String?
+
+  places  Place[]
+}
+
+model Place {
+  id          Int      @id @default(autoincrement())
+
+  nom         String
+  description String?
+
+  adresse     String?
+  ville       String?
+
+  latitude    Float
+  longitude   Float
+
+  imageUrl    String?
+  siteWeb     String?
+  telephone   String?
+
+  regionId    Int
+  categoryId  Int
+
+  region       Region    @relation(fields: [regionId], references: [id])
+  category     Category  @relation(fields: [categoryId], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
