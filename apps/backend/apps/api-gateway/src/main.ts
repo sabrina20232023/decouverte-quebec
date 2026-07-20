@@ -1,14 +1,40 @@
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApiGatewayModule } from './api-gateway.module';
 
-async function bootstrap(): Promise<void> {
+async function bootstrap() {
     const app = await NestFactory.create(ApiGatewayModule);
 
-    app.enableCors({
-        origin: 'http://localhost:3000',
-    });
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle('Découverte Québec API')
+        .setDescription(
+            'Documentation de l’API du projet Découverte Québec',
+        )
+        .setVersion('1.0')
+        .addTag('Santé')
+        .addTag('Lieux')
+        .build();
+
+    const swaggerDocument = SwaggerModule.createDocument(
+        app,
+        swaggerConfig,
+    );
+
+    SwaggerModule.setup(
+        'api/docs',
+        app,
+        swaggerDocument,
+    );
 
     await app.listen(3001);
-    console.log('API Gateway actif sur http://localhost:3001');
+
+    console.log(
+        'API Gateway actif sur http://localhost:3001',
+    );
+
+    console.log(
+        'Swagger disponible sur http://localhost:3001/api/docs',
+    );
 }
-void bootstrap();
+
+bootstrap();

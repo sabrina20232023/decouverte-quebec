@@ -9,6 +9,15 @@ import {
     Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import {
+    ApiBadRequestResponse,
+    ApiNotFoundResponse,
+    ApiOkResponse,
+    ApiOperation,
+    ApiParam,
+    ApiQuery,
+    ApiTags,
+} from '@nestjs/swagger';
 import { firstValueFrom, Observable } from 'rxjs';
 
 interface ServiceHealth {
@@ -55,6 +64,7 @@ interface PlacesFilters {
     categorie?: string;
 }
 
+@ApiTags('Lieux')
 @Controller('api')
 export class ApiGatewayController {
     constructor(
@@ -62,6 +72,12 @@ export class ApiGatewayController {
         private readonly placesClient: ClientProxy,
     ) { }
 
+    @ApiOperation({
+        summary: 'Vérifier l’état de l’API Gateway',
+    })
+    @ApiOkResponse({
+        description: 'API Gateway fonctionnelle',
+    })
     @Get('health')
     getGatewayHealth(): { service: string; status: string } {
         return {
@@ -70,6 +86,12 @@ export class ApiGatewayController {
         };
     }
 
+    @ApiOperation({
+        summary: 'Vérifier l’état du service des lieux',
+    })
+    @ApiOkResponse({
+        description: 'Places Service fonctionnel',
+    })
     @Get('places/health')
     getPlacesHealth(): Observable<ServiceHealth> {
         return this.placesClient.send<ServiceHealth>(
@@ -78,6 +100,36 @@ export class ApiGatewayController {
         );
     }
 
+    @ApiOperation({
+        summary: 'Récupérer la liste des lieux',
+        description:
+            'Retourne tous les lieux. Il est possible de filtrer les résultats par recherche, région ou catégorie.',
+    })
+    @ApiQuery({
+        name: 'recherche',
+        required: false,
+        type: String,
+        description:
+            'Recherche dans le nom, la ville ou la description du lieu',
+        example: 'mont',
+    })
+    @ApiQuery({
+        name: 'region',
+        required: false,
+        type: String,
+        description: 'Slug de la région',
+        example: 'capitale-nationale',
+    })
+    @ApiQuery({
+        name: 'categorie',
+        required: false,
+        type: String,
+        description: 'Nom de la catégorie',
+        example: 'Parc',
+    })
+    @ApiOkResponse({
+        description: 'Liste des lieux récupérée avec succès',
+    })
     @Get('places')
     getPlaces(
         @Query('recherche') recherche?: string,
@@ -96,6 +148,28 @@ export class ApiGatewayController {
         );
     }
 
+    @ApiOperation({
+        summary: 'Récupérer un lieu par son identifiant',
+        description:
+            'Retourne les informations détaillées d’un lieu, incluant sa région et sa catégorie.',
+    })
+    @ApiParam({
+        name: 'id',
+        required: true,
+        type: Number,
+        example: 1,
+        description: 'Identifiant numérique du lieu',
+    })
+    @ApiOkResponse({
+        description: 'Lieu récupéré avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Identifiant invalide ou inférieur ou égal à zéro',
+    })
+    @ApiNotFoundResponse({
+        description: 'Lieu introuvable',
+    })
     @Get('places/:id')
     async getPlaceById(
         @Param('id', ParseIntPipe) id: number,
