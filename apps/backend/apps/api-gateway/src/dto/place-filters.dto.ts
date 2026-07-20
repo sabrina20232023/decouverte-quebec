@@ -1,5 +1,13 @@
+import { Type } from 'class-transformer';
+import {
+    IsInt,
+    IsOptional,
+    IsString,
+    Max,
+    MaxLength,
+    Min,
+} from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class PlaceFiltersDto {
     @ApiPropertyOptional({
@@ -28,4 +36,30 @@ export class PlaceFiltersDto {
     @IsString()
     @MaxLength(100)
     categorie?: string;
+
+    @ApiPropertyOptional({
+        example: 1,
+        default: 1,
+        minimum: 1,
+        description: 'Numéro de la page',
+    })
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt()
+    @Min(1)
+    page?: number = 1;
+
+    @ApiPropertyOptional({
+        example: 10,
+        default: 10,
+        minimum: 1,
+        maximum: 50,
+        description: 'Nombre de lieux par page',
+    })
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt()
+    @Min(1)
+    @Max(50)
+    limit?: number = 10;
 }

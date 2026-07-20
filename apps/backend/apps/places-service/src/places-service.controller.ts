@@ -6,6 +6,8 @@ interface PlacesFilters {
     recherche?: string;
     region?: string;
     categorie?: string;
+    page?: number;
+    limit?: number;
 }
 
 @Controller()

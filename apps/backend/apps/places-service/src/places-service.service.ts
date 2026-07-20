@@ -5,71 +5,99 @@ interface PlacesFilters {
     recherche?: string;
     region?: string;
     categorie?: string;
+    page?: number;
+    limit?: number;
 }
 
 @Injectable()
 export class PlacesServiceService {
     constructor(private readonly prisma: PrismaService) { }
 
-    findAll(filters: PlacesFilters = {}) {
-        const { recherche, region, categorie } = filters;
+    async findAll(filters: PlacesFilters = {}) {
+        const {
+            recherche,
+            region,
+            categorie,
+            page = 1,
+            limit = 10,
+        } = filters;
 
-        return this.prisma.place.findMany({
-            where: {
-                ...(recherche
-                    ? {
-                        OR: [
-                            {
-                                nom: {
-                                    contains: recherche,
-                                    mode: 'insensitive',
-                                },
-                            },
-                            {
-                                ville: {
-                                    contains: recherche,
-                                    mode: 'insensitive',
-                                },
-                            },
-                            {
-                                description: {
-                                    contains: recherche,
-                                    mode: 'insensitive',
-                                },
-                            },
-                        ],
-                    }
-                    : {}),
-
-                ...(region
-                    ? {
-                        region: {
-                            slug: region,
-                        },
-                    }
-                    : {}),
-
-                ...(categorie
-                    ? {
-                        category: {
+        const where = {
+            ...(recherche
+                ? {
+                    OR: [
+                        {
                             nom: {
-                                equals: categorie,
-                                mode: 'insensitive',
+                                contains: recherche,
+                                mode: 'insensitive' as const,
                             },
                         },
-                    }
-                    : {}),
-            },
+                        {
+                            ville: {
+                                contains: recherche,
+                                mode: 'insensitive' as const,
+                            },
+                        },
+                        {
+                            description: {
+                                contains: recherche,
+                                mode: 'insensitive' as const,
+                            },
+                        },
+                    ],
+                }
+                : {}),
 
-            include: {
-                region: true,
-                category: true,
-            },
+            ...(region
+                ? {
+                    region: {
+                        slug: region,
+                    },
+                }
+                : {}),
 
-            orderBy: {
-                nom: 'asc',
+            ...(categorie
+                ? {
+                    category: {
+                        nom: {
+                            equals: categorie,
+                            mode: 'insensitive' as const,
+                        },
+                    },
+                }
+                : {}),
+        };
+
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await this.prisma.$transaction([
+            this.prisma.place.findMany({
+                where,
+                include: {
+                    region: true,
+                    category: true,
+                },
+                orderBy: {
+                    nom: 'asc',
+                },
+                skip,
+                take: limit,
+            }),
+
+            this.prisma.place.count({
+                where,
+            }),
+        ]);
+
+        return {
+            data,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
             },
-        });
+        };
     }
 
     findOne(id: number) {

@@ -20,6 +20,7 @@ import {
 import { firstValueFrom, Observable } from 'rxjs';
 import { PlaceFiltersDto } from './dto/place-filters.dto';
 import { PlaceResponseDto } from './dto/place-response.dto';
+import { PlacesResponseDto } from './dto/places-response.dto';
 
 interface ServiceHealth {
     service: string;
@@ -64,26 +65,28 @@ export class ApiGatewayController {
     }
 
     @ApiOperation({
-        summary: 'Récupérer la liste des lieux',
+        summary: 'Récupérer la liste paginée des lieux',
         description:
-            'Retourne tous les lieux avec possibilité de filtrer par recherche, région ou catégorie.',
+            'Retourne les lieux avec filtres de recherche, région, catégorie et pagination.',
     })
     @ApiOkResponse({
-        description: 'Liste des lieux récupérée avec succès',
-        type: PlaceResponseDto,
-        isArray: true,
+        description:
+            'Liste paginée des lieux récupérée avec succès',
+        type: PlacesResponseDto,
     })
     @Get('places')
     getPlaces(
         @Query() filters: PlaceFiltersDto,
-    ): Observable<PlaceResponseDto[]> {
+    ): Observable<PlacesResponseDto> {
         const normalizedFilters: PlaceFiltersDto = {
             recherche: filters.recherche?.trim() || undefined,
             region: filters.region?.trim() || undefined,
             categorie: filters.categorie?.trim() || undefined,
+            page: filters.page ?? 1,
+            limit: filters.limit ?? 10,
         };
 
-        return this.placesClient.send<PlaceResponseDto[]>(
+        return this.placesClient.send<PlacesResponseDto>(
             { cmd: 'places.findAll' },
             normalizedFilters,
         );
