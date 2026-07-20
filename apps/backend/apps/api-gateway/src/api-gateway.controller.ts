@@ -1,12 +1,15 @@
 import {
+    BadRequestException,
     Controller,
     Get,
     Inject,
+    NotFoundException,
     Param,
+    ParseIntPipe,
     Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 interface ServiceHealth {
     service: string;
@@ -82,9 +85,9 @@ export class ApiGatewayController {
         @Query('categorie') categorie?: string,
     ): Observable<Place[]> {
         const filters: PlacesFilters = {
-            recherche,
-            region,
-            categorie,
+            recherche: recherche?.trim() || undefined,
+            region: region?.trim() || undefined,
+            categorie: categorie?.trim() || undefined,
         };
 
         return this.placesClient.send<Place[]>(
@@ -94,12 +97,26 @@ export class ApiGatewayController {
     }
 
     @Get('places/:id')
-    getPlaceById(
-        @Param('id') id: string,
-    ): Observable<Place | null> {
-        return this.placesClient.send<Place | null>(
-            { cmd: 'places.findOne' },
-            Number(id),
+    async getPlaceById(
+        @Param('id', ParseIntPipe) id: number,
+    ): Promise<Place> {
+        if (id <= 0) {
+            throw new BadRequestException(
+                'L’identifiant du lieu doit être supérieur à zéro.',
+            );
+        }
+
+        const place = await firstValueFrom(
+            this.placesClient.send<Place | null>(
+                { cmd: 'places.findOne' },
+                id,
+            ),
         );
+
+        if (!place) {
+            throw new NotFoundException('Lieu introuvable');
+        }
+
+        return place;
     }
 }
