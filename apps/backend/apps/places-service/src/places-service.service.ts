@@ -1,8 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../common/prisma/prisma.service';
 
 @Injectable()
 export class PlacesServiceService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+    constructor(private readonly prisma: PrismaService) { }
+
+    findAll() {
+        return this.prisma.place.findMany({
+            include: {
+                region: true,
+                category: true,
+            },
+            orderBy: {
+                nom: 'asc',
+            },
+        });
+    }
 }
