@@ -15,53 +15,16 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiParam,
-    ApiQuery,
     ApiTags,
 } from '@nestjs/swagger';
 import { firstValueFrom, Observable } from 'rxjs';
+import { PlaceFiltersDto } from './dto/place-filters.dto';
+import { PlaceResponseDto } from './dto/place-response.dto';
 
 interface ServiceHealth {
     service: string;
     status: string;
     timestamp: string;
-}
-
-interface Region {
-    id: number;
-    nom: string;
-    slug: string;
-    description: string | null;
-}
-
-interface Category {
-    id: number;
-    nom: string;
-    icone: string | null;
-}
-
-interface Place {
-    id: number;
-    nom: string;
-    description: string | null;
-    adresse: string | null;
-    ville: string | null;
-    latitude: number;
-    longitude: number;
-    imageUrl: string | null;
-    siteWeb: string | null;
-    telephone: string | null;
-    regionId: number;
-    categoryId: number;
-    createdAt: Date;
-    updatedAt: Date;
-    region: Region;
-    category: Category;
-}
-
-interface PlacesFilters {
-    recherche?: string;
-    region?: string;
-    categorie?: string;
 }
 
 @ApiTags('Lieux')
@@ -103,48 +66,26 @@ export class ApiGatewayController {
     @ApiOperation({
         summary: 'Récupérer la liste des lieux',
         description:
-            'Retourne tous les lieux. Il est possible de filtrer les résultats par recherche, région ou catégorie.',
-    })
-    @ApiQuery({
-        name: 'recherche',
-        required: false,
-        type: String,
-        description:
-            'Recherche dans le nom, la ville ou la description du lieu',
-        example: 'mont',
-    })
-    @ApiQuery({
-        name: 'region',
-        required: false,
-        type: String,
-        description: 'Slug de la région',
-        example: 'capitale-nationale',
-    })
-    @ApiQuery({
-        name: 'categorie',
-        required: false,
-        type: String,
-        description: 'Nom de la catégorie',
-        example: 'Parc',
+            'Retourne tous les lieux avec possibilité de filtrer par recherche, région ou catégorie.',
     })
     @ApiOkResponse({
         description: 'Liste des lieux récupérée avec succès',
+        type: PlaceResponseDto,
+        isArray: true,
     })
     @Get('places')
     getPlaces(
-        @Query('recherche') recherche?: string,
-        @Query('region') region?: string,
-        @Query('categorie') categorie?: string,
-    ): Observable<Place[]> {
-        const filters: PlacesFilters = {
-            recherche: recherche?.trim() || undefined,
-            region: region?.trim() || undefined,
-            categorie: categorie?.trim() || undefined,
+        @Query() filters: PlaceFiltersDto,
+    ): Observable<PlaceResponseDto[]> {
+        const normalizedFilters: PlaceFiltersDto = {
+            recherche: filters.recherche?.trim() || undefined,
+            region: filters.region?.trim() || undefined,
+            categorie: filters.categorie?.trim() || undefined,
         };
 
-        return this.placesClient.send<Place[]>(
+        return this.placesClient.send<PlaceResponseDto[]>(
             { cmd: 'places.findAll' },
-            filters,
+            normalizedFilters,
         );
     }
 
@@ -162,6 +103,7 @@ export class ApiGatewayController {
     })
     @ApiOkResponse({
         description: 'Lieu récupéré avec succès',
+        type: PlaceResponseDto,
     })
     @ApiBadRequestResponse({
         description:
@@ -173,7 +115,7 @@ export class ApiGatewayController {
     @Get('places/:id')
     async getPlaceById(
         @Param('id', ParseIntPipe) id: number,
-    ): Promise<Place> {
+    ): Promise<PlaceResponseDto> {
         if (id <= 0) {
             throw new BadRequestException(
                 'L’identifiant du lieu doit être supérieur à zéro.',
@@ -181,7 +123,7 @@ export class ApiGatewayController {
         }
 
         const place = await firstValueFrom(
-            this.placesClient.send<Place | null>(
+            this.placesClient.send<PlaceResponseDto | null>(
                 { cmd: 'places.findOne' },
                 id,
             ),

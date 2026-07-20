@@ -1,9 +1,18 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApiGatewayModule } from './api-gateway.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(ApiGatewayModule);
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: true,
+        }),
+    );
 
     const swaggerConfig = new DocumentBuilder()
         .setTitle('Découverte Québec API')
