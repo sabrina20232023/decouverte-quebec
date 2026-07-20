@@ -1,5 +1,7 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+    IsIn,
     IsInt,
     IsOptional,
     IsString,
@@ -7,12 +9,12 @@ import {
     MaxLength,
     Min,
 } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PlaceFiltersDto {
     @ApiPropertyOptional({
         example: 'mont',
-        description: 'Recherche dans le nom, la ville ou la description',
+        description:
+            'Recherche dans le nom, la ville ou la description',
     })
     @IsOptional()
     @IsString()
@@ -62,4 +64,24 @@ export class PlaceFiltersDto {
     @Min(1)
     @Max(50)
     limit?: number = 10;
+
+    @ApiPropertyOptional({
+        example: 'nom',
+        default: 'nom',
+        enum: ['nom', 'ville', 'createdAt'],
+        description: 'Champ utilisé pour trier les lieux',
+    })
+    @IsOptional()
+    @IsIn(['nom', 'ville', 'createdAt'])
+    tri?: 'nom' | 'ville' | 'createdAt' = 'nom';
+
+    @ApiPropertyOptional({
+        example: 'asc',
+        default: 'asc',
+        enum: ['asc', 'desc'],
+        description: 'Ordre du tri',
+    })
+    @IsOptional()
+    @IsIn(['asc', 'desc'])
+    ordre?: 'asc' | 'desc' = 'asc';
 }

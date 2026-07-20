@@ -7,6 +7,8 @@ interface PlacesFilters {
     categorie?: string;
     page?: number;
     limit?: number;
+    tri?: 'nom' | 'ville' | 'createdAt';
+    ordre?: 'asc' | 'desc';
 }
 
 @Injectable()
@@ -20,6 +22,8 @@ export class PlacesServiceService {
             categorie,
             page = 1,
             limit = 10,
+            tri = 'nom',
+            ordre = 'asc',
         } = filters;
 
         const where = {
@@ -70,6 +74,10 @@ export class PlacesServiceService {
 
         const skip = (page - 1) * limit;
 
+        const orderBy = {
+            [tri]: ordre,
+        };
+
         const [data, total] = await this.prisma.$transaction([
             this.prisma.place.findMany({
                 where,
@@ -77,9 +85,7 @@ export class PlacesServiceService {
                     region: true,
                     category: true,
                 },
-                orderBy: {
-                    nom: 'asc',
-                },
+                orderBy,
                 skip,
                 take: limit,
             }),

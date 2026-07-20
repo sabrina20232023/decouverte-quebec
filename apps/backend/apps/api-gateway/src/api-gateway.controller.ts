@@ -67,7 +67,7 @@ export class ApiGatewayController {
     @ApiOperation({
         summary: 'Récupérer la liste paginée des lieux',
         description:
-            'Retourne les lieux avec filtres de recherche, région, catégorie et pagination.',
+            'Retourne les lieux avec filtres de recherche, région, catégorie, pagination et tri.',
     })
     @ApiOkResponse({
         description:
@@ -84,6 +84,8 @@ export class ApiGatewayController {
             categorie: filters.categorie?.trim() || undefined,
             page: filters.page ?? 1,
             limit: filters.limit ?? 10,
+            tri: filters.tri ?? 'nom',
+            ordre: filters.ordre ?? 'asc',
         };
 
         return this.placesClient.send<PlacesResponseDto>(

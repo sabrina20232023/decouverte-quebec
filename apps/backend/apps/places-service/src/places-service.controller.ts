@@ -8,6 +8,8 @@ interface PlacesFilters {
     categorie?: string;
     page?: number;
     limit?: number;
+    tri?: 'nom' | 'ville' | 'createdAt';
+    ordre?: 'asc' | 'desc';
 }
 
 @Controller()
