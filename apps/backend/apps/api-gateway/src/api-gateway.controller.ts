@@ -1,4 +1,10 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Inject,
+    Param,
+    Query,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
@@ -40,6 +46,12 @@ interface Place {
     category: Category;
 }
 
+interface PlacesFilters {
+    recherche?: string;
+    region?: string;
+    categorie?: string;
+}
+
 @Controller('api')
 export class ApiGatewayController {
     constructor(
@@ -64,15 +76,27 @@ export class ApiGatewayController {
     }
 
     @Get('places')
-    getPlaces(): Observable<Place[]> {
+    getPlaces(
+        @Query('recherche') recherche?: string,
+        @Query('region') region?: string,
+        @Query('categorie') categorie?: string,
+    ): Observable<Place[]> {
+        const filters: PlacesFilters = {
+            recherche,
+            region,
+            categorie,
+        };
+
         return this.placesClient.send<Place[]>(
             { cmd: 'places.findAll' },
-            {},
+            filters,
         );
     }
 
     @Get('places/:id')
-    getPlaceById(@Param('id') id: string): Observable<Place | null> {
+    getPlaceById(
+        @Param('id') id: string,
+    ): Observable<Place | null> {
         return this.placesClient.send<Place | null>(
             { cmd: 'places.findOne' },
             Number(id),

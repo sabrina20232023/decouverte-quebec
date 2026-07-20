@@ -2,6 +2,12 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PlacesServiceService } from './places-service.service';
 
+interface PlacesFilters {
+    recherche?: string;
+    region?: string;
+    categorie?: string;
+}
+
 @Controller()
 export class PlacesServiceController {
     constructor(
@@ -18,8 +24,8 @@ export class PlacesServiceController {
     }
 
     @MessagePattern({ cmd: 'places.findAll' })
-    findAll() {
-        return this.placesService.findAll();
+    findAll(@Payload() filters: PlacesFilters) {
+        return this.placesService.findAll(filters);
     }
 
     @MessagePattern({ cmd: 'places.findOne' })
