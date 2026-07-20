@@ -47,6 +47,15 @@
         "tsConfigPath": "apps/places-service/tsconfig.app.json"
       }
     },
+    "regions-service": {
+      "type": "application",
+      "root": "apps/regions-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/regions-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/regions-service/tsconfig.app.json"
+      }
+    },
     "users-service": {
       "type": "application",
       "root": "apps/users-service",

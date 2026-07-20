@@ -22,6 +22,7 @@ async function bootstrap() {
         .setVersion('1.0')
         .addTag('Santé')
         .addTag('Lieux')
+        .addTag('Régions')
         .build();
 
     const swaggerDocument = SwaggerModule.createDocument(
