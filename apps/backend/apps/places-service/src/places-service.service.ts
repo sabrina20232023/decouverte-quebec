@@ -16,4 +16,16 @@ export class PlacesServiceService {
             },
         });
     }
+
+    findOne(id: number) {
+        return this.prisma.place.findUnique({
+            where: {
+                id,
+            },
+            include: {
+                region: true,
+                category: true,
+            },
+        });
+    }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
@@ -68,6 +68,14 @@ export class ApiGatewayController {
         return this.placesClient.send<Place[]>(
             { cmd: 'places.findAll' },
             {},
+        );
+    }
+
+    @Get('places/:id')
+    getPlaceById(@Param('id') id: string): Observable<Place | null> {
+        return this.placesClient.send<Place | null>(
+            { cmd: 'places.findOne' },
+            Number(id),
         );
     }
 }

@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PlacesServiceService } from './places-service.service';
 
 @Controller()
@@ -18,7 +18,12 @@ export class PlacesServiceController {
     }
 
     @MessagePattern({ cmd: 'places.findAll' })
-    async findAll() {
+    findAll() {
         return this.placesService.findAll();
+    }
+
+    @MessagePattern({ cmd: 'places.findOne' })
+    findOne(@Payload() id: number) {
+        return this.placesService.findOne(id);
     }
 }
