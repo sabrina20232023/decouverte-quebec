@@ -28,10 +28,12 @@ export type AggregateRegion = {
 
 export type RegionAvgAggregateOutputType = {
   id: number | null
+  provinceId: number | null
 }
 
 export type RegionSumAggregateOutputType = {
   id: number | null
+  provinceId: number | null
 }
 
 export type RegionMinAggregateOutputType = {
@@ -39,6 +41,11 @@ export type RegionMinAggregateOutputType = {
   nom: string | null
   slug: string | null
   description: string | null
+  imageUrl: string | null
+  estActive: boolean | null
+  provinceId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RegionMaxAggregateOutputType = {
@@ -46,6 +53,11 @@ export type RegionMaxAggregateOutputType = {
   nom: string | null
   slug: string | null
   description: string | null
+  imageUrl: string | null
+  estActive: boolean | null
+  provinceId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RegionCountAggregateOutputType = {
@@ -53,16 +65,23 @@ export type RegionCountAggregateOutputType = {
   nom: number
   slug: number
   description: number
+  imageUrl: number
+  estActive: number
+  provinceId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type RegionAvgAggregateInputType = {
   id?: true
+  provinceId?: true
 }
 
 export type RegionSumAggregateInputType = {
   id?: true
+  provinceId?: true
 }
 
 export type RegionMinAggregateInputType = {
@@ -70,6 +89,11 @@ export type RegionMinAggregateInputType = {
   nom?: true
   slug?: true
   description?: true
+  imageUrl?: true
+  estActive?: true
+  provinceId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type RegionMaxAggregateInputType = {
@@ -77,6 +101,11 @@ export type RegionMaxAggregateInputType = {
   nom?: true
   slug?: true
   description?: true
+  imageUrl?: true
+  estActive?: true
+  provinceId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type RegionCountAggregateInputType = {
@@ -84,6 +113,11 @@ export type RegionCountAggregateInputType = {
   nom?: true
   slug?: true
   description?: true
+  imageUrl?: true
+  estActive?: true
+  provinceId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -178,6 +212,11 @@ export type RegionGroupByOutputType = {
   nom: string
   slug: string
   description: string | null
+  imageUrl: string | null
+  estActive: boolean
+  provinceId: number
+  createdAt: Date
+  updatedAt: Date
   _count: RegionCountAggregateOutputType | null
   _avg: RegionAvgAggregateOutputType | null
   _sum: RegionSumAggregateOutputType | null
@@ -208,6 +247,12 @@ export type RegionWhereInput = {
   nom?: Prisma.StringFilter<"Region"> | string
   slug?: Prisma.StringFilter<"Region"> | string
   description?: Prisma.StringNullableFilter<"Region"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Region"> | string | null
+  estActive?: Prisma.BoolFilter<"Region"> | boolean
+  provinceId?: Prisma.IntFilter<"Region"> | number
+  createdAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+  province?: Prisma.XOR<Prisma.ProvinceScalarRelationFilter, Prisma.ProvinceWhereInput>
   places?: Prisma.PlaceListRelationFilter
 }
 
@@ -216,25 +261,44 @@ export type RegionOrderByWithRelationInput = {
   nom?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  estActive?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  province?: Prisma.ProvinceOrderByWithRelationInput
   places?: Prisma.PlaceOrderByRelationAggregateInput
 }
 
 export type RegionWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  nom?: string
-  slug?: string
+  provinceId_slug?: Prisma.RegionProvinceIdSlugCompoundUniqueInput
+  provinceId_nom?: Prisma.RegionProvinceIdNomCompoundUniqueInput
   AND?: Prisma.RegionWhereInput | Prisma.RegionWhereInput[]
   OR?: Prisma.RegionWhereInput[]
   NOT?: Prisma.RegionWhereInput | Prisma.RegionWhereInput[]
+  nom?: Prisma.StringFilter<"Region"> | string
+  slug?: Prisma.StringFilter<"Region"> | string
   description?: Prisma.StringNullableFilter<"Region"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Region"> | string | null
+  estActive?: Prisma.BoolFilter<"Region"> | boolean
+  provinceId?: Prisma.IntFilter<"Region"> | number
+  createdAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+  province?: Prisma.XOR<Prisma.ProvinceScalarRelationFilter, Prisma.ProvinceWhereInput>
   places?: Prisma.PlaceListRelationFilter
-}, "id" | "nom" | "slug">
+}, "id" | "provinceId_slug" | "provinceId_nom">
 
 export type RegionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  estActive?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.RegionCountOrderByAggregateInput
   _avg?: Prisma.RegionAvgOrderByAggregateInput
   _max?: Prisma.RegionMaxOrderByAggregateInput
@@ -250,12 +314,22 @@ export type RegionScalarWhereWithAggregatesInput = {
   nom?: Prisma.StringWithAggregatesFilter<"Region"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Region"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Region"> | string | null
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Region"> | string | null
+  estActive?: Prisma.BoolWithAggregatesFilter<"Region"> | boolean
+  provinceId?: Prisma.IntWithAggregatesFilter<"Region"> | number
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Region"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Region"> | Date | string
 }
 
 export type RegionCreateInput = {
   nom: string
   slug: string
   description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  province: Prisma.ProvinceCreateNestedOneWithoutRegionsInput
   places?: Prisma.PlaceCreateNestedManyWithoutRegionInput
 }
 
@@ -264,6 +338,11 @@ export type RegionUncheckedCreateInput = {
   nom: string
   slug: string
   description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  provinceId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
   places?: Prisma.PlaceUncheckedCreateNestedManyWithoutRegionInput
 }
 
@@ -271,6 +350,11 @@ export type RegionUpdateInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  province?: Prisma.ProvinceUpdateOneRequiredWithoutRegionsNestedInput
   places?: Prisma.PlaceUpdateManyWithoutRegionNestedInput
 }
 
@@ -279,6 +363,11 @@ export type RegionUncheckedUpdateInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provinceId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   places?: Prisma.PlaceUncheckedUpdateManyWithoutRegionNestedInput
 }
 
@@ -287,12 +376,21 @@ export type RegionCreateManyInput = {
   nom: string
   slug: string
   description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  provinceId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RegionUpdateManyMutationInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RegionUncheckedUpdateManyInput = {
@@ -300,6 +398,31 @@ export type RegionUncheckedUpdateManyInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provinceId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type RegionListRelationFilter = {
+  every?: Prisma.RegionWhereInput
+  some?: Prisma.RegionWhereInput
+  none?: Prisma.RegionWhereInput
+}
+
+export type RegionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type RegionProvinceIdSlugCompoundUniqueInput = {
+  provinceId: number
+  slug: string
+}
+
+export type RegionProvinceIdNomCompoundUniqueInput = {
+  provinceId: number
+  nom: string
 }
 
 export type RegionCountOrderByAggregateInput = {
@@ -307,10 +430,16 @@ export type RegionCountOrderByAggregateInput = {
   nom?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  estActive?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RegionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
 }
 
 export type RegionMaxOrderByAggregateInput = {
@@ -318,6 +447,11 @@ export type RegionMaxOrderByAggregateInput = {
   nom?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  estActive?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RegionMinOrderByAggregateInput = {
@@ -325,10 +459,16 @@ export type RegionMinOrderByAggregateInput = {
   nom?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  estActive?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RegionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  provinceId?: Prisma.SortOrder
 }
 
 export type RegionScalarRelationFilter = {
@@ -336,20 +476,46 @@ export type RegionScalarRelationFilter = {
   isNot?: Prisma.RegionWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type RegionCreateNestedManyWithoutProvinceInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput> | Prisma.RegionCreateWithoutProvinceInput[] | Prisma.RegionUncheckedCreateWithoutProvinceInput[]
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutProvinceInput | Prisma.RegionCreateOrConnectWithoutProvinceInput[]
+  createMany?: Prisma.RegionCreateManyProvinceInputEnvelope
+  connect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type RegionUncheckedCreateNestedManyWithoutProvinceInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput> | Prisma.RegionCreateWithoutProvinceInput[] | Prisma.RegionUncheckedCreateWithoutProvinceInput[]
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutProvinceInput | Prisma.RegionCreateOrConnectWithoutProvinceInput[]
+  createMany?: Prisma.RegionCreateManyProvinceInputEnvelope
+  connect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type RegionUpdateManyWithoutProvinceNestedInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput> | Prisma.RegionCreateWithoutProvinceInput[] | Prisma.RegionUncheckedCreateWithoutProvinceInput[]
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutProvinceInput | Prisma.RegionCreateOrConnectWithoutProvinceInput[]
+  upsert?: Prisma.RegionUpsertWithWhereUniqueWithoutProvinceInput | Prisma.RegionUpsertWithWhereUniqueWithoutProvinceInput[]
+  createMany?: Prisma.RegionCreateManyProvinceInputEnvelope
+  set?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  disconnect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  delete?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  connect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  update?: Prisma.RegionUpdateWithWhereUniqueWithoutProvinceInput | Prisma.RegionUpdateWithWhereUniqueWithoutProvinceInput[]
+  updateMany?: Prisma.RegionUpdateManyWithWhereWithoutProvinceInput | Prisma.RegionUpdateManyWithWhereWithoutProvinceInput[]
+  deleteMany?: Prisma.RegionScalarWhereInput | Prisma.RegionScalarWhereInput[]
+}
+
+export type RegionUncheckedUpdateManyWithoutProvinceNestedInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput> | Prisma.RegionCreateWithoutProvinceInput[] | Prisma.RegionUncheckedCreateWithoutProvinceInput[]
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutProvinceInput | Prisma.RegionCreateOrConnectWithoutProvinceInput[]
+  upsert?: Prisma.RegionUpsertWithWhereUniqueWithoutProvinceInput | Prisma.RegionUpsertWithWhereUniqueWithoutProvinceInput[]
+  createMany?: Prisma.RegionCreateManyProvinceInputEnvelope
+  set?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  disconnect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  delete?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  connect?: Prisma.RegionWhereUniqueInput | Prisma.RegionWhereUniqueInput[]
+  update?: Prisma.RegionUpdateWithWhereUniqueWithoutProvinceInput | Prisma.RegionUpdateWithWhereUniqueWithoutProvinceInput[]
+  updateMany?: Prisma.RegionUpdateManyWithWhereWithoutProvinceInput | Prisma.RegionUpdateManyWithWhereWithoutProvinceInput[]
+  deleteMany?: Prisma.RegionScalarWhereInput | Prisma.RegionScalarWhereInput[]
 }
 
 export type RegionCreateNestedOneWithoutPlacesInput = {
@@ -366,10 +532,79 @@ export type RegionUpdateOneRequiredWithoutPlacesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RegionUpdateToOneWithWhereWithoutPlacesInput, Prisma.RegionUpdateWithoutPlacesInput>, Prisma.RegionUncheckedUpdateWithoutPlacesInput>
 }
 
+export type RegionCreateWithoutProvinceInput = {
+  nom: string
+  slug: string
+  description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  places?: Prisma.PlaceCreateNestedManyWithoutRegionInput
+}
+
+export type RegionUncheckedCreateWithoutProvinceInput = {
+  id?: number
+  nom: string
+  slug: string
+  description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  places?: Prisma.PlaceUncheckedCreateNestedManyWithoutRegionInput
+}
+
+export type RegionCreateOrConnectWithoutProvinceInput = {
+  where: Prisma.RegionWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput>
+}
+
+export type RegionCreateManyProvinceInputEnvelope = {
+  data: Prisma.RegionCreateManyProvinceInput | Prisma.RegionCreateManyProvinceInput[]
+  skipDuplicates?: boolean
+}
+
+export type RegionUpsertWithWhereUniqueWithoutProvinceInput = {
+  where: Prisma.RegionWhereUniqueInput
+  update: Prisma.XOR<Prisma.RegionUpdateWithoutProvinceInput, Prisma.RegionUncheckedUpdateWithoutProvinceInput>
+  create: Prisma.XOR<Prisma.RegionCreateWithoutProvinceInput, Prisma.RegionUncheckedCreateWithoutProvinceInput>
+}
+
+export type RegionUpdateWithWhereUniqueWithoutProvinceInput = {
+  where: Prisma.RegionWhereUniqueInput
+  data: Prisma.XOR<Prisma.RegionUpdateWithoutProvinceInput, Prisma.RegionUncheckedUpdateWithoutProvinceInput>
+}
+
+export type RegionUpdateManyWithWhereWithoutProvinceInput = {
+  where: Prisma.RegionScalarWhereInput
+  data: Prisma.XOR<Prisma.RegionUpdateManyMutationInput, Prisma.RegionUncheckedUpdateManyWithoutProvinceInput>
+}
+
+export type RegionScalarWhereInput = {
+  AND?: Prisma.RegionScalarWhereInput | Prisma.RegionScalarWhereInput[]
+  OR?: Prisma.RegionScalarWhereInput[]
+  NOT?: Prisma.RegionScalarWhereInput | Prisma.RegionScalarWhereInput[]
+  id?: Prisma.IntFilter<"Region"> | number
+  nom?: Prisma.StringFilter<"Region"> | string
+  slug?: Prisma.StringFilter<"Region"> | string
+  description?: Prisma.StringNullableFilter<"Region"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Region"> | string | null
+  estActive?: Prisma.BoolFilter<"Region"> | boolean
+  provinceId?: Prisma.IntFilter<"Region"> | number
+  createdAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Region"> | Date | string
+}
+
 export type RegionCreateWithoutPlacesInput = {
   nom: string
   slug: string
   description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  province: Prisma.ProvinceCreateNestedOneWithoutRegionsInput
 }
 
 export type RegionUncheckedCreateWithoutPlacesInput = {
@@ -377,6 +612,11 @@ export type RegionUncheckedCreateWithoutPlacesInput = {
   nom: string
   slug: string
   description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  provinceId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RegionCreateOrConnectWithoutPlacesInput = {
@@ -399,6 +639,11 @@ export type RegionUpdateWithoutPlacesInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  province?: Prisma.ProvinceUpdateOneRequiredWithoutRegionsNestedInput
 }
 
 export type RegionUncheckedUpdateWithoutPlacesInput = {
@@ -406,6 +651,56 @@ export type RegionUncheckedUpdateWithoutPlacesInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provinceId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type RegionCreateManyProvinceInput = {
+  id?: number
+  nom: string
+  slug: string
+  description?: string | null
+  imageUrl?: string | null
+  estActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type RegionUpdateWithoutProvinceInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  places?: Prisma.PlaceUpdateManyWithoutRegionNestedInput
+}
+
+export type RegionUncheckedUpdateWithoutProvinceInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  places?: Prisma.PlaceUncheckedUpdateManyWithoutRegionNestedInput
+}
+
+export type RegionUncheckedUpdateManyWithoutProvinceInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -444,6 +739,12 @@ export type RegionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   nom?: boolean
   slug?: boolean
   description?: boolean
+  imageUrl?: boolean
+  estActive?: boolean
+  provinceId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
   places?: boolean | Prisma.Region$placesArgs<ExtArgs>
   _count?: boolean | Prisma.RegionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["region"]>
@@ -453,6 +754,12 @@ export type RegionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   nom?: boolean
   slug?: boolean
   description?: boolean
+  imageUrl?: boolean
+  estActive?: boolean
+  provinceId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["region"]>
 
 export type RegionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -460,6 +767,12 @@ export type RegionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   nom?: boolean
   slug?: boolean
   description?: boolean
+  imageUrl?: boolean
+  estActive?: boolean
+  provinceId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["region"]>
 
 export type RegionSelectScalar = {
@@ -467,19 +780,30 @@ export type RegionSelectScalar = {
   nom?: boolean
   slug?: boolean
   description?: boolean
+  imageUrl?: boolean
+  estActive?: boolean
+  provinceId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type RegionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "slug" | "description", ExtArgs["result"]["region"]>
+export type RegionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "slug" | "description" | "imageUrl" | "estActive" | "provinceId" | "createdAt" | "updatedAt", ExtArgs["result"]["region"]>
 export type RegionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
   places?: boolean | Prisma.Region$placesArgs<ExtArgs>
   _count?: boolean | Prisma.RegionCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type RegionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type RegionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type RegionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
+}
+export type RegionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  province?: boolean | Prisma.ProvinceDefaultArgs<ExtArgs>
+}
 
 export type $RegionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Region"
   objects: {
+    province: Prisma.$ProvincePayload<ExtArgs>
     places: Prisma.$PlacePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -487,6 +811,11 @@ export type $RegionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     nom: string
     slug: string
     description: string | null
+    imageUrl: string | null
+    estActive: boolean
+    provinceId: number
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["region"]>
   composites: {}
 }
@@ -881,6 +1210,7 @@ readonly fields: RegionFieldRefs;
  */
 export interface Prisma__RegionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  province<T extends Prisma.ProvinceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProvinceDefaultArgs<ExtArgs>>): Prisma.Prisma__ProvinceClient<runtime.Types.Result.GetResult<Prisma.$ProvincePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   places<T extends Prisma.Region$placesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Region$placesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -915,6 +1245,11 @@ export interface RegionFieldRefs {
   readonly nom: Prisma.FieldRef<"Region", 'String'>
   readonly slug: Prisma.FieldRef<"Region", 'String'>
   readonly description: Prisma.FieldRef<"Region", 'String'>
+  readonly imageUrl: Prisma.FieldRef<"Region", 'String'>
+  readonly estActive: Prisma.FieldRef<"Region", 'Boolean'>
+  readonly provinceId: Prisma.FieldRef<"Region", 'Int'>
+  readonly createdAt: Prisma.FieldRef<"Region", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Region", 'DateTime'>
 }
     
 
@@ -1169,6 +1504,10 @@ export type RegionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.RegionCreateManyInput | Prisma.RegionCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1239,6 +1578,10 @@ export type RegionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Regions to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

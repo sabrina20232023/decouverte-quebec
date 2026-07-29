@@ -51,9 +51,23 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Province: 'Province',
   Region: 'Region',
   Category: 'Category',
-  Place: 'Place'
+  Activity: 'Activity',
+  Place: 'Place',
+  PlaceImage: 'PlaceImage',
+  PlaceLink: 'PlaceLink',
+  PlaceActivity: 'PlaceActivity',
+  WeatherForecast: 'WeatherForecast',
+  User: 'User',
+  RefreshToken: 'RefreshToken',
+  Favorite: 'Favorite',
+  RecentlyViewed: 'RecentlyViewed',
+  UserPreference: 'UserPreference',
+  UserPreferredProvince: 'UserPreferredProvince',
+  UserPreferredCategory: 'UserPreferredCategory',
+  UserPreferredActivity: 'UserPreferredActivity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -72,11 +86,30 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ProvinceScalarFieldEnum = {
+  id: 'id',
+  nom: 'nom',
+  code: 'code',
+  slug: 'slug',
+  description: 'description',
+  estActive: 'estActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProvinceScalarFieldEnum = (typeof ProvinceScalarFieldEnum)[keyof typeof ProvinceScalarFieldEnum]
+
+
 export const RegionScalarFieldEnum = {
   id: 'id',
   nom: 'nom',
   slug: 'slug',
-  description: 'description'
+  description: 'description',
+  imageUrl: 'imageUrl',
+  estActive: 'estActive',
+  provinceId: 'provinceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RegionScalarFieldEnum = (typeof RegionScalarFieldEnum)[keyof typeof RegionScalarFieldEnum]
@@ -85,23 +118,58 @@ export type RegionScalarFieldEnum = (typeof RegionScalarFieldEnum)[keyof typeof 
 export const CategoryScalarFieldEnum = {
   id: 'id',
   nom: 'nom',
-  icone: 'icone'
+  slug: 'slug',
+  description: 'description',
+  icone: 'icone',
+  estActive: 'estActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
+export const ActivityScalarFieldEnum = {
+  id: 'id',
+  nom: 'nom',
+  slug: 'slug',
+  description: 'description',
+  icone: 'icone',
+  estActive: 'estActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
+
+
 export const PlaceScalarFieldEnum = {
   id: 'id',
   nom: 'nom',
+  slug: 'slug',
+  resume: 'resume',
   description: 'description',
   adresse: 'adresse',
   ville: 'ville',
+  codePostal: 'codePostal',
   latitude: 'latitude',
   longitude: 'longitude',
-  imageUrl: 'imageUrl',
-  siteWeb: 'siteWeb',
   telephone: 'telephone',
+  email: 'email',
+  siteWeb: 'siteWeb',
+  thumbnailUrl: 'thumbnailUrl',
+  horaire: 'horaire',
+  prix: 'prix',
+  accessibilite: 'accessibilite',
+  stationnement: 'stationnement',
+  tempsVisite: 'tempsVisite',
+  estGratuit: 'estGratuit',
+  note: 'note',
+  nombreAvis: 'nombreAvis',
+  estVedette: 'estVedette',
+  estActif: 'estActif',
+  sourceExterneId: 'sourceExterneId',
+  sourceExterne: 'sourceExterne',
   regionId: 'regionId',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
@@ -109,6 +177,171 @@ export const PlaceScalarFieldEnum = {
 } as const
 
 export type PlaceScalarFieldEnum = (typeof PlaceScalarFieldEnum)[keyof typeof PlaceScalarFieldEnum]
+
+
+export const PlaceImageScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  titre: 'titre',
+  altText: 'altText',
+  ordre: 'ordre',
+  estImagePrincipale: 'estImagePrincipale',
+  largeur: 'largeur',
+  hauteur: 'hauteur',
+  source: 'source',
+  sourceUrl: 'sourceUrl',
+  placeId: 'placeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlaceImageScalarFieldEnum = (typeof PlaceImageScalarFieldEnum)[keyof typeof PlaceImageScalarFieldEnum]
+
+
+export const PlaceLinkScalarFieldEnum = {
+  id: 'id',
+  titre: 'titre',
+  url: 'url',
+  type: 'type',
+  ordre: 'ordre',
+  placeId: 'placeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlaceLinkScalarFieldEnum = (typeof PlaceLinkScalarFieldEnum)[keyof typeof PlaceLinkScalarFieldEnum]
+
+
+export const PlaceActivityScalarFieldEnum = {
+  id: 'id',
+  ordre: 'ordre',
+  placeId: 'placeId',
+  activityId: 'activityId',
+  createdAt: 'createdAt'
+} as const
+
+export type PlaceActivityScalarFieldEnum = (typeof PlaceActivityScalarFieldEnum)[keyof typeof PlaceActivityScalarFieldEnum]
+
+
+export const WeatherForecastScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  datePrevision: 'datePrevision',
+  temperatureMin: 'temperatureMin',
+  temperatureMax: 'temperatureMax',
+  temperatureRessentie: 'temperatureRessentie',
+  humidite: 'humidite',
+  ventKmh: 'ventKmh',
+  probabilitePrecipitation: 'probabilitePrecipitation',
+  condition: 'condition',
+  description: 'description',
+  icone: 'icone',
+  sourceApi: 'sourceApi',
+  fetchedAt: 'fetchedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WeatherForecastScalarFieldEnum = (typeof WeatherForecastScalarFieldEnum)[keyof typeof WeatherForecastScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  displayName: 'displayName',
+  prenom: 'prenom',
+  nom: 'nom',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  avatarUrl: 'avatarUrl',
+  role: 'role',
+  estActif: 'estActif',
+  emailVerifiedAt: 'emailVerifiedAt',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  device: 'device',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const FavoriteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const RecentlyViewedScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  viewedAt: 'viewedAt'
+} as const
+
+export type RecentlyViewedScalarFieldEnum = (typeof RecentlyViewedScalarFieldEnum)[keyof typeof RecentlyViewedScalarFieldEnum]
+
+
+export const UserPreferenceScalarFieldEnum = {
+  id: 'id',
+  langue: 'langue',
+  uniteTemperature: 'uniteTemperature',
+  theme: 'theme',
+  recevoirNotificationsMeteo: 'recevoirNotificationsMeteo',
+  recevoirSuggestions: 'recevoirSuggestions',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserPreferenceScalarFieldEnum = (typeof UserPreferenceScalarFieldEnum)[keyof typeof UserPreferenceScalarFieldEnum]
+
+
+export const UserPreferredProvinceScalarFieldEnum = {
+  id: 'id',
+  preferenceId: 'preferenceId',
+  provinceId: 'provinceId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserPreferredProvinceScalarFieldEnum = (typeof UserPreferredProvinceScalarFieldEnum)[keyof typeof UserPreferredProvinceScalarFieldEnum]
+
+
+export const UserPreferredCategoryScalarFieldEnum = {
+  id: 'id',
+  preferenceId: 'preferenceId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserPreferredCategoryScalarFieldEnum = (typeof UserPreferredCategoryScalarFieldEnum)[keyof typeof UserPreferredCategoryScalarFieldEnum]
+
+
+export const UserPreferredActivityScalarFieldEnum = {
+  id: 'id',
+  preferenceId: 'preferenceId',
+  activityId: 'activityId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserPreferredActivityScalarFieldEnum = (typeof UserPreferredActivityScalarFieldEnum)[keyof typeof UserPreferredActivityScalarFieldEnum]
 
 
 export const SortOrder = {

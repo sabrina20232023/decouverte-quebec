@@ -9,7 +9,38 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserRole = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const TemperatureUnit = {
+  CELSIUS: 'CELSIUS',
+  FAHRENHEIT: 'FAHRENHEIT'
+} as const
+
+export type TemperatureUnit = (typeof TemperatureUnit)[keyof typeof TemperatureUnit]
+
+
+export const PlaceLinkType = {
+  OFFICIAL: 'OFFICIAL',
+  BOOKING: 'BOOKING',
+  WIKIPEDIA: 'WIKIPEDIA',
+  FACEBOOK: 'FACEBOOK',
+  INSTAGRAM: 'INSTAGRAM',
+  OTHER: 'OTHER'
+} as const
+
+export type PlaceLinkType = (typeof PlaceLinkType)[keyof typeof PlaceLinkType]
+
+
+export const Theme = {
+  LIGHT: 'LIGHT',
+  DARK: 'DARK',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type Theme = (typeof Theme)[keyof typeof Theme]

@@ -29,8 +29,8 @@ export * from "./enums.js"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Regions
- * const regions = await prisma.region.findMany()
+ * // Fetch zero or more Provinces
+ * const provinces = await prisma.province.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -39,6 +39,11 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model Province
+ * 
+ */
+export type Province = Prisma.ProvinceModel
 /**
  * Model Region
  * 
@@ -50,7 +55,86 @@ export type Region = Prisma.RegionModel
  */
 export type Category = Prisma.CategoryModel
 /**
+ * Model Activity
+ * 
+ */
+export type Activity = Prisma.ActivityModel
+/**
  * Model Place
  * 
  */
 export type Place = Prisma.PlaceModel
+/**
+ * Model PlaceImage
+ * 
+ */
+export type PlaceImage = Prisma.PlaceImageModel
+/**
+ * Model PlaceLink
+ * *
+ *  * Liens pertinents associ�s � une destination
+ *  * (site officiel, billetterie, Wikip�dia, r�seaux sociaux, etc.)
+ */
+export type PlaceLink = Prisma.PlaceLinkModel
+/**
+ * Model PlaceActivity
+ * *
+ *  * Relation explicite plusieurs-�-plusieurs :
+ *  * un lieu peut proposer plusieurs activit�s ;
+ *  * une activit� peut �tre propos�e dans plusieurs lieux.
+ */
+export type PlaceActivity = Prisma.PlaceActivityModel
+/**
+ * Model WeatherForecast
+ * *
+ *  * Cache des pr�visions m�t�o par lieu et par date.
+ *  * �vite d'appeler l'API externe � chaque consultation
+ *  * et permet d'associer une pr�vision � une date de visite
+ *  * choisie par l'utilisateur (3.5) ainsi qu'aux favoris
+ *  * affich�s sur le tableau de bord (3.7).
+ */
+export type WeatherForecast = Prisma.WeatherForecastModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model RefreshToken
+ * *
+ *  * Jetons de rafra�chissement pour la gestion des sessions JWT.
+ *  * Permet la r�vocation par appareil (d�connexion cibl�e,
+ *  * changement de mot de passe, d�tection d'usage suspect)
+ *  * sans attendre l'expiration naturelle du token d'acc�s.
+ */
+export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model Favorite
+ * 
+ */
+export type Favorite = Prisma.FavoriteModel
+/**
+ * Model RecentlyViewed
+ * 
+ */
+export type RecentlyViewed = Prisma.RecentlyViewedModel
+/**
+ * Model UserPreference
+ * 
+ */
+export type UserPreference = Prisma.UserPreferenceModel
+/**
+ * Model UserPreferredProvince
+ * 
+ */
+export type UserPreferredProvince = Prisma.UserPreferredProvinceModel
+/**
+ * Model UserPreferredCategory
+ * 
+ */
+export type UserPreferredCategory = Prisma.UserPreferredCategoryModel
+/**
+ * Model UserPreferredActivity
+ * 
+ */
+export type UserPreferredActivity = Prisma.UserPreferredActivityModel

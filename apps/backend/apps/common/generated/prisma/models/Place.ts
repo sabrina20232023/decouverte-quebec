@@ -30,6 +30,8 @@ export type PlaceAvgAggregateOutputType = {
   id: number | null
   latitude: number | null
   longitude: number | null
+  note: number | null
+  nombreAvis: number | null
   regionId: number | null
   categoryId: number | null
 }
@@ -38,6 +40,8 @@ export type PlaceSumAggregateOutputType = {
   id: number | null
   latitude: number | null
   longitude: number | null
+  note: number | null
+  nombreAvis: number | null
   regionId: number | null
   categoryId: number | null
 }
@@ -45,14 +49,30 @@ export type PlaceSumAggregateOutputType = {
 export type PlaceMinAggregateOutputType = {
   id: number | null
   nom: string | null
+  slug: string | null
+  resume: string | null
   description: string | null
   adresse: string | null
   ville: string | null
+  codePostal: string | null
   latitude: number | null
   longitude: number | null
-  imageUrl: string | null
-  siteWeb: string | null
   telephone: string | null
+  email: string | null
+  siteWeb: string | null
+  thumbnailUrl: string | null
+  horaire: string | null
+  prix: string | null
+  accessibilite: string | null
+  stationnement: string | null
+  tempsVisite: string | null
+  estGratuit: boolean | null
+  note: number | null
+  nombreAvis: number | null
+  estVedette: boolean | null
+  estActif: boolean | null
+  sourceExterneId: string | null
+  sourceExterne: string | null
   regionId: number | null
   categoryId: number | null
   createdAt: Date | null
@@ -62,14 +82,30 @@ export type PlaceMinAggregateOutputType = {
 export type PlaceMaxAggregateOutputType = {
   id: number | null
   nom: string | null
+  slug: string | null
+  resume: string | null
   description: string | null
   adresse: string | null
   ville: string | null
+  codePostal: string | null
   latitude: number | null
   longitude: number | null
-  imageUrl: string | null
-  siteWeb: string | null
   telephone: string | null
+  email: string | null
+  siteWeb: string | null
+  thumbnailUrl: string | null
+  horaire: string | null
+  prix: string | null
+  accessibilite: string | null
+  stationnement: string | null
+  tempsVisite: string | null
+  estGratuit: boolean | null
+  note: number | null
+  nombreAvis: number | null
+  estVedette: boolean | null
+  estActif: boolean | null
+  sourceExterneId: string | null
+  sourceExterne: string | null
   regionId: number | null
   categoryId: number | null
   createdAt: Date | null
@@ -79,14 +115,30 @@ export type PlaceMaxAggregateOutputType = {
 export type PlaceCountAggregateOutputType = {
   id: number
   nom: number
+  slug: number
+  resume: number
   description: number
   adresse: number
   ville: number
+  codePostal: number
   latitude: number
   longitude: number
-  imageUrl: number
-  siteWeb: number
   telephone: number
+  email: number
+  siteWeb: number
+  thumbnailUrl: number
+  horaire: number
+  prix: number
+  accessibilite: number
+  stationnement: number
+  tempsVisite: number
+  estGratuit: number
+  note: number
+  nombreAvis: number
+  estVedette: number
+  estActif: number
+  sourceExterneId: number
+  sourceExterne: number
   regionId: number
   categoryId: number
   createdAt: number
@@ -99,6 +151,8 @@ export type PlaceAvgAggregateInputType = {
   id?: true
   latitude?: true
   longitude?: true
+  note?: true
+  nombreAvis?: true
   regionId?: true
   categoryId?: true
 }
@@ -107,6 +161,8 @@ export type PlaceSumAggregateInputType = {
   id?: true
   latitude?: true
   longitude?: true
+  note?: true
+  nombreAvis?: true
   regionId?: true
   categoryId?: true
 }
@@ -114,14 +170,30 @@ export type PlaceSumAggregateInputType = {
 export type PlaceMinAggregateInputType = {
   id?: true
   nom?: true
+  slug?: true
+  resume?: true
   description?: true
   adresse?: true
   ville?: true
+  codePostal?: true
   latitude?: true
   longitude?: true
-  imageUrl?: true
-  siteWeb?: true
   telephone?: true
+  email?: true
+  siteWeb?: true
+  thumbnailUrl?: true
+  horaire?: true
+  prix?: true
+  accessibilite?: true
+  stationnement?: true
+  tempsVisite?: true
+  estGratuit?: true
+  note?: true
+  nombreAvis?: true
+  estVedette?: true
+  estActif?: true
+  sourceExterneId?: true
+  sourceExterne?: true
   regionId?: true
   categoryId?: true
   createdAt?: true
@@ -131,14 +203,30 @@ export type PlaceMinAggregateInputType = {
 export type PlaceMaxAggregateInputType = {
   id?: true
   nom?: true
+  slug?: true
+  resume?: true
   description?: true
   adresse?: true
   ville?: true
+  codePostal?: true
   latitude?: true
   longitude?: true
-  imageUrl?: true
-  siteWeb?: true
   telephone?: true
+  email?: true
+  siteWeb?: true
+  thumbnailUrl?: true
+  horaire?: true
+  prix?: true
+  accessibilite?: true
+  stationnement?: true
+  tempsVisite?: true
+  estGratuit?: true
+  note?: true
+  nombreAvis?: true
+  estVedette?: true
+  estActif?: true
+  sourceExterneId?: true
+  sourceExterne?: true
   regionId?: true
   categoryId?: true
   createdAt?: true
@@ -148,14 +236,30 @@ export type PlaceMaxAggregateInputType = {
 export type PlaceCountAggregateInputType = {
   id?: true
   nom?: true
+  slug?: true
+  resume?: true
   description?: true
   adresse?: true
   ville?: true
+  codePostal?: true
   latitude?: true
   longitude?: true
-  imageUrl?: true
-  siteWeb?: true
   telephone?: true
+  email?: true
+  siteWeb?: true
+  thumbnailUrl?: true
+  horaire?: true
+  prix?: true
+  accessibilite?: true
+  stationnement?: true
+  tempsVisite?: true
+  estGratuit?: true
+  note?: true
+  nombreAvis?: true
+  estVedette?: true
+  estActif?: true
+  sourceExterneId?: true
+  sourceExterne?: true
   regionId?: true
   categoryId?: true
   createdAt?: true
@@ -252,14 +356,30 @@ export type PlaceGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type PlaceGroupByOutputType = {
   id: number
   nom: string
+  slug: string
+  resume: string | null
   description: string | null
   adresse: string | null
   ville: string | null
+  codePostal: string | null
   latitude: number
   longitude: number
-  imageUrl: string | null
-  siteWeb: string | null
   telephone: string | null
+  email: string | null
+  siteWeb: string | null
+  thumbnailUrl: string | null
+  horaire: string | null
+  prix: string | null
+  accessibilite: string | null
+  stationnement: string | null
+  tempsVisite: string | null
+  estGratuit: boolean
+  note: number | null
+  nombreAvis: number
+  estVedette: boolean
+  estActif: boolean
+  sourceExterneId: string | null
+  sourceExterne: string | null
   regionId: number
   categoryId: number
   createdAt: Date
@@ -292,74 +412,157 @@ export type PlaceWhereInput = {
   NOT?: Prisma.PlaceWhereInput | Prisma.PlaceWhereInput[]
   id?: Prisma.IntFilter<"Place"> | number
   nom?: Prisma.StringFilter<"Place"> | string
+  slug?: Prisma.StringFilter<"Place"> | string
+  resume?: Prisma.StringNullableFilter<"Place"> | string | null
   description?: Prisma.StringNullableFilter<"Place"> | string | null
   adresse?: Prisma.StringNullableFilter<"Place"> | string | null
   ville?: Prisma.StringNullableFilter<"Place"> | string | null
+  codePostal?: Prisma.StringNullableFilter<"Place"> | string | null
   latitude?: Prisma.FloatFilter<"Place"> | number
   longitude?: Prisma.FloatFilter<"Place"> | number
-  imageUrl?: Prisma.StringNullableFilter<"Place"> | string | null
-  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
   telephone?: Prisma.StringNullableFilter<"Place"> | string | null
+  email?: Prisma.StringNullableFilter<"Place"> | string | null
+  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Place"> | string | null
+  horaire?: Prisma.StringNullableFilter<"Place"> | string | null
+  prix?: Prisma.StringNullableFilter<"Place"> | string | null
+  accessibilite?: Prisma.StringNullableFilter<"Place"> | string | null
+  stationnement?: Prisma.StringNullableFilter<"Place"> | string | null
+  tempsVisite?: Prisma.StringNullableFilter<"Place"> | string | null
+  estGratuit?: Prisma.BoolFilter<"Place"> | boolean
+  note?: Prisma.FloatNullableFilter<"Place"> | number | null
+  nombreAvis?: Prisma.IntFilter<"Place"> | number
+  estVedette?: Prisma.BoolFilter<"Place"> | boolean
+  estActif?: Prisma.BoolFilter<"Place"> | boolean
+  sourceExterneId?: Prisma.StringNullableFilter<"Place"> | string | null
+  sourceExterne?: Prisma.StringNullableFilter<"Place"> | string | null
   regionId?: Prisma.IntFilter<"Place"> | number
   categoryId?: Prisma.IntFilter<"Place"> | number
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   region?: Prisma.XOR<Prisma.RegionScalarRelationFilter, Prisma.RegionWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  images?: Prisma.PlaceImageListRelationFilter
+  links?: Prisma.PlaceLinkListRelationFilter
+  placeActivities?: Prisma.PlaceActivityListRelationFilter
+  weatherForecasts?: Prisma.WeatherForecastListRelationFilter
+  favorites?: Prisma.FavoriteListRelationFilter
+  recentlyViewed?: Prisma.RecentlyViewedListRelationFilter
 }
 
 export type PlaceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  resume?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   adresse?: Prisma.SortOrderInput | Prisma.SortOrder
   ville?: Prisma.SortOrderInput | Prisma.SortOrder
+  codePostal?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  siteWeb?: Prisma.SortOrderInput | Prisma.SortOrder
   telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  siteWeb?: Prisma.SortOrderInput | Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  horaire?: Prisma.SortOrderInput | Prisma.SortOrder
+  prix?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessibilite?: Prisma.SortOrderInput | Prisma.SortOrder
+  stationnement?: Prisma.SortOrderInput | Prisma.SortOrder
+  tempsVisite?: Prisma.SortOrderInput | Prisma.SortOrder
+  estGratuit?: Prisma.SortOrder
+  note?: Prisma.SortOrderInput | Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
+  estVedette?: Prisma.SortOrder
+  estActif?: Prisma.SortOrder
+  sourceExterneId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceExterne?: Prisma.SortOrderInput | Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   region?: Prisma.RegionOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
+  images?: Prisma.PlaceImageOrderByRelationAggregateInput
+  links?: Prisma.PlaceLinkOrderByRelationAggregateInput
+  placeActivities?: Prisma.PlaceActivityOrderByRelationAggregateInput
+  weatherForecasts?: Prisma.WeatherForecastOrderByRelationAggregateInput
+  favorites?: Prisma.FavoriteOrderByRelationAggregateInput
+  recentlyViewed?: Prisma.RecentlyViewedOrderByRelationAggregateInput
 }
 
 export type PlaceWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  slug?: string
+  sourceExterne_sourceExterneId?: Prisma.PlaceSourceExterneSourceExterneIdCompoundUniqueInput
   AND?: Prisma.PlaceWhereInput | Prisma.PlaceWhereInput[]
   OR?: Prisma.PlaceWhereInput[]
   NOT?: Prisma.PlaceWhereInput | Prisma.PlaceWhereInput[]
   nom?: Prisma.StringFilter<"Place"> | string
+  resume?: Prisma.StringNullableFilter<"Place"> | string | null
   description?: Prisma.StringNullableFilter<"Place"> | string | null
   adresse?: Prisma.StringNullableFilter<"Place"> | string | null
   ville?: Prisma.StringNullableFilter<"Place"> | string | null
+  codePostal?: Prisma.StringNullableFilter<"Place"> | string | null
   latitude?: Prisma.FloatFilter<"Place"> | number
   longitude?: Prisma.FloatFilter<"Place"> | number
-  imageUrl?: Prisma.StringNullableFilter<"Place"> | string | null
-  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
   telephone?: Prisma.StringNullableFilter<"Place"> | string | null
+  email?: Prisma.StringNullableFilter<"Place"> | string | null
+  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Place"> | string | null
+  horaire?: Prisma.StringNullableFilter<"Place"> | string | null
+  prix?: Prisma.StringNullableFilter<"Place"> | string | null
+  accessibilite?: Prisma.StringNullableFilter<"Place"> | string | null
+  stationnement?: Prisma.StringNullableFilter<"Place"> | string | null
+  tempsVisite?: Prisma.StringNullableFilter<"Place"> | string | null
+  estGratuit?: Prisma.BoolFilter<"Place"> | boolean
+  note?: Prisma.FloatNullableFilter<"Place"> | number | null
+  nombreAvis?: Prisma.IntFilter<"Place"> | number
+  estVedette?: Prisma.BoolFilter<"Place"> | boolean
+  estActif?: Prisma.BoolFilter<"Place"> | boolean
+  sourceExterneId?: Prisma.StringNullableFilter<"Place"> | string | null
+  sourceExterne?: Prisma.StringNullableFilter<"Place"> | string | null
   regionId?: Prisma.IntFilter<"Place"> | number
   categoryId?: Prisma.IntFilter<"Place"> | number
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   region?: Prisma.XOR<Prisma.RegionScalarRelationFilter, Prisma.RegionWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-}, "id">
+  images?: Prisma.PlaceImageListRelationFilter
+  links?: Prisma.PlaceLinkListRelationFilter
+  placeActivities?: Prisma.PlaceActivityListRelationFilter
+  weatherForecasts?: Prisma.WeatherForecastListRelationFilter
+  favorites?: Prisma.FavoriteListRelationFilter
+  recentlyViewed?: Prisma.RecentlyViewedListRelationFilter
+}, "id" | "slug" | "sourceExterne_sourceExterneId">
 
 export type PlaceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  resume?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   adresse?: Prisma.SortOrderInput | Prisma.SortOrder
   ville?: Prisma.SortOrderInput | Prisma.SortOrder
+  codePostal?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  siteWeb?: Prisma.SortOrderInput | Prisma.SortOrder
   telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  siteWeb?: Prisma.SortOrderInput | Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  horaire?: Prisma.SortOrderInput | Prisma.SortOrder
+  prix?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessibilite?: Prisma.SortOrderInput | Prisma.SortOrder
+  stationnement?: Prisma.SortOrderInput | Prisma.SortOrder
+  tempsVisite?: Prisma.SortOrderInput | Prisma.SortOrder
+  estGratuit?: Prisma.SortOrder
+  note?: Prisma.SortOrderInput | Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
+  estVedette?: Prisma.SortOrder
+  estActif?: Prisma.SortOrder
+  sourceExterneId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceExterne?: Prisma.SortOrderInput | Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -377,14 +580,30 @@ export type PlaceScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlaceScalarWhereWithAggregatesInput | Prisma.PlaceScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Place"> | number
   nom?: Prisma.StringWithAggregatesFilter<"Place"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Place"> | string
+  resume?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   adresse?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   ville?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  codePostal?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   latitude?: Prisma.FloatWithAggregatesFilter<"Place"> | number
   longitude?: Prisma.FloatWithAggregatesFilter<"Place"> | number
-  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
-  siteWeb?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   telephone?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  email?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  siteWeb?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  horaire?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  prix?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  accessibilite?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  stationnement?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  tempsVisite?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  estGratuit?: Prisma.BoolWithAggregatesFilter<"Place"> | boolean
+  note?: Prisma.FloatNullableWithAggregatesFilter<"Place"> | number | null
+  nombreAvis?: Prisma.IntWithAggregatesFilter<"Place"> | number
+  estVedette?: Prisma.BoolWithAggregatesFilter<"Place"> | boolean
+  estActif?: Prisma.BoolWithAggregatesFilter<"Place"> | boolean
+  sourceExterneId?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  sourceExterne?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   regionId?: Prisma.IntWithAggregatesFilter<"Place"> | number
   categoryId?: Prisma.IntWithAggregatesFilter<"Place"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Place"> | Date | string
@@ -393,81 +612,185 @@ export type PlaceScalarWhereWithAggregatesInput = {
 
 export type PlaceCreateInput = {
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   region: Prisma.RegionCreateNestedOneWithoutPlacesInput
   category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateInput = {
   id?: number
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   regionId: number
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUpdateInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateManyInput = {
   id?: number
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   regionId: number
   categoryId: number
   createdAt?: Date | string
@@ -476,14 +799,30 @@ export type PlaceCreateManyInput = {
 
 export type PlaceUpdateManyMutationInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -491,14 +830,30 @@ export type PlaceUpdateManyMutationInput = {
 export type PlaceUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -515,17 +870,38 @@ export type PlaceOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type PlaceSourceExterneSourceExterneIdCompoundUniqueInput = {
+  sourceExterne: string
+  sourceExterneId: string
+}
+
 export type PlaceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  resume?: Prisma.SortOrder
   description?: Prisma.SortOrder
   adresse?: Prisma.SortOrder
   ville?: Prisma.SortOrder
+  codePostal?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  siteWeb?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  siteWeb?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  horaire?: Prisma.SortOrder
+  prix?: Prisma.SortOrder
+  accessibilite?: Prisma.SortOrder
+  stationnement?: Prisma.SortOrder
+  tempsVisite?: Prisma.SortOrder
+  estGratuit?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
+  estVedette?: Prisma.SortOrder
+  estActif?: Prisma.SortOrder
+  sourceExterneId?: Prisma.SortOrder
+  sourceExterne?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -536,6 +912,8 @@ export type PlaceAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
 }
@@ -543,14 +921,30 @@ export type PlaceAvgOrderByAggregateInput = {
 export type PlaceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  resume?: Prisma.SortOrder
   description?: Prisma.SortOrder
   adresse?: Prisma.SortOrder
   ville?: Prisma.SortOrder
+  codePostal?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  siteWeb?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  siteWeb?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  horaire?: Prisma.SortOrder
+  prix?: Prisma.SortOrder
+  accessibilite?: Prisma.SortOrder
+  stationnement?: Prisma.SortOrder
+  tempsVisite?: Prisma.SortOrder
+  estGratuit?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
+  estVedette?: Prisma.SortOrder
+  estActif?: Prisma.SortOrder
+  sourceExterneId?: Prisma.SortOrder
+  sourceExterne?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -560,14 +954,30 @@ export type PlaceMaxOrderByAggregateInput = {
 export type PlaceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nom?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  resume?: Prisma.SortOrder
   description?: Prisma.SortOrder
   adresse?: Prisma.SortOrder
   ville?: Prisma.SortOrder
+  codePostal?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  siteWeb?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  siteWeb?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  horaire?: Prisma.SortOrder
+  prix?: Prisma.SortOrder
+  accessibilite?: Prisma.SortOrder
+  stationnement?: Prisma.SortOrder
+  tempsVisite?: Prisma.SortOrder
+  estGratuit?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
+  estVedette?: Prisma.SortOrder
+  estActif?: Prisma.SortOrder
+  sourceExterneId?: Prisma.SortOrder
+  sourceExterne?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -578,8 +988,15 @@ export type PlaceSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  nombreAvis?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+}
+
+export type PlaceScalarRelationFilter = {
+  is?: Prisma.PlaceWhereInput
+  isNot?: Prisma.PlaceWhereInput
 }
 
 export type PlaceCreateNestedManyWithoutRegionInput = {
@@ -674,39 +1091,171 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type PlaceCreateNestedOneWithoutImagesInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutImagesInput, Prisma.PlaceUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutImagesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutImagesNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutImagesInput, Prisma.PlaceUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutImagesInput
+  upsert?: Prisma.PlaceUpsertWithoutImagesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutImagesInput, Prisma.PlaceUpdateWithoutImagesInput>, Prisma.PlaceUncheckedUpdateWithoutImagesInput>
+}
+
+export type PlaceCreateNestedOneWithoutLinksInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutLinksInput, Prisma.PlaceUncheckedCreateWithoutLinksInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutLinksInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutLinksInput, Prisma.PlaceUncheckedCreateWithoutLinksInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutLinksInput
+  upsert?: Prisma.PlaceUpsertWithoutLinksInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutLinksInput, Prisma.PlaceUpdateWithoutLinksInput>, Prisma.PlaceUncheckedUpdateWithoutLinksInput>
+}
+
+export type PlaceCreateNestedOneWithoutPlaceActivitiesInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedCreateWithoutPlaceActivitiesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutPlaceActivitiesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutPlaceActivitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedCreateWithoutPlaceActivitiesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutPlaceActivitiesInput
+  upsert?: Prisma.PlaceUpsertWithoutPlaceActivitiesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutPlaceActivitiesInput, Prisma.PlaceUpdateWithoutPlaceActivitiesInput>, Prisma.PlaceUncheckedUpdateWithoutPlaceActivitiesInput>
+}
+
+export type PlaceCreateNestedOneWithoutWeatherForecastsInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedCreateWithoutWeatherForecastsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutWeatherForecastsInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutWeatherForecastsNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedCreateWithoutWeatherForecastsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutWeatherForecastsInput
+  upsert?: Prisma.PlaceUpsertWithoutWeatherForecastsInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutWeatherForecastsInput, Prisma.PlaceUpdateWithoutWeatherForecastsInput>, Prisma.PlaceUncheckedUpdateWithoutWeatherForecastsInput>
+}
+
+export type PlaceCreateNestedOneWithoutFavoritesInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutFavoritesInput, Prisma.PlaceUncheckedCreateWithoutFavoritesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutFavoritesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutFavoritesNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutFavoritesInput, Prisma.PlaceUncheckedCreateWithoutFavoritesInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutFavoritesInput
+  upsert?: Prisma.PlaceUpsertWithoutFavoritesInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutFavoritesInput, Prisma.PlaceUpdateWithoutFavoritesInput>, Prisma.PlaceUncheckedUpdateWithoutFavoritesInput>
+}
+
+export type PlaceCreateNestedOneWithoutRecentlyViewedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedCreateWithoutRecentlyViewedInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutRecentlyViewedInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutRecentlyViewedNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedCreateWithoutRecentlyViewedInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutRecentlyViewedInput
+  upsert?: Prisma.PlaceUpsertWithoutRecentlyViewedInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutRecentlyViewedInput, Prisma.PlaceUpdateWithoutRecentlyViewedInput>, Prisma.PlaceUncheckedUpdateWithoutRecentlyViewedInput>
 }
 
 export type PlaceCreateWithoutRegionInput = {
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutRegionInput = {
   id?: number
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutRegionInput = {
@@ -741,14 +1290,30 @@ export type PlaceScalarWhereInput = {
   NOT?: Prisma.PlaceScalarWhereInput | Prisma.PlaceScalarWhereInput[]
   id?: Prisma.IntFilter<"Place"> | number
   nom?: Prisma.StringFilter<"Place"> | string
+  slug?: Prisma.StringFilter<"Place"> | string
+  resume?: Prisma.StringNullableFilter<"Place"> | string | null
   description?: Prisma.StringNullableFilter<"Place"> | string | null
   adresse?: Prisma.StringNullableFilter<"Place"> | string | null
   ville?: Prisma.StringNullableFilter<"Place"> | string | null
+  codePostal?: Prisma.StringNullableFilter<"Place"> | string | null
   latitude?: Prisma.FloatFilter<"Place"> | number
   longitude?: Prisma.FloatFilter<"Place"> | number
-  imageUrl?: Prisma.StringNullableFilter<"Place"> | string | null
-  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
   telephone?: Prisma.StringNullableFilter<"Place"> | string | null
+  email?: Prisma.StringNullableFilter<"Place"> | string | null
+  siteWeb?: Prisma.StringNullableFilter<"Place"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Place"> | string | null
+  horaire?: Prisma.StringNullableFilter<"Place"> | string | null
+  prix?: Prisma.StringNullableFilter<"Place"> | string | null
+  accessibilite?: Prisma.StringNullableFilter<"Place"> | string | null
+  stationnement?: Prisma.StringNullableFilter<"Place"> | string | null
+  tempsVisite?: Prisma.StringNullableFilter<"Place"> | string | null
+  estGratuit?: Prisma.BoolFilter<"Place"> | boolean
+  note?: Prisma.FloatNullableFilter<"Place"> | number | null
+  nombreAvis?: Prisma.IntFilter<"Place"> | number
+  estVedette?: Prisma.BoolFilter<"Place"> | boolean
+  estActif?: Prisma.BoolFilter<"Place"> | boolean
+  sourceExterneId?: Prisma.StringNullableFilter<"Place"> | string | null
+  sourceExterne?: Prisma.StringNullableFilter<"Place"> | string | null
   regionId?: Prisma.IntFilter<"Place"> | number
   categoryId?: Prisma.IntFilter<"Place"> | number
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
@@ -757,33 +1322,77 @@ export type PlaceScalarWhereInput = {
 
 export type PlaceCreateWithoutCategoryInput = {
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutCategoryInput = {
   id?: number
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   regionId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutCategoryInput = {
@@ -812,17 +1421,1029 @@ export type PlaceUpdateManyWithWhereWithoutCategoryInput = {
   data: Prisma.XOR<Prisma.PlaceUpdateManyMutationInput, Prisma.PlaceUncheckedUpdateManyWithoutCategoryInput>
 }
 
-export type PlaceCreateManyRegionInput = {
-  id?: number
+export type PlaceCreateWithoutImagesInput = {
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutImagesInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutImagesInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutImagesInput, Prisma.PlaceUncheckedCreateWithoutImagesInput>
+}
+
+export type PlaceUpsertWithoutImagesInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutImagesInput, Prisma.PlaceUncheckedUpdateWithoutImagesInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutImagesInput, Prisma.PlaceUncheckedCreateWithoutImagesInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutImagesInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutImagesInput, Prisma.PlaceUncheckedUpdateWithoutImagesInput>
+}
+
+export type PlaceUpdateWithoutImagesInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutImagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutLinksInput = {
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutLinksInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutLinksInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutLinksInput, Prisma.PlaceUncheckedCreateWithoutLinksInput>
+}
+
+export type PlaceUpsertWithoutLinksInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutLinksInput, Prisma.PlaceUncheckedUpdateWithoutLinksInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutLinksInput, Prisma.PlaceUncheckedCreateWithoutLinksInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutLinksInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutLinksInput, Prisma.PlaceUncheckedUpdateWithoutLinksInput>
+}
+
+export type PlaceUpdateWithoutLinksInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutLinksInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutPlaceActivitiesInput = {
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutPlaceActivitiesInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutPlaceActivitiesInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedCreateWithoutPlaceActivitiesInput>
+}
+
+export type PlaceUpsertWithoutPlaceActivitiesInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedUpdateWithoutPlaceActivitiesInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedCreateWithoutPlaceActivitiesInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutPlaceActivitiesInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutPlaceActivitiesInput, Prisma.PlaceUncheckedUpdateWithoutPlaceActivitiesInput>
+}
+
+export type PlaceUpdateWithoutPlaceActivitiesInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutPlaceActivitiesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutWeatherForecastsInput = {
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutWeatherForecastsInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutWeatherForecastsInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedCreateWithoutWeatherForecastsInput>
+}
+
+export type PlaceUpsertWithoutWeatherForecastsInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedUpdateWithoutWeatherForecastsInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedCreateWithoutWeatherForecastsInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutWeatherForecastsInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutWeatherForecastsInput, Prisma.PlaceUncheckedUpdateWithoutWeatherForecastsInput>
+}
+
+export type PlaceUpdateWithoutWeatherForecastsInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutWeatherForecastsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutFavoritesInput = {
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutFavoritesInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutFavoritesInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutFavoritesInput, Prisma.PlaceUncheckedCreateWithoutFavoritesInput>
+}
+
+export type PlaceUpsertWithoutFavoritesInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutFavoritesInput, Prisma.PlaceUncheckedUpdateWithoutFavoritesInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutFavoritesInput, Prisma.PlaceUncheckedCreateWithoutFavoritesInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutFavoritesInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutFavoritesInput, Prisma.PlaceUncheckedUpdateWithoutFavoritesInput>
+}
+
+export type PlaceUpdateWithoutFavoritesInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutFavoritesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutRecentlyViewedInput = {
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  category: Prisma.CategoryCreateNestedOneWithoutPlacesInput
+  images?: Prisma.PlaceImageCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutRecentlyViewedInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
+  regionId: number
+  categoryId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.PlaceImageUncheckedCreateNestedManyWithoutPlaceInput
+  links?: Prisma.PlaceLinkUncheckedCreateNestedManyWithoutPlaceInput
+  placeActivities?: Prisma.PlaceActivityUncheckedCreateNestedManyWithoutPlaceInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedCreateNestedManyWithoutPlaceInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutRecentlyViewedInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedCreateWithoutRecentlyViewedInput>
+}
+
+export type PlaceUpsertWithoutRecentlyViewedInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedUpdateWithoutRecentlyViewedInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedCreateWithoutRecentlyViewedInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutRecentlyViewedInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutRecentlyViewedInput, Prisma.PlaceUncheckedUpdateWithoutRecentlyViewedInput>
+}
+
+export type PlaceUpdateWithoutRecentlyViewedInput = {
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutRecentlyViewedInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateManyRegionInput = {
+  id?: number
+  nom: string
+  slug: string
+  resume?: string | null
+  description?: string | null
+  adresse?: string | null
+  ville?: string | null
+  codePostal?: string | null
+  latitude: number
+  longitude: number
+  telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -830,46 +2451,106 @@ export type PlaceCreateManyRegionInput = {
 
 export type PlaceUpdateWithoutRegionInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutRegionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateManyWithoutRegionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -878,14 +2559,30 @@ export type PlaceUncheckedUpdateManyWithoutRegionInput = {
 export type PlaceCreateManyCategoryInput = {
   id?: number
   nom: string
+  slug: string
+  resume?: string | null
   description?: string | null
   adresse?: string | null
   ville?: string | null
+  codePostal?: string | null
   latitude: number
   longitude: number
-  imageUrl?: string | null
-  siteWeb?: string | null
   telephone?: string | null
+  email?: string | null
+  siteWeb?: string | null
+  thumbnailUrl?: string | null
+  horaire?: string | null
+  prix?: string | null
+  accessibilite?: string | null
+  stationnement?: string | null
+  tempsVisite?: string | null
+  estGratuit?: boolean
+  note?: number | null
+  nombreAvis?: number
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: string | null
+  sourceExterne?: string | null
   regionId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -893,83 +2590,256 @@ export type PlaceCreateManyCategoryInput = {
 
 export type PlaceUpdateWithoutCategoryInput = {
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   region?: Prisma.RegionUpdateOneRequiredWithoutPlacesNestedInput
+  images?: Prisma.PlaceImageUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PlaceImageUncheckedUpdateManyWithoutPlaceNestedInput
+  links?: Prisma.PlaceLinkUncheckedUpdateManyWithoutPlaceNestedInput
+  placeActivities?: Prisma.PlaceActivityUncheckedUpdateManyWithoutPlaceNestedInput
+  weatherForecasts?: Prisma.WeatherForecastUncheckedUpdateManyWithoutPlaceNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPlaceNestedInput
+  recentlyViewed?: Prisma.RecentlyViewedUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nom?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  resume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteWeb?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  horaire?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessibilite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stationnement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tempsVisite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estGratuit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  nombreAvis?: Prisma.IntFieldUpdateOperationsInput | number
+  estVedette?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sourceExterneId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceExterne?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
+/**
+ * Count Type PlaceCountOutputType
+ */
+
+export type PlaceCountOutputType = {
+  images: number
+  links: number
+  placeActivities: number
+  weatherForecasts: number
+  favorites: number
+  recentlyViewed: number
+}
+
+export type PlaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  images?: boolean | PlaceCountOutputTypeCountImagesArgs
+  links?: boolean | PlaceCountOutputTypeCountLinksArgs
+  placeActivities?: boolean | PlaceCountOutputTypeCountPlaceActivitiesArgs
+  weatherForecasts?: boolean | PlaceCountOutputTypeCountWeatherForecastsArgs
+  favorites?: boolean | PlaceCountOutputTypeCountFavoritesArgs
+  recentlyViewed?: boolean | PlaceCountOutputTypeCountRecentlyViewedArgs
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaceCountOutputType
+   */
+  select?: Prisma.PlaceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaceImageWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaceLinkWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountPlaceActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaceActivityWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountWeatherForecastsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeatherForecastWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountRecentlyViewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecentlyViewedWhereInput
+}
+
 
 export type PlaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   nom?: boolean
+  slug?: boolean
+  resume?: boolean
   description?: boolean
   adresse?: boolean
   ville?: boolean
+  codePostal?: boolean
   latitude?: boolean
   longitude?: boolean
-  imageUrl?: boolean
-  siteWeb?: boolean
   telephone?: boolean
+  email?: boolean
+  siteWeb?: boolean
+  thumbnailUrl?: boolean
+  horaire?: boolean
+  prix?: boolean
+  accessibilite?: boolean
+  stationnement?: boolean
+  tempsVisite?: boolean
+  estGratuit?: boolean
+  note?: boolean
+  nombreAvis?: boolean
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: boolean
+  sourceExterne?: boolean
   regionId?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  images?: boolean | Prisma.Place$imagesArgs<ExtArgs>
+  links?: boolean | Prisma.Place$linksArgs<ExtArgs>
+  placeActivities?: boolean | Prisma.Place$placeActivitiesArgs<ExtArgs>
+  weatherForecasts?: boolean | Prisma.Place$weatherForecastsArgs<ExtArgs>
+  favorites?: boolean | Prisma.Place$favoritesArgs<ExtArgs>
+  recentlyViewed?: boolean | Prisma.Place$recentlyViewedArgs<ExtArgs>
+  _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["place"]>
 
 export type PlaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   nom?: boolean
+  slug?: boolean
+  resume?: boolean
   description?: boolean
   adresse?: boolean
   ville?: boolean
+  codePostal?: boolean
   latitude?: boolean
   longitude?: boolean
-  imageUrl?: boolean
-  siteWeb?: boolean
   telephone?: boolean
+  email?: boolean
+  siteWeb?: boolean
+  thumbnailUrl?: boolean
+  horaire?: boolean
+  prix?: boolean
+  accessibilite?: boolean
+  stationnement?: boolean
+  tempsVisite?: boolean
+  estGratuit?: boolean
+  note?: boolean
+  nombreAvis?: boolean
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: boolean
+  sourceExterne?: boolean
   regionId?: boolean
   categoryId?: boolean
   createdAt?: boolean
@@ -981,14 +2851,30 @@ export type PlaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type PlaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   nom?: boolean
+  slug?: boolean
+  resume?: boolean
   description?: boolean
   adresse?: boolean
   ville?: boolean
+  codePostal?: boolean
   latitude?: boolean
   longitude?: boolean
-  imageUrl?: boolean
-  siteWeb?: boolean
   telephone?: boolean
+  email?: boolean
+  siteWeb?: boolean
+  thumbnailUrl?: boolean
+  horaire?: boolean
+  prix?: boolean
+  accessibilite?: boolean
+  stationnement?: boolean
+  tempsVisite?: boolean
+  estGratuit?: boolean
+  note?: boolean
+  nombreAvis?: boolean
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: boolean
+  sourceExterne?: boolean
   regionId?: boolean
   categoryId?: boolean
   createdAt?: boolean
@@ -1000,24 +2886,47 @@ export type PlaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type PlaceSelectScalar = {
   id?: boolean
   nom?: boolean
+  slug?: boolean
+  resume?: boolean
   description?: boolean
   adresse?: boolean
   ville?: boolean
+  codePostal?: boolean
   latitude?: boolean
   longitude?: boolean
-  imageUrl?: boolean
-  siteWeb?: boolean
   telephone?: boolean
+  email?: boolean
+  siteWeb?: boolean
+  thumbnailUrl?: boolean
+  horaire?: boolean
+  prix?: boolean
+  accessibilite?: boolean
+  stationnement?: boolean
+  tempsVisite?: boolean
+  estGratuit?: boolean
+  note?: boolean
+  nombreAvis?: boolean
+  estVedette?: boolean
+  estActif?: boolean
+  sourceExterneId?: boolean
+  sourceExterne?: boolean
   regionId?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PlaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "description" | "adresse" | "ville" | "latitude" | "longitude" | "imageUrl" | "siteWeb" | "telephone" | "regionId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["place"]>
+export type PlaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "slug" | "resume" | "description" | "adresse" | "ville" | "codePostal" | "latitude" | "longitude" | "telephone" | "email" | "siteWeb" | "thumbnailUrl" | "horaire" | "prix" | "accessibilite" | "stationnement" | "tempsVisite" | "estGratuit" | "note" | "nombreAvis" | "estVedette" | "estActif" | "sourceExterneId" | "sourceExterne" | "regionId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["place"]>
 export type PlaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  images?: boolean | Prisma.Place$imagesArgs<ExtArgs>
+  links?: boolean | Prisma.Place$linksArgs<ExtArgs>
+  placeActivities?: boolean | Prisma.Place$placeActivitiesArgs<ExtArgs>
+  weatherForecasts?: boolean | Prisma.Place$weatherForecastsArgs<ExtArgs>
+  favorites?: boolean | Prisma.Place$favoritesArgs<ExtArgs>
+  recentlyViewed?: boolean | Prisma.Place$recentlyViewedArgs<ExtArgs>
+  _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
@@ -1033,18 +2942,40 @@ export type $PlacePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     region: Prisma.$RegionPayload<ExtArgs>
     category: Prisma.$CategoryPayload<ExtArgs>
+    images: Prisma.$PlaceImagePayload<ExtArgs>[]
+    links: Prisma.$PlaceLinkPayload<ExtArgs>[]
+    placeActivities: Prisma.$PlaceActivityPayload<ExtArgs>[]
+    weatherForecasts: Prisma.$WeatherForecastPayload<ExtArgs>[]
+    favorites: Prisma.$FavoritePayload<ExtArgs>[]
+    recentlyViewed: Prisma.$RecentlyViewedPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     nom: string
+    slug: string
+    resume: string | null
     description: string | null
     adresse: string | null
     ville: string | null
+    codePostal: string | null
     latitude: number
     longitude: number
-    imageUrl: string | null
-    siteWeb: string | null
     telephone: string | null
+    email: string | null
+    siteWeb: string | null
+    thumbnailUrl: string | null
+    horaire: string | null
+    prix: string | null
+    accessibilite: string | null
+    stationnement: string | null
+    tempsVisite: string | null
+    estGratuit: boolean
+    note: number | null
+    nombreAvis: number
+    estVedette: boolean
+    estActif: boolean
+    sourceExterneId: string | null
+    sourceExterne: string | null
     regionId: number
     categoryId: number
     createdAt: Date
@@ -1445,6 +3376,12 @@ export interface Prisma__PlaceClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   region<T extends Prisma.RegionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RegionDefaultArgs<ExtArgs>>): Prisma.Prisma__RegionClient<runtime.Types.Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  images<T extends Prisma.Place$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaceImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  links<T extends Prisma.Place$linksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$linksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaceLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  placeActivities<T extends Prisma.Place$placeActivitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$placeActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaceActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  weatherForecasts<T extends Prisma.Place$weatherForecastsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$weatherForecastsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeatherForecastPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favorites<T extends Prisma.Place$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recentlyViewed<T extends Prisma.Place$recentlyViewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$recentlyViewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecentlyViewedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1476,14 +3413,30 @@ export interface Prisma__PlaceClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface PlaceFieldRefs {
   readonly id: Prisma.FieldRef<"Place", 'Int'>
   readonly nom: Prisma.FieldRef<"Place", 'String'>
+  readonly slug: Prisma.FieldRef<"Place", 'String'>
+  readonly resume: Prisma.FieldRef<"Place", 'String'>
   readonly description: Prisma.FieldRef<"Place", 'String'>
   readonly adresse: Prisma.FieldRef<"Place", 'String'>
   readonly ville: Prisma.FieldRef<"Place", 'String'>
+  readonly codePostal: Prisma.FieldRef<"Place", 'String'>
   readonly latitude: Prisma.FieldRef<"Place", 'Float'>
   readonly longitude: Prisma.FieldRef<"Place", 'Float'>
-  readonly imageUrl: Prisma.FieldRef<"Place", 'String'>
-  readonly siteWeb: Prisma.FieldRef<"Place", 'String'>
   readonly telephone: Prisma.FieldRef<"Place", 'String'>
+  readonly email: Prisma.FieldRef<"Place", 'String'>
+  readonly siteWeb: Prisma.FieldRef<"Place", 'String'>
+  readonly thumbnailUrl: Prisma.FieldRef<"Place", 'String'>
+  readonly horaire: Prisma.FieldRef<"Place", 'String'>
+  readonly prix: Prisma.FieldRef<"Place", 'String'>
+  readonly accessibilite: Prisma.FieldRef<"Place", 'String'>
+  readonly stationnement: Prisma.FieldRef<"Place", 'String'>
+  readonly tempsVisite: Prisma.FieldRef<"Place", 'String'>
+  readonly estGratuit: Prisma.FieldRef<"Place", 'Boolean'>
+  readonly note: Prisma.FieldRef<"Place", 'Float'>
+  readonly nombreAvis: Prisma.FieldRef<"Place", 'Int'>
+  readonly estVedette: Prisma.FieldRef<"Place", 'Boolean'>
+  readonly estActif: Prisma.FieldRef<"Place", 'Boolean'>
+  readonly sourceExterneId: Prisma.FieldRef<"Place", 'String'>
+  readonly sourceExterne: Prisma.FieldRef<"Place", 'String'>
   readonly regionId: Prisma.FieldRef<"Place", 'Int'>
   readonly categoryId: Prisma.FieldRef<"Place", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Place", 'DateTime'>
@@ -1886,6 +3839,150 @@ export type PlaceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Places to delete.
    */
   limit?: number
+}
+
+/**
+ * Place.images
+ */
+export type Place$imagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaceImage
+   */
+  select?: Prisma.PlaceImageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaceImage
+   */
+  omit?: Prisma.PlaceImageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaceImageInclude<ExtArgs> | null
+  where?: Prisma.PlaceImageWhereInput
+  orderBy?: Prisma.PlaceImageOrderByWithRelationInput | Prisma.PlaceImageOrderByWithRelationInput[]
+  cursor?: Prisma.PlaceImageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaceImageScalarFieldEnum | Prisma.PlaceImageScalarFieldEnum[]
+}
+
+/**
+ * Place.links
+ */
+export type Place$linksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaceLink
+   */
+  select?: Prisma.PlaceLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaceLink
+   */
+  omit?: Prisma.PlaceLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaceLinkInclude<ExtArgs> | null
+  where?: Prisma.PlaceLinkWhereInput
+  orderBy?: Prisma.PlaceLinkOrderByWithRelationInput | Prisma.PlaceLinkOrderByWithRelationInput[]
+  cursor?: Prisma.PlaceLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaceLinkScalarFieldEnum | Prisma.PlaceLinkScalarFieldEnum[]
+}
+
+/**
+ * Place.placeActivities
+ */
+export type Place$placeActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaceActivity
+   */
+  select?: Prisma.PlaceActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaceActivity
+   */
+  omit?: Prisma.PlaceActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaceActivityInclude<ExtArgs> | null
+  where?: Prisma.PlaceActivityWhereInput
+  orderBy?: Prisma.PlaceActivityOrderByWithRelationInput | Prisma.PlaceActivityOrderByWithRelationInput[]
+  cursor?: Prisma.PlaceActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaceActivityScalarFieldEnum | Prisma.PlaceActivityScalarFieldEnum[]
+}
+
+/**
+ * Place.weatherForecasts
+ */
+export type Place$weatherForecastsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeatherForecast
+   */
+  select?: Prisma.WeatherForecastSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeatherForecast
+   */
+  omit?: Prisma.WeatherForecastOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeatherForecastInclude<ExtArgs> | null
+  where?: Prisma.WeatherForecastWhereInput
+  orderBy?: Prisma.WeatherForecastOrderByWithRelationInput | Prisma.WeatherForecastOrderByWithRelationInput[]
+  cursor?: Prisma.WeatherForecastWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeatherForecastScalarFieldEnum | Prisma.WeatherForecastScalarFieldEnum[]
+}
+
+/**
+ * Place.favorites
+ */
+export type Place$favoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Favorite
+   */
+  select?: Prisma.FavoriteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Favorite
+   */
+  omit?: Prisma.FavoriteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteInclude<ExtArgs> | null
+  where?: Prisma.FavoriteWhereInput
+  orderBy?: Prisma.FavoriteOrderByWithRelationInput | Prisma.FavoriteOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteScalarFieldEnum | Prisma.FavoriteScalarFieldEnum[]
+}
+
+/**
+ * Place.recentlyViewed
+ */
+export type Place$recentlyViewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecentlyViewed
+   */
+  select?: Prisma.RecentlyViewedSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecentlyViewed
+   */
+  omit?: Prisma.RecentlyViewedOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecentlyViewedInclude<ExtArgs> | null
+  where?: Prisma.RecentlyViewedWhereInput
+  orderBy?: Prisma.RecentlyViewedOrderByWithRelationInput | Prisma.RecentlyViewedOrderByWithRelationInput[]
+  cursor?: Prisma.RecentlyViewedWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecentlyViewedScalarFieldEnum | Prisma.RecentlyViewedScalarFieldEnum[]
 }
 
 /**
