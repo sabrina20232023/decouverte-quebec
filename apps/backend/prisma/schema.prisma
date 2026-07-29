@@ -8,45 +8,485 @@ datasource db {
   provider = "postgresql"
 }
 
-model Region {
-  id          Int      @id @default(autoincrement())
-  nom         String   @unique
-  slug        String   @unique
-  description String?
+// ======================================================
+// ENUMS
+// ======================================================
 
-  places      Place[]
+enum UserRole {
+  USER
+  ADMIN
 }
+
+enum TemperatureUnit {
+  CELSIUS
+  FAHRENHEIT
+}
+
+enum PlaceLinkType {
+  OFFICIAL
+  BOOKING
+  WIKIPEDIA
+  FACEBOOK
+  INSTAGRAM
+  OTHER
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+// ======================================================
+// G�OGRAPHIE
+// ======================================================
+
+model Province {
+  id          Int     @id @default(autoincrement())
+  nom         String
+  code        String  @unique
+  slug        String  @unique
+  description String?
+  estActive   Boolean @default(true)
+
+  regions          Region[]
+  preferredByUsers UserPreferredProvince[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nom])
+  @@index([estActive])
+  @@map("provinces")
+}
+
+model Region {
+  id          Int     @id @default(autoincrement())
+  nom         String
+  slug        String
+  description String?
+  imageUrl    String?
+  estActive   Boolean @default(true)
+
+  provinceId Int
+  province   Province @relation(fields: [provinceId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  places Place[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provinceId, slug])
+  @@unique([provinceId, nom])
+  @@index([provinceId])
+  @@index([estActive])
+  @@map("regions")
+}
+
+// ======================================================
+// CLASSIFICATION
+// ======================================================
 
 model Category {
-  id      Int     @id @default(autoincrement())
-  nom     String  @unique
-  icone   String?
+  id          Int     @id @default(autoincrement())
+  nom         String
+  slug        String  @unique
+  description String?
+  icone       String?
+  estActive   Boolean @default(true)
 
-  places  Place[]
+  places           Place[]
+  preferredByUsers UserPreferredCategory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nom])
+  @@index([estActive])
+  @@map("categories")
 }
 
-model Place {
-  id          Int      @id @default(autoincrement())
-
+model Activity {
+  id          Int     @id @default(autoincrement())
   nom         String
+  slug        String  @unique
+  description String?
+  icone       String?
+  estActive   Boolean @default(true)
+
+  placeActivities  PlaceActivity[]
+  preferredByUsers UserPreferredActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nom])
+  @@index([estActive])
+  @@map("activities")
+}
+
+// ======================================================
+// DESTINATIONS
+// ======================================================
+
+model Place {
+  id          Int     @id @default(autoincrement())
+  nom         String
+  slug        String  @unique
+  resume      String?
   description String?
 
-  adresse     String?
-  ville       String?
+  adresse    String?
+  ville      String?
+  codePostal String?
 
-  latitude    Float
-  longitude   Float
+  latitude  Float
+  longitude Float
 
-  imageUrl    String?
-  siteWeb     String?
-  telephone   String?
+  telephone    String?
+  email        String?
+  siteWeb      String?
+  thumbnailUrl String?
 
-  regionId    Int
-  categoryId  Int
+  horaire       String?
+  prix          String?
+  accessibilite String?
+  stationnement String?
+  tempsVisite   String?
+  estGratuit    Boolean @default(false)
 
-  region      Region   @relation(fields: [regionId], references: [id])
-  category    Category @relation(fields: [categoryId], references: [id])
+  note       Float?
+  nombreAvis Int    @default(0)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  estVedette Boolean @default(false)
+  estActif   Boolean @default(true)
+
+  sourceExterneId String?
+  sourceExterne   String?
+
+  regionId Int
+  region   Region @relation(fields: [regionId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  images           PlaceImage[]
+  links            PlaceLink[]
+  placeActivities  PlaceActivity[]
+  weatherForecasts WeatherForecast[]
+  favorites        Favorite[]
+  recentlyViewed   RecentlyViewed[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sourceExterne, sourceExterneId])
+  @@index([nom])
+  @@index([ville])
+  @@index([regionId])
+  @@index([categoryId])
+  @@index([estActif])
+  @@index([estVedette])
+  @@index([latitude, longitude])
+  @@index([regionId, categoryId, estActif])
+  @@map("places")
+}
+
+model PlaceImage {
+  id                 Int     @id @default(autoincrement())
+  url                String
+  titre              String?
+  altText            String?
+  ordre              Int     @default(0)
+  estImagePrincipale Boolean @default(false)
+
+  largeur Int?
+  hauteur Int?
+
+  source    String?
+  sourceUrl String?
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([placeId])
+  @@index([placeId, ordre])
+  @@index([placeId, estImagePrincipale])
+  @@map("place_images")
+}
+
+/**
+ * Liens pertinents associ�s � une destination
+ * (site officiel, billetterie, Wikip�dia, r�seaux sociaux, etc.)
+ */
+model PlaceLink {
+  id Int @id @default(autoincrement())
+
+  titre String
+  url   String
+  type  PlaceLinkType @default(OTHER)
+  ordre Int           @default(0)
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([placeId])
+  @@index([placeId, ordre])
+  @@map("place_links")
+}
+
+/**
+ * Relation explicite plusieurs-�-plusieurs :
+ * un lieu peut proposer plusieurs activit�s ;
+ * une activit� peut �tre propos�e dans plusieurs lieux.
+ */
+model PlaceActivity {
+  id Int @id @default(autoincrement())
+
+  ordre Int?
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([placeId, activityId])
+  @@index([placeId])
+  @@index([activityId])
+  @@map("place_activities")
+}
+
+// ======================================================
+// M�T�O
+// ======================================================
+
+/**
+ * Cache des pr�visions m�t�o par lieu et par date.
+ * �vite d'appeler l'API externe � chaque consultation
+ * et permet d'associer une pr�vision � une date de visite
+ * choisie par l'utilisateur (3.5) ainsi qu'aux favoris
+ * affich�s sur le tableau de bord (3.7).
+ */
+model WeatherForecast {
+  id Int @id @default(autoincrement())
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  datePrevision DateTime
+
+  temperatureMin       Float?
+  temperatureMax       Float?
+  temperatureRessentie Float?
+
+  humidite Int?
+  ventKmh  Float?
+
+  probabilitePrecipitation Int?
+
+  // code normalis� (ex: "Rain", "Clear") pour mapper facilement
+  // les r�ponses de diff�rentes API m�t�o entre elles
+  condition   String
+  description String?
+
+  icone String?
+
+  sourceApi String?
+
+  fetchedAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([placeId, datePrevision])
+  @@index([placeId])
+  @@index([datePrevision])
+  @@map("weather_forecasts")
+}
+
+// ======================================================
+// UTILISATEURS
+// ======================================================
+
+model User {
+  id          Int     @id @default(autoincrement())
+  displayName String?
+  prenom      String
+  nom         String
+  email       String  @unique
+
+  passwordHash String
+
+  avatarUrl String?
+  role      UserRole @default(USER)
+
+  estActif        Boolean   @default(true)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+
+  preference     UserPreference?
+  favorites      Favorite[]
+  recentlyViewed RecentlyViewed[]
+  refreshTokens  RefreshToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([estActif])
+  @@map("users")
+}
+
+/**
+ * Jetons de rafra�chissement pour la gestion des sessions JWT.
+ * Permet la r�vocation par appareil (d�connexion cibl�e,
+ * changement de mot de passe, d�tection d'usage suspect)
+ * sans attendre l'expiration naturelle du token d'acc�s.
+ */
+model RefreshToken {
+  id Int @id @default(autoincrement())
+
+  token String @unique
+
+  device    String?
+  ipAddress String?
+  userAgent String?
+
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ======================================================
+// FAVORIS ET HISTORIQUE
+// ======================================================
+
+model Favorite {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, placeId])
+  @@index([userId])
+  @@index([placeId])
+  @@index([userId, createdAt])
+  @@map("favorites")
+}
+
+model RecentlyViewed {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  placeId Int
+  place   Place @relation(fields: [placeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  viewedAt DateTime @default(now())
+
+  @@unique([userId, placeId])
+  @@index([userId])
+  @@index([placeId])
+  @@index([userId, viewedAt])
+  @@map("recently_viewed")
+}
+
+// ======================================================
+// PR�F�RENCES
+// ======================================================
+
+model UserPreference {
+  id Int @id @default(autoincrement())
+
+  langue           String          @default("fr")
+  uniteTemperature TemperatureUnit @default(CELSIUS)
+  theme            Theme           @default(SYSTEM)
+
+  recevoirNotificationsMeteo Boolean @default(false)
+  recevoirSuggestions        Boolean @default(true)
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  provincesPreferees  UserPreferredProvince[]
+  categoriesPreferees UserPreferredCategory[]
+  activitiesPreferees UserPreferredActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+model UserPreferredProvince {
+  id Int @id @default(autoincrement())
+
+  preferenceId Int
+  preference   UserPreference @relation(fields: [preferenceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  provinceId Int
+  province   Province @relation(fields: [provinceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([preferenceId, provinceId])
+  @@index([preferenceId])
+  @@index([provinceId])
+  @@map("user_preferred_provinces")
+}
+
+model UserPreferredCategory {
+  id Int @id @default(autoincrement())
+
+  preferenceId Int
+  preference   UserPreference @relation(fields: [preferenceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([preferenceId, categoryId])
+  @@index([preferenceId])
+  @@index([categoryId])
+  @@map("user_preferred_categories")
+}
+
+model UserPreferredActivity {
+  id Int @id @default(autoincrement())
+
+  preferenceId Int
+  preference   UserPreference @relation(fields: [preferenceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([preferenceId, activityId])
+  @@index([preferenceId])
+  @@index([activityId])
+  @@map("user_preferred_activities")
 }
