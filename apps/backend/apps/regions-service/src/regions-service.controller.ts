@@ -1,6 +1,17 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+    MessagePattern,
+    Payload,
+} from '@nestjs/microservices';
 import { RegionsServiceService } from './regions-service.service';
+
+interface RegionIdPayload {
+    id: number;
+}
+
+interface RegionSlugPayload {
+    slug: string;
+}
 
 @Controller()
 export class RegionsServiceController {
@@ -23,12 +34,20 @@ export class RegionsServiceController {
     }
 
     @MessagePattern({ cmd: 'regions.findOne' })
-    findOne(@Payload() id: number) {
-        return this.regionsService.findOne(id);
+    findOne(
+        @Payload() payload: RegionIdPayload,
+    ) {
+        return this.regionsService.findOne(
+            payload.id,
+        );
     }
 
     @MessagePattern({ cmd: 'regions.findBySlug' })
-    findBySlug(@Payload() slug: string) {
-        return this.regionsService.findBySlug(slug);
+    findBySlug(
+        @Payload() payload: RegionSlugPayload,
+    ) {
+        return this.regionsService.findBySlug(
+            payload.slug,
+        );
     }
 }

@@ -1,22 +1,51 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RegionsServiceController } from './regions-service.controller';
-import { RegionsServiceService } from './regions-service.service';
+import 'dotenv/config';
+import { NestFactory } from '@nestjs/core';
+import {
+    MicroserviceOptions,
+    Transport,
+} from '@nestjs/microservices';
+import { RegionsServiceModule } from './regions-service.module';
 
-describe('RegionsServiceController', () => {
-  let regionsServiceController: RegionsServiceController;
+async function bootstrap(): Promise<void> {
+    const host =
+        process.env.REGIONS_SERVICE_HOST ??
+        '127.0.0.1';
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [RegionsServiceController],
-      providers: [RegionsServiceService],
-    }).compile();
+    const port = Number(
+        process.env.REGIONS_SERVICE_PORT ??
+        3003,
+    );
 
-    regionsServiceController = app.get<RegionsServiceController>(RegionsServiceController);
-  });
+    if (Number.isNaN(port)) {
+        throw new Error(
+            'REGIONS_SERVICE_PORT doit être un nombre valide.',
+        );
+    }
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(regionsServiceController.getHello()).toBe('Hello World!');
-    });
-  });
+    const app =
+        await NestFactory.createMicroservice<MicroserviceOptions>(
+            RegionsServiceModule,
+            {
+                transport: Transport.TCP,
+                options: {
+                    host,
+                    port,
+                },
+            },
+        );
+
+    await app.listen();
+
+    console.log(
+        `Regions Service actif sur TCP ${host}:${port}`,
+    );
+}
+
+bootstrap().catch((error: unknown) => {
+    console.error(
+        'Impossible de démarrer le Regions Service.',
+        error,
+    );
+
+    process.exit(1);
 });

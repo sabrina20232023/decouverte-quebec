@@ -90,11 +90,13 @@ export class ApiGatewayController {
         @Query() filters: PlaceFiltersDto,
     ): Observable<PlacesResponseDto> {
         const normalizedFilters: PlaceFiltersDto = {
-            recherche:
-                filters.recherche?.trim() || undefined,
+            recherche: filters.recherche?.trim() || undefined,
+            province: filters.province?.trim() || undefined,
             region: filters.region?.trim() || undefined,
-            categorie:
-                filters.categorie?.trim() || undefined,
+            categorie: filters.categorie?.trim() || undefined,
+            activite: filters.activite?.trim() || undefined,
+            ville: filters.ville?.trim() || undefined,
+            estVedette: filters.estVedette,
             page: filters.page ?? 1,
             limit: filters.limit ?? 10,
             tri: filters.tri ?? 'nom',
@@ -144,7 +146,48 @@ export class ApiGatewayController {
         const place = await firstValueFrom(
             this.placesClient.send<PlaceResponseDto | null>(
                 { cmd: 'places.findOne' },
-                id,
+                { id },
+            ),
+        );
+
+        if (!place) {
+            throw new NotFoundException(
+                'Lieu introuvable',
+            );
+        }
+
+        return place;
+    }
+
+    @ApiTags('Lieux')
+    @ApiOperation({
+        summary: 'Récupérer un lieu par son slug',
+        description:
+            'Retourne les informations détaillées d’un lieu à partir de son slug.',
+    })
+    @ApiParam({
+        name: 'slug',
+        type: String,
+        example: 'chute-montmorency',
+        description: 'Slug du lieu',
+    })
+    @ApiOkResponse({
+        description: 'Lieu récupéré avec succès',
+        type: PlaceResponseDto,
+    })
+    @ApiNotFoundResponse({
+        description: 'Lieu introuvable',
+    })
+    @Get('places/slug/:slug')
+    async getPlaceBySlug(
+        @Param('slug') slug: string,
+    ): Promise<PlaceResponseDto> {
+        const normalizedSlug = slug.trim().toLowerCase();
+
+        const place = await firstValueFrom(
+            this.placesClient.send<PlaceResponseDto | null>(
+                { cmd: 'places.findBySlug' },
+                { slug: normalizedSlug },
             ),
         );
 
@@ -187,9 +230,7 @@ export class ApiGatewayController {
     })
     @Get('regions')
     getRegions(): Observable<RegionCountResponseDto[]> {
-        return this.regionsClient.send<
-            RegionCountResponseDto[]
-        >(
+        return this.regionsClient.send<RegionCountResponseDto[]>(
             { cmd: 'regions.findAll' },
             {},
         );
@@ -221,11 +262,9 @@ export class ApiGatewayController {
         const normalizedSlug = slug.trim().toLowerCase();
 
         const region = await firstValueFrom(
-            this.regionsClient.send<
-                RegionDetailsResponseDto | null
-            >(
+            this.regionsClient.send<RegionDetailsResponseDto | null>(
                 { cmd: 'regions.findBySlug' },
-                normalizedSlug,
+                { slug: normalizedSlug },
             ),
         );
 
@@ -272,11 +311,9 @@ export class ApiGatewayController {
         }
 
         const region = await firstValueFrom(
-            this.regionsClient.send<
-                RegionCountResponseDto | null
-            >(
+            this.regionsClient.send<RegionCountResponseDto | null>(
                 { cmd: 'regions.findOne' },
-                id,
+                { id },
             ),
         );
 

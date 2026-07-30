@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+    IsBoolean,
     IsIn,
     IsInt,
     IsOptional,
@@ -14,12 +15,21 @@ export class PlaceFiltersDto {
     @ApiPropertyOptional({
         example: 'mont',
         description:
-            'Recherche dans le nom, la ville ou la description',
+            'Recherche dans le nom, le résumé, la ville ou la description',
     })
     @IsOptional()
     @IsString()
     @MaxLength(100)
     recherche?: string;
+
+    @ApiPropertyOptional({
+        example: 'quebec',
+        description: 'Slug de la province',
+    })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    province?: string;
 
     @ApiPropertyOptional({
         example: 'capitale-nationale',
@@ -31,13 +41,56 @@ export class PlaceFiltersDto {
     region?: string;
 
     @ApiPropertyOptional({
-        example: 'Parc',
-        description: 'Nom de la catégorie',
+        example: 'parcs',
+        description: 'Slug de la catégorie',
     })
     @IsOptional()
     @IsString()
     @MaxLength(100)
     categorie?: string;
+
+    @ApiPropertyOptional({
+        example: 'randonnee',
+        description: 'Slug de l’activité',
+    })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    activite?: string;
+
+    @ApiPropertyOptional({
+        example: 'Québec',
+        description: 'Ville du lieu',
+    })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    ville?: string;
+
+    @ApiPropertyOptional({
+        example: true,
+        description:
+            'Filtrer les lieux mis en vedette',
+        type: Boolean,
+    })
+    @IsOptional()
+    @Transform(({ value }) => {
+        if (typeof value === 'boolean') {
+            return value;
+        }
+
+        if (value === 'true' || value === '1') {
+            return true;
+        }
+
+        if (value === 'false' || value === '0') {
+            return false;
+        }
+
+        return value;
+    })
+    @IsBoolean()
+    estVedette?: boolean;
 
     @ApiPropertyOptional({
         example: 1,
@@ -69,7 +122,8 @@ export class PlaceFiltersDto {
         example: 'nom',
         default: 'nom',
         enum: ['nom', 'ville', 'createdAt'],
-        description: 'Champ utilisé pour trier les lieux',
+        description:
+            'Champ utilisé pour trier les lieux',
     })
     @IsOptional()
     @IsIn(['nom', 'ville', 'createdAt'])
