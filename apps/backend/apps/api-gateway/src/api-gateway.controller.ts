@@ -1,23 +1,26 @@
 import {
     BadRequestException,
+    Body,
     Controller,
     Get,
     Inject,
     NotFoundException,
     Param,
     ParseIntPipe,
+    Post,
     Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
     ApiBadRequestResponse,
+    ApiBody,
     ApiNotFoundResponse,
     ApiOkResponse,
     ApiOperation,
     ApiParam,
     ApiTags,
 } from '@nestjs/swagger';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { PlaceFiltersDto } from './dto/place-filters.dto';
 import { PlaceResponseDto } from './dto/place-response.dto';
 import { PlacesResponseDto } from './dto/places-response.dto';
@@ -28,6 +31,37 @@ interface ServiceHealth {
     service: string;
     status: string;
     timestamp: string;
+}
+
+interface ImportRegionPayload {
+    provinceSlug: string;
+    regionSlug: string;
+}
+
+interface ImportRegionResponse {
+    provinceSlug: string;
+    regionSlug: string;
+    total: number;
+    crees: number;
+    misAJour: number;
+    ignores: number;
+    erreurs: Array<{
+        placeId?: string;
+        nom?: string;
+        message: string;
+    }>;
+}
+
+interface ImportAllResponse {
+    regions: number;
+    lieuxCrees: number;
+    lieuxMisAJour: number;
+    lieuxIgnores: number;
+    erreurs: Array<{
+        placeId?: string;
+        nom?: string;
+        message: string;
+    }>;
 }
 
 @ApiTags('Lieux', 'Régions')
@@ -72,6 +106,149 @@ export class ApiGatewayController {
             { cmd: 'places.health' },
             {},
         );
+    }
+
+    @ApiTags('Geoapify')
+    @ApiOperation({
+        summary: 'Tester la connexion avec Geoapify',
+    })
+    @Get('places/geoapify/test')
+    testerGeoapify() {
+        return this.placesClient.send(
+            { cmd: 'places.geoapify.test' },
+            {},
+        );
+    }
+
+    @ApiTags('Geoapify')
+    @ApiOperation({
+        summary: 'Rechercher des lieux au Québec via Geoapify',
+    })
+    @Get('places/geoapify/quebec')
+    geoapifyQuebec() {
+        return this.placesClient.send(
+            { cmd: 'places.geoapify.quebec' },
+            {},
+        );
+    }
+
+    @ApiTags('Importation')
+    @ApiOperation({
+        summary: 'Importer les lieux Geoapify d’une région',
+        description:
+            'Déclenche l’importation des lieux Geoapify pour une région configurée dans le Places Service.',
+    })
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: [
+                'provinceSlug',
+                'regionSlug',
+            ],
+            properties: {
+                provinceSlug: {
+                    type: 'string',
+                    example: 'quebec',
+                },
+                regionSlug: {
+                    type: 'string',
+                    example: 'capitale-nationale',
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description:
+            'Importation terminée avec succès',
+        schema: {
+            example: {
+                provinceSlug: 'quebec',
+                regionSlug: 'capitale-nationale',
+                total: 20,
+                crees: 18,
+                misAJour: 0,
+                ignores: 2,
+                erreurs: [],
+            },
+        },
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Province ou région manquante dans la requête',
+    })
+    @Post('places/import/region')
+    importerRegion(
+        @Body() body: ImportRegionPayload,
+    ): Observable<ImportRegionResponse> {
+        const provinceSlug =
+            body.provinceSlug?.trim().toLowerCase();
+
+        const regionSlug =
+            body.regionSlug?.trim().toLowerCase();
+
+        if (!provinceSlug || !regionSlug) {
+            throw new BadRequestException(
+                'provinceSlug et regionSlug sont obligatoires.',
+            );
+        }
+
+        return this.placesClient.send<ImportRegionResponse>(
+            { cmd: 'places.import.region' },
+            {
+                provinceSlug,
+                regionSlug,
+            },
+        );
+    }
+
+    @ApiTags('Importation')
+    @ApiOperation({
+        summary: 'Importer les lieux Geoapify de toutes les régions actives',
+        description:
+            'Déclenche l’importation Geoapify pour chaque région marquée estActive: true dans la configuration du Places Service, puis retourne un bilan agrégé.',
+    })
+    @ApiOkResponse({
+        description:
+            'Importation terminée avec succès',
+        schema: {
+            example: {
+                regions: 5,
+                lieuxCrees: 268,
+                lieuxMisAJour: 41,
+                lieuxIgnores: 3,
+                erreurs: [],
+            },
+        },
+    })
+    @Post('places/import/all')
+    importerToutesLesRegions(): Observable<ImportAllResponse> {
+        return this.placesClient
+            .send<ImportRegionResponse[]>(
+                { cmd: 'places.import.all' },
+                {},
+            )
+            .pipe(map((bilans) => this.agregerBilans(bilans)));
+    }
+
+    private agregerBilans(
+        bilans: ImportRegionResponse[],
+    ): ImportAllResponse {
+        return {
+            regions: bilans.length,
+            lieuxCrees: bilans.reduce(
+                (total, bilan) => total + bilan.crees,
+                0,
+            ),
+            lieuxMisAJour: bilans.reduce(
+                (total, bilan) => total + bilan.misAJour,
+                0,
+            ),
+            lieuxIgnores: bilans.reduce(
+                (total, bilan) => total + bilan.ignores,
+                0,
+            ),
+            erreurs: bilans.flatMap((bilan) => bilan.erreurs),
+        };
     }
 
     @ApiTags('Lieux')

@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { GeoapifyService } from './geoapify/geoapify.service';
+import { ImportService } from './import/import.service';
 import { PlacesServiceController } from './places-service.controller';
 import { PlacesServiceService } from './places-service.service';
 
@@ -11,20 +14,42 @@ describe('PlacesServiceController', () => {
         findBySlug: jest.fn(),
     };
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            controllers: [PlacesServiceController],
-            providers: [
-                {
-                    provide: PlacesServiceService,
-                    useValue: placesServiceMock,
-                },
-            ],
-        }).compile();
+    const geoapifyServiceMock = {
+        rechercherLieuxProches: jest.fn(),
+        rechercherLieuxAuQuebec: jest.fn(),
+    };
 
-        controller = module.get<PlacesServiceController>(
-            PlacesServiceController,
-        );
+    const importServiceMock = {
+        importerRegion: jest.fn(),
+        importerRegionsActives: jest.fn(),
+    };
+
+    beforeEach(async () => {
+        const module: TestingModule =
+            await Test.createTestingModule({
+                controllers: [
+                    PlacesServiceController,
+                ],
+                providers: [
+                    {
+                        provide: PlacesServiceService,
+                        useValue: placesServiceMock,
+                    },
+                    {
+                        provide: GeoapifyService,
+                        useValue: geoapifyServiceMock,
+                    },
+                    {
+                        provide: ImportService,
+                        useValue: importServiceMock,
+                    },
+                ],
+            }).compile();
+
+        controller =
+            module.get<PlacesServiceController>(
+                PlacesServiceController,
+            );
 
         jest.clearAllMocks();
     });
@@ -33,8 +58,12 @@ describe('PlacesServiceController', () => {
         it('doit retourner l’état du service', () => {
             const result = controller.getHealth();
 
-            expect(result.service).toBe('places-service');
+            expect(result.service).toBe(
+                'places-service',
+            );
+
             expect(result.status).toBe('ok');
+
             expect(result.timestamp).toBeDefined();
         });
     });
@@ -59,7 +88,9 @@ describe('PlacesServiceController', () => {
 
             await controller.findAll(filters);
 
-            expect(placesServiceMock.findAll).toHaveBeenCalledWith(filters);
+            expect(
+                placesServiceMock.findAll,
+            ).toHaveBeenCalledWith(filters);
         });
     });
 
@@ -70,9 +101,13 @@ describe('PlacesServiceController', () => {
                 nom: 'Chute Montmorency',
             });
 
-            await controller.findOne({ id: 1 });
+            await controller.findOne({
+                id: 1,
+            });
 
-            expect(placesServiceMock.findOne).toHaveBeenCalledWith(1);
+            expect(
+                placesServiceMock.findOne,
+            ).toHaveBeenCalledWith(1);
         });
 
         it('doit accepter directement un identifiant numérique', async () => {
@@ -82,12 +117,14 @@ describe('PlacesServiceController', () => {
 
             await controller.findOne(1);
 
-            expect(placesServiceMock.findOne).toHaveBeenCalledWith(1);
+            expect(
+                placesServiceMock.findOne,
+            ).toHaveBeenCalledWith(1);
         });
     });
 
     describe('findBySlug', () => {
-        it('doit rechercher un lieu par slug', async () => {
+        it('doit rechercher un lieu par slug avec un objet', async () => {
             placesServiceMock.findBySlug.mockResolvedValue({
                 id: 1,
                 slug: 'chute-montmorency',
@@ -99,7 +136,195 @@ describe('PlacesServiceController', () => {
 
             expect(
                 placesServiceMock.findBySlug,
-            ).toHaveBeenCalledWith('chute-montmorency');
+            ).toHaveBeenCalledWith(
+                'chute-montmorency',
+            );
+        });
+
+        it('doit accepter directement un slug sous forme de chaîne', async () => {
+            placesServiceMock.findBySlug.mockResolvedValue({
+                id: 1,
+                slug: 'vieux-quebec',
+            });
+
+            await controller.findBySlug(
+                'vieux-quebec',
+            );
+
+            expect(
+                placesServiceMock.findBySlug,
+            ).toHaveBeenCalledWith(
+                'vieux-quebec',
+            );
+        });
+    });
+
+    describe('testerGeoapify', () => {
+        it('doit utiliser les valeurs par défaut et retourner les lieux', async () => {
+            geoapifyServiceMock.rechercherLieuxProches
+                .mockResolvedValue([
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [
+                                -71.208,
+                                46.8139,
+                            ],
+                        },
+                        properties: {
+                            place_id:
+                                'geoapify-lieu-1',
+                            name:
+                                'Lieu touristique',
+                            formatted:
+                                'Québec, QC, Canada',
+                            city: 'Québec',
+                            state: 'Québec',
+                            country: 'Canada',
+                            country_code: 'ca',
+                            lat: 46.8139,
+                            lon: -71.208,
+                            categories: [
+                                'tourism.attraction',
+                            ],
+                        },
+                    },
+                ]);
+
+            const result =
+                await controller.testerGeoapify();
+
+            expect(
+                geoapifyServiceMock
+                    .rechercherLieuxProches,
+            ).toHaveBeenCalledWith({
+                latitude: 46.8139,
+                longitude: -71.208,
+                rayon: 10_000,
+                limite: 20,
+                categories: undefined,
+                langue: 'fr',
+                seulementCanada: true,
+            });
+
+            expect(result.fournisseur).toBe(
+                'Geoapify',
+            );
+
+            expect(result.total).toBe(1);
+
+            expect(result.lieux).toHaveLength(1);
+
+            expect(result.lieux[0]).toEqual(
+                expect.objectContaining({
+                    placeId:
+                        'geoapify-lieu-1',
+                    nom: 'Lieu touristique',
+                    ville: 'Québec',
+                    codePays: 'ca',
+                }),
+            );
+        });
+    });
+
+    describe('rechercherLieuxAuQuebec', () => {
+        it('doit transmettre les paramètres au service Geoapify', async () => {
+            geoapifyServiceMock
+                .rechercherLieuxAuQuebec
+                .mockResolvedValue([]);
+
+            const result =
+                await controller
+                    .rechercherLieuxAuQuebec({
+                        latitude: 46.9,
+                        longitude: -71.1,
+                        rayon: 25_000,
+                        limite: 15,
+                    });
+
+            expect(
+                geoapifyServiceMock
+                    .rechercherLieuxAuQuebec,
+            ).toHaveBeenCalledWith(
+                46.9,
+                -71.1,
+                25_000,
+                15,
+            );
+
+            expect(result).toEqual({
+                fournisseur: 'Geoapify',
+                territoire: 'Québec',
+                total: 0,
+                lieux: [],
+            });
+        });
+    });
+
+    describe('importerRegion', () => {
+        it('doit importer une région précise', async () => {
+            const bilan = {
+                provinceSlug: 'quebec',
+                regionSlug:
+                    'capitale-nationale',
+                total: 20,
+                crees: 10,
+                misAJour: 5,
+                ignores: 5,
+                erreurs: [],
+            };
+
+            importServiceMock.importerRegion
+                .mockResolvedValue(bilan);
+
+            const result =
+                await controller.importerRegion({
+                    provinceSlug: 'quebec',
+                    regionSlug:
+                        'capitale-nationale',
+                });
+
+            expect(
+                importServiceMock.importerRegion,
+            ).toHaveBeenCalledWith(
+                'quebec',
+                'capitale-nationale',
+            );
+
+            expect(result).toEqual(bilan);
+        });
+    });
+
+    describe('importerToutesLesRegionsActives', () => {
+        it('doit importer toutes les régions actives', async () => {
+            const bilans = [
+                {
+                    provinceSlug: 'quebec',
+                    regionSlug:
+                        'capitale-nationale',
+                    total: 20,
+                    crees: 10,
+                    misAJour: 5,
+                    ignores: 5,
+                    erreurs: [],
+                },
+            ];
+
+            importServiceMock
+                .importerRegionsActives
+                .mockResolvedValue(bilans);
+
+            const result =
+                await controller
+                    .importerToutesLesRegionsActives();
+
+            expect(
+                importServiceMock
+                    .importerRegionsActives,
+            ).toHaveBeenCalledTimes(1);
+
+            expect(result).toEqual(bilans);
         });
     });
 });

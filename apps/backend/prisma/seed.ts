@@ -119,27 +119,33 @@ async function seedProvinces() {
 async function seedRegions() {
     console.log('??? Création des régions...');
 
+    /*
+     * Les 17 régions administratives officielles du Québec,
+     * plus deux régions déjà utilisées hors Québec (Est de
+     * l'Ontario, Nord-Ouest du Nouveau-Brunswick) pour les
+     * lieux déjà seedés dans ces provinces.
+     */
     const regions = [
+        {
+            nom: 'Bas-Saint-Laurent',
+            slug: 'bas-saint-laurent',
+            provinceCode: 'QC',
+            description:
+                'Région riveraine du Saint-Laurent réputée pour ses paysages côtiers et ses villages maritimes.',
+        },
+        {
+            nom: 'Saguenay–Lac-Saint-Jean',
+            slug: 'saguenay-lac-saint-jean',
+            provinceCode: 'QC',
+            description:
+                'Région autour du fjord du Saguenay et du lac Saint-Jean, connue pour ses grands espaces naturels.',
+        },
         {
             nom: 'Capitale-Nationale',
             slug: 'capitale-nationale',
             provinceCode: 'QC',
             description:
                 'Région comprenant Québec, Charlevoix et plusieurs destinations naturelles et historiques.',
-        },
-        {
-            nom: 'Chaudière-Appalaches',
-            slug: 'chaudiere-appalaches',
-            provinceCode: 'QC',
-            description:
-                'Région située sur la rive sud du fleuve Saint-Laurent, face à Québec.',
-        },
-        {
-            nom: 'Montréal',
-            slug: 'montreal',
-            provinceCode: 'QC',
-            description:
-                'Grande région urbaine reconnue pour sa culture, sa gastronomie et ses festivals.',
         },
         {
             nom: 'Mauricie',
@@ -149,11 +155,95 @@ async function seedRegions() {
                 'Région de lacs, de forêts et de grands espaces située entre Montréal et Québec.',
         },
         {
+            nom: 'Estrie',
+            slug: 'estrie',
+            provinceCode: 'QC',
+            description:
+                'Région vallonnée des Cantons-de-l’Est, reconnue pour ses lacs, ses vignobles et ses stations de ski.',
+        },
+        {
+            nom: 'Montréal',
+            slug: 'montreal',
+            provinceCode: 'QC',
+            description:
+                'Grande région urbaine reconnue pour sa culture, sa gastronomie et ses festivals.',
+        },
+        {
             nom: 'Outaouais',
             slug: 'outaouais',
             provinceCode: 'QC',
             description:
                 'Région de l’ouest du Québec comprenant Gatineau et de nombreux espaces naturels.',
+        },
+        {
+            nom: 'Abitibi-Témiscamingue',
+            slug: 'abitibi-temiscamingue',
+            provinceCode: 'QC',
+            description:
+                'Région minière et forestière du nord-ouest québécois, riche en lacs et en histoire minière.',
+        },
+        {
+            nom: 'Côte-Nord',
+            slug: 'cote-nord',
+            provinceCode: 'QC',
+            description:
+                'Vaste région nordique le long du fleuve Saint-Laurent, reconnue pour ses paysages sauvages.',
+        },
+        {
+            nom: 'Nord-du-Québec',
+            slug: 'nord-du-quebec',
+            provinceCode: 'QC',
+            description:
+                'Immense territoire nordique couvrant une grande partie du Québec, peu densément peuplé.',
+        },
+        {
+            nom: 'Gaspésie–Îles-de-la-Madeleine',
+            slug: 'gaspesie-iles-de-la-madeleine',
+            provinceCode: 'QC',
+            description:
+                'Région péninsulaire reconnue pour ses paysages maritimes, ses falaises et le rocher Percé.',
+        },
+        {
+            nom: 'Chaudière-Appalaches',
+            slug: 'chaudiere-appalaches',
+            provinceCode: 'QC',
+            description:
+                'Région située sur la rive sud du fleuve Saint-Laurent, face à Québec.',
+        },
+        {
+            nom: 'Laval',
+            slug: 'laval',
+            provinceCode: 'QC',
+            description:
+                'Région insulaire au nord de Montréal, entre la rivière des Mille Îles et la rivière des Prairies.',
+        },
+        {
+            nom: 'Lanaudière',
+            slug: 'lanaudiere',
+            provinceCode: 'QC',
+            description:
+                'Région au nord de Montréal, mêlant zones agricoles, forêts et attraits récréotouristiques.',
+        },
+        {
+            nom: 'Laurentides',
+            slug: 'laurentides',
+            provinceCode: 'QC',
+            description:
+                'Région de montagnes et de lacs au nord de Montréal, reconnue pour le ski et le plein air.',
+        },
+        {
+            nom: 'Montérégie',
+            slug: 'monteregie',
+            provinceCode: 'QC',
+            description:
+                'Région agricole au sud de Montréal, bordée par le fleuve Saint-Laurent et la frontière américaine.',
+        },
+        {
+            nom: 'Centre-du-Québec',
+            slug: 'centre-du-quebec',
+            provinceCode: 'QC',
+            description:
+                'Région centrale du Québec, entre Montréal et Québec, à vocation agricole et industrielle.',
         },
         {
             nom: 'Est de l’Ontario',
@@ -319,6 +409,30 @@ async function seedActivities() {
             slug: 'kayak',
             description: 'Activité nautique en kayak ou en embarcation légère.',
             icone: 'ship-wheel',
+        },
+        {
+            nom: 'Baignade',
+            slug: 'baignade',
+            description: 'Baignade en lac, en rivière ou dans un plan d’eau aménagé.',
+            icone: 'waves',
+        },
+        {
+            nom: 'Ski',
+            slug: 'ski',
+            description: 'Ski alpin, ski de fond ou planche à neige.',
+            icone: 'snowflake',
+        },
+        {
+            nom: 'Camping',
+            slug: 'camping',
+            description: 'Hébergement de plein air en tente, en camping-car ou en refuge.',
+            icone: 'tent',
+        },
+        {
+            nom: 'Bateau',
+            slug: 'bateau',
+            description: 'Navigation de plaisance, croisière ou excursion en bateau.',
+            icone: 'sailboat',
         },
     ];
 
