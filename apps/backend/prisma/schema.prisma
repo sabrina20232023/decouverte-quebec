@@ -302,6 +302,8 @@ model WeatherForecast {
 
   sourceApi String?
 
+  donneesCompletes Json?
+
   fetchedAt DateTime  @default(now())
   expiresAt DateTime?
 

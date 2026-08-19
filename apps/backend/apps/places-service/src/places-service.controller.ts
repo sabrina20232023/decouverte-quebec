@@ -5,6 +5,7 @@ import {
     GeoapifySearchParams,
     GeoapifyService,
 } from './geoapify/geoapify.service';
+import { ImageService } from './images/image.service';
 import { ImportService } from './import/import.service';
 import { PlacesServiceService } from './places-service.service';
 
@@ -37,12 +38,19 @@ interface ImportRegionPayload {
     regionSlug: string;
 }
 
+interface ImageTestPayload {
+    nom: string;
+    ville?: string;
+    province?: string;
+}
+
 @Controller()
 export class PlacesServiceController {
     constructor(
         private readonly placesService: PlacesServiceService,
         private readonly geoapifyService: GeoapifyService,
         private readonly importService: ImportService,
+        private readonly imageService: ImageService,
     ) { }
 
     @MessagePattern({ cmd: 'places.health' })
@@ -205,5 +213,28 @@ export class PlacesServiceController {
     @MessagePattern({ cmd: 'places.import.all' })
     importerToutesLesRegionsActives() {
         return this.importService.importerRegionsActives();
+    }
+
+    @MessagePattern({ cmd: 'places.images.test' })
+    async testerRechercheImage(
+        @Payload() payload: ImageTestPayload,
+    ) {
+        const image =
+            await this.imageService.rechercherImagePourLieu(
+                payload.nom,
+                payload.ville,
+                payload.province,
+            );
+
+        return {
+            fournisseur: 'Wikimedia Commons',
+            recherche: {
+                nom: payload.nom,
+                ville: payload.ville ?? null,
+                province: payload.province ?? null,
+            },
+            trouvee: image !== null,
+            image,
+        };
     }
 }

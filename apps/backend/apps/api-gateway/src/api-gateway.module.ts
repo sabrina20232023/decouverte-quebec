@@ -12,20 +12,45 @@ import { ApiGatewayController } from './api-gateway.controller';
                 name: 'PLACES_SERVICE',
                 transport: Transport.TCP,
                 options: {
-                    host: '127.0.0.1',
-                    port: 4001,
+                    host:
+                        process.env.PLACES_SERVICE_HOST ??
+                        '127.0.0.1',
+                    port: Number(
+                        process.env.PLACES_SERVICE_PORT ??
+                        4001,
+                    ),
                 },
             },
             {
                 name: 'REGIONS_SERVICE',
                 transport: Transport.TCP,
                 options: {
-                    host: '127.0.0.1',
-                    port: 3003,
+                    host:
+                        process.env.REGIONS_SERVICE_HOST ??
+                        '127.0.0.1',
+                    port: Number(
+                        process.env.REGIONS_SERVICE_PORT ??
+                        3003,
+                    ),
+                },
+            },
+            {
+                name: 'WEATHER_SERVICE',
+                transport: Transport.TCP,
+                options: {
+                    host:
+                        process.env.WEATHER_SERVICE_HOST ??
+                        '127.0.0.1',
+                    port: Number(
+                        process.env.WEATHER_SERVICE_PORT ??
+                        4004,
+                    ),
                 },
             },
         ]),
     ],
-    controllers: [ApiGatewayController],
+    controllers: [
+        ApiGatewayController,
+    ],
 })
 export class ApiGatewayModule { }

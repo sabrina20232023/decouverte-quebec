@@ -105,6 +105,7 @@ export type WeatherForecastCountAggregateOutputType = {
   description: number
   icone: number
   sourceApi: number
+  donneesCompletes: number
   fetchedAt: number
   expiresAt: number
   createdAt: number
@@ -186,6 +187,7 @@ export type WeatherForecastCountAggregateInputType = {
   description?: true
   icone?: true
   sourceApi?: true
+  donneesCompletes?: true
   fetchedAt?: true
   expiresAt?: true
   createdAt?: true
@@ -292,6 +294,7 @@ export type WeatherForecastGroupByOutputType = {
   description: string | null
   icone: string | null
   sourceApi: string | null
+  donneesCompletes: runtime.JsonValue | null
   fetchedAt: Date
   expiresAt: Date | null
   createdAt: Date
@@ -334,6 +337,7 @@ export type WeatherForecastWhereInput = {
   description?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   icone?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   sourceApi?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
+  donneesCompletes?: Prisma.JsonNullableFilter<"WeatherForecast">
   fetchedAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"WeatherForecast"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
@@ -354,6 +358,7 @@ export type WeatherForecastOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   icone?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceApi?: Prisma.SortOrderInput | Prisma.SortOrder
+  donneesCompletes?: Prisma.SortOrderInput | Prisma.SortOrder
   fetchedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -378,6 +383,7 @@ export type WeatherForecastWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   icone?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   sourceApi?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
+  donneesCompletes?: Prisma.JsonNullableFilter<"WeatherForecast">
   fetchedAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"WeatherForecast"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
@@ -398,6 +404,7 @@ export type WeatherForecastOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   icone?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceApi?: Prisma.SortOrderInput | Prisma.SortOrder
+  donneesCompletes?: Prisma.SortOrderInput | Prisma.SortOrder
   fetchedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -425,6 +432,7 @@ export type WeatherForecastScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"WeatherForecast"> | string | null
   icone?: Prisma.StringNullableWithAggregatesFilter<"WeatherForecast"> | string | null
   sourceApi?: Prisma.StringNullableWithAggregatesFilter<"WeatherForecast"> | string | null
+  donneesCompletes?: Prisma.JsonNullableWithAggregatesFilter<"WeatherForecast">
   fetchedAt?: Prisma.DateTimeWithAggregatesFilter<"WeatherForecast"> | Date | string
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WeatherForecast"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WeatherForecast"> | Date | string
@@ -442,6 +450,7 @@ export type WeatherForecastCreateInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -462,6 +471,7 @@ export type WeatherForecastUncheckedCreateInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -479,6 +489,7 @@ export type WeatherForecastUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -499,6 +510,7 @@ export type WeatherForecastUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -518,6 +530,7 @@ export type WeatherForecastCreateManyInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -535,6 +548,7 @@ export type WeatherForecastUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -554,6 +568,7 @@ export type WeatherForecastUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -588,6 +603,7 @@ export type WeatherForecastCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   icone?: Prisma.SortOrder
   sourceApi?: Prisma.SortOrder
+  donneesCompletes?: Prisma.SortOrder
   fetchedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -711,6 +727,7 @@ export type WeatherForecastCreateWithoutPlaceInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -729,6 +746,7 @@ export type WeatherForecastUncheckedCreateWithoutPlaceInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -777,6 +795,7 @@ export type WeatherForecastScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   icone?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
   sourceApi?: Prisma.StringNullableFilter<"WeatherForecast"> | string | null
+  donneesCompletes?: Prisma.JsonNullableFilter<"WeatherForecast">
   fetchedAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"WeatherForecast"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"WeatherForecast"> | Date | string
@@ -795,6 +814,7 @@ export type WeatherForecastCreateManyPlaceInput = {
   description?: string | null
   icone?: string | null
   sourceApi?: string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Date | string
   expiresAt?: Date | string | null
   createdAt?: Date | string
@@ -812,6 +832,7 @@ export type WeatherForecastUpdateWithoutPlaceInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -830,6 +851,7 @@ export type WeatherForecastUncheckedUpdateWithoutPlaceInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -848,6 +870,7 @@ export type WeatherForecastUncheckedUpdateManyWithoutPlaceInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceApi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  donneesCompletes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   fetchedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -869,6 +892,7 @@ export type WeatherForecastSelect<ExtArgs extends runtime.Types.Extensions.Inter
   description?: boolean
   icone?: boolean
   sourceApi?: boolean
+  donneesCompletes?: boolean
   fetchedAt?: boolean
   expiresAt?: boolean
   createdAt?: boolean
@@ -889,6 +913,7 @@ export type WeatherForecastSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   description?: boolean
   icone?: boolean
   sourceApi?: boolean
+  donneesCompletes?: boolean
   fetchedAt?: boolean
   expiresAt?: boolean
   createdAt?: boolean
@@ -909,6 +934,7 @@ export type WeatherForecastSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   description?: boolean
   icone?: boolean
   sourceApi?: boolean
+  donneesCompletes?: boolean
   fetchedAt?: boolean
   expiresAt?: boolean
   createdAt?: boolean
@@ -929,12 +955,13 @@ export type WeatherForecastSelectScalar = {
   description?: boolean
   icone?: boolean
   sourceApi?: boolean
+  donneesCompletes?: boolean
   fetchedAt?: boolean
   expiresAt?: boolean
   createdAt?: boolean
 }
 
-export type WeatherForecastOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "placeId" | "datePrevision" | "temperatureMin" | "temperatureMax" | "temperatureRessentie" | "humidite" | "ventKmh" | "probabilitePrecipitation" | "condition" | "description" | "icone" | "sourceApi" | "fetchedAt" | "expiresAt" | "createdAt", ExtArgs["result"]["weatherForecast"]>
+export type WeatherForecastOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "placeId" | "datePrevision" | "temperatureMin" | "temperatureMax" | "temperatureRessentie" | "humidite" | "ventKmh" | "probabilitePrecipitation" | "condition" | "description" | "icone" | "sourceApi" | "donneesCompletes" | "fetchedAt" | "expiresAt" | "createdAt", ExtArgs["result"]["weatherForecast"]>
 export type WeatherForecastInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   place?: boolean | Prisma.PlaceDefaultArgs<ExtArgs>
 }
@@ -964,6 +991,7 @@ export type $WeatherForecastPayload<ExtArgs extends runtime.Types.Extensions.Int
     description: string | null
     icone: string | null
     sourceApi: string | null
+    donneesCompletes: runtime.JsonValue | null
     fetchedAt: Date
     expiresAt: Date | null
     createdAt: Date
@@ -1404,6 +1432,7 @@ export interface WeatherForecastFieldRefs {
   readonly description: Prisma.FieldRef<"WeatherForecast", 'String'>
   readonly icone: Prisma.FieldRef<"WeatherForecast", 'String'>
   readonly sourceApi: Prisma.FieldRef<"WeatherForecast", 'String'>
+  readonly donneesCompletes: Prisma.FieldRef<"WeatherForecast", 'Json'>
   readonly fetchedAt: Prisma.FieldRef<"WeatherForecast", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"WeatherForecast", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"WeatherForecast", 'DateTime'>

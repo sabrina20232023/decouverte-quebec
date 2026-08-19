@@ -1,11 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import {
     GeoapifyFeature,
     GeoapifyService,
 } from '../geoapify/geoapify.service';
+import { ImageService } from '../images/image.service';
 import {
     RegionImportConfig,
     listerRegionsActives,
@@ -156,7 +155,7 @@ export class ImportService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly geoapifyService: GeoapifyService,
-        private readonly httpService: HttpService,
+        private readonly imageService: ImageService,
     ) { }
 
     /**
@@ -397,34 +396,53 @@ export class ImportService {
                 data: { ...donneesLieu, slug },
             });
 
-        // 8b. Rechercher une image sur Wikimedia Commons si le lieu n'en
-        // a pas encore (création, ou mise à jour d'un lieu jamais enrichi)
+        // 8b. Enrichir le lieu avec une image Wikimedia lorsqu'il
+        // n'en possède pas encore.
         if (!place.thumbnailUrl) {
-            const image = await this.rechercherImageWikimedia(
-                nom,
-                donneesLieu.ville,
-            );
+            const image =
+                await this.imageService.rechercherImagePourLieu(
+                    nom,
+                    donneesLieu.ville,
+                    properties.state ?? null,
+                );
 
             if (image) {
                 await this.prisma.place.update({
-                    where: { id: place.id },
-                    data: { thumbnailUrl: image.url },
+                    where: {
+                        id: place.id,
+                    },
+                    data: {
+                        thumbnailUrl: image.thumbnailUrl,
+                    },
                 });
 
-                const imageExistante = await this.prisma.placeImage.findFirst({
-                    where: { placeId: place.id, url: image.url },
-                });
+                const imageExistante =
+                    await this.prisma.placeImage.findFirst({
+                        where: {
+                            placeId: place.id,
+                            url: image.url,
+                        },
+                    });
 
                 if (!imageExistante) {
+                    const imagePrincipaleExistante =
+                        await this.prisma.placeImage.findFirst({
+                            where: {
+                                placeId: place.id,
+                                estImagePrincipale: true,
+                            },
+                        });
+
                     await this.prisma.placeImage.create({
                         data: {
                             placeId: place.id,
                             url: image.url,
                             titre: image.titre,
-                            altText: nom,
-                            ordre: 1,
-                            estImagePrincipale: true,
-                            source: 'Wikimedia Commons',
+                            altText: image.altText,
+                            ordre: imagePrincipaleExistante ? 2 : 1,
+                            estImagePrincipale:
+                                !imagePrincipaleExistante,
+                            source: image.source,
                             sourceUrl: image.sourceUrl,
                         },
                     });
@@ -556,79 +574,6 @@ export class ImportService {
                     ordre: index + 1,
                 },
             });
-        }
-    }
-
-    /**
-     * Recherche une image représentative d'un lieu sur Wikimedia
-     * Commons (API publique, sans clé requise). Retourne null si
-     * aucune image pertinente n'est trouvée ou si l'appel échoue —
-     * l'échec de cette recherche ne doit jamais faire échouer
-     * l'import du lieu lui-même.
-     */
-    private async rechercherImageWikimedia(
-        nom: string,
-        ville?: string | null,
-    ): Promise<{ url: string; titre: string; sourceUrl: string } | null> {
-        try {
-            const requete = ville ? `${nom} ${ville}` : nom;
-
-            const response = await firstValueFrom(
-                this.httpService.get<{
-                    query?: {
-                        pages?: Record<
-                            string,
-                            {
-                                title?: string;
-                                imageinfo?: Array<{
-                                    url?: string;
-                                    thumburl?: string;
-                                    descriptionurl?: string;
-                                }>;
-                            }
-                        >;
-                    };
-                }>('https://commons.wikimedia.org/w/api.php', {
-                    params: {
-                        action: 'query',
-                        generator: 'search',
-                        gsrsearch: requete,
-                        gsrlimit: 1,
-                        gsrnamespace: 6, // namespace "File:"
-                        prop: 'imageinfo',
-                        iiprop: 'url',
-                        iiurlwidth: 1200,
-                        format: 'json',
-                    },
-                    timeout: 10_000,
-                }),
-            );
-
-            const pages = response.data?.query?.pages;
-
-            if (!pages) {
-                return null;
-            }
-
-            const page = Object.values(pages)[0];
-            const imageInfo = page?.imageinfo?.[0];
-
-            if (!imageInfo?.url) {
-                return null;
-            }
-
-            return {
-                url: imageInfo.thumburl ?? imageInfo.url,
-                titre: page?.title?.replace(/^File:/, '') ?? nom,
-                sourceUrl: imageInfo.descriptionurl ?? imageInfo.url,
-            };
-        } catch (error: unknown) {
-            this.logger.warn(
-                `Recherche d'image Wikimedia échouée pour "${nom}" : ${error instanceof Error ? error.message : String(error)
-                }`,
-            );
-
-            return null;
         }
     }
 

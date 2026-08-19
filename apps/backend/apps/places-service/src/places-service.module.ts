@@ -6,6 +6,7 @@ import { GeoapifyService } from './geoapify/geoapify.service';
 import { ImportService } from './import/import.service';
 import { PlacesServiceController } from './places-service.controller';
 import { PlacesServiceService } from './places-service.service';
+import { ImageService } from './images/image.service';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { PlacesServiceService } from './places-service.service';
     providers: [
         PlacesServiceService,
         GeoapifyService,
+        ImageService,
         ImportService,
     ],
     exports: [

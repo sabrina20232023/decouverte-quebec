@@ -18,9 +18,15 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiParam,
+    ApiQuery,
     ApiTags,
 } from '@nestjs/swagger';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import {
+    firstValueFrom,
+    map,
+    Observable,
+} from 'rxjs';
+
 import { PlaceFiltersDto } from './dto/place-filters.dto';
 import { PlaceResponseDto } from './dto/place-response.dto';
 import { PlacesResponseDto } from './dto/places-response.dto';
@@ -64,6 +70,11 @@ interface ImportAllResponse {
     }>;
 }
 
+interface WeatherCoordinatesPayload {
+    latitude: number;
+    longitude: number;
+}
+
 @ApiTags('Lieux', 'Régions')
 @Controller('api')
 export class ApiGatewayController {
@@ -73,14 +84,19 @@ export class ApiGatewayController {
 
         @Inject('REGIONS_SERVICE')
         private readonly regionsClient: ClientProxy,
+
+        @Inject('WEATHER_SERVICE')
+        private readonly weatherClient: ClientProxy,
     ) { }
 
     @ApiTags('Santé')
     @ApiOperation({
-        summary: 'Vérifier l’état de l’API Gateway',
+        summary:
+            'Vérifier l’état de l’API Gateway',
     })
     @ApiOkResponse({
-        description: 'API Gateway fonctionnelle',
+        description:
+            'API Gateway fonctionnelle',
     })
     @Get('health')
     getGatewayHealth(): {
@@ -95,46 +111,111 @@ export class ApiGatewayController {
 
     @ApiTags('Santé')
     @ApiOperation({
-        summary: 'Vérifier l’état du service des lieux',
+        summary:
+            'Vérifier l’état du service des lieux',
     })
     @ApiOkResponse({
-        description: 'Places Service fonctionnel',
+        description:
+            'Places Service fonctionnel',
     })
     @Get('places/health')
     getPlacesHealth(): Observable<ServiceHealth> {
         return this.placesClient.send<ServiceHealth>(
-            { cmd: 'places.health' },
+            {
+                cmd: 'places.health',
+            },
             {},
         );
     }
 
     @ApiTags('Geoapify')
     @ApiOperation({
-        summary: 'Tester la connexion avec Geoapify',
+        summary:
+            'Tester la connexion avec Geoapify',
     })
     @Get('places/geoapify/test')
     testerGeoapify() {
         return this.placesClient.send(
-            { cmd: 'places.geoapify.test' },
+            {
+                cmd: 'places.geoapify.test',
+            },
             {},
         );
     }
 
     @ApiTags('Geoapify')
     @ApiOperation({
-        summary: 'Rechercher des lieux au Québec via Geoapify',
+        summary:
+            'Rechercher des lieux au Québec via Geoapify',
     })
     @Get('places/geoapify/quebec')
     geoapifyQuebec() {
         return this.placesClient.send(
-            { cmd: 'places.geoapify.quebec' },
+            {
+                cmd:
+                    'places.geoapify.quebec',
+            },
             {},
+        );
+    }
+
+    @ApiTags('Images')
+    @ApiOperation({
+        summary:
+            'Tester la recherche d’une image sur Wikimedia Commons',
+        description:
+            'Recherche une image correspondant à un lieu touristique sans l’enregistrer dans la base de données.',
+    })
+    @ApiOkResponse({
+        description:
+            'Résultat de la recherche Wikimedia',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Le nom du lieu est absent',
+    })
+    @Get('places/images/test')
+    testerImageWikimedia(
+        @Query('nom')
+        nom: string,
+
+        @Query('ville')
+        ville?: string,
+
+        @Query('province')
+        province?: string,
+    ) {
+        const nomNormalise =
+            nom?.trim();
+
+        if (!nomNormalise) {
+            throw new BadRequestException(
+                'Le paramètre nom est obligatoire.',
+            );
+        }
+
+        return this.placesClient.send(
+            {
+                cmd:
+                    'places.images.test',
+            },
+            {
+                nom:
+                    nomNormalise,
+                ville:
+                    ville?.trim() ||
+                    undefined,
+                province:
+                    province?.trim() ||
+                    undefined,
+            },
         );
     }
 
     @ApiTags('Importation')
     @ApiOperation({
-        summary: 'Importer les lieux Geoapify d’une région',
+        summary:
+            'Importer les lieux Geoapify d’une région',
         description:
             'Déclenche l’importation des lieux Geoapify pour une région configurée dans le Places Service.',
     })
@@ -148,11 +229,13 @@ export class ApiGatewayController {
             properties: {
                 provinceSlug: {
                     type: 'string',
-                    example: 'quebec',
+                    example:
+                        'quebec',
                 },
                 regionSlug: {
                     type: 'string',
-                    example: 'capitale-nationale',
+                    example:
+                        'capitale-nationale',
                 },
             },
         },
@@ -162,8 +245,10 @@ export class ApiGatewayController {
             'Importation terminée avec succès',
         schema: {
             example: {
-                provinceSlug: 'quebec',
-                regionSlug: 'capitale-nationale',
+                provinceSlug:
+                    'quebec',
+                regionSlug:
+                    'capitale-nationale',
                 total: 20,
                 crees: 18,
                 misAJour: 0,
@@ -178,22 +263,33 @@ export class ApiGatewayController {
     })
     @Post('places/import/region')
     importerRegion(
-        @Body() body: ImportRegionPayload,
+        @Body()
+        body: ImportRegionPayload,
     ): Observable<ImportRegionResponse> {
         const provinceSlug =
-            body.provinceSlug?.trim().toLowerCase();
+            body.provinceSlug
+                ?.trim()
+                .toLowerCase();
 
         const regionSlug =
-            body.regionSlug?.trim().toLowerCase();
+            body.regionSlug
+                ?.trim()
+                .toLowerCase();
 
-        if (!provinceSlug || !regionSlug) {
+        if (
+            !provinceSlug ||
+            !regionSlug
+        ) {
             throw new BadRequestException(
                 'provinceSlug et regionSlug sont obligatoires.',
             );
         }
 
         return this.placesClient.send<ImportRegionResponse>(
-            { cmd: 'places.import.region' },
+            {
+                cmd:
+                    'places.import.region',
+            },
             {
                 provinceSlug,
                 regionSlug,
@@ -203,7 +299,8 @@ export class ApiGatewayController {
 
     @ApiTags('Importation')
     @ApiOperation({
-        summary: 'Importer les lieux Geoapify de toutes les régions actives',
+        summary:
+            'Importer les lieux Geoapify de toutes les régions actives',
         description:
             'Déclenche l’importation Geoapify pour chaque région marquée estActive: true dans la configuration du Places Service, puis retourne un bilan agrégé.',
     })
@@ -224,71 +321,152 @@ export class ApiGatewayController {
     importerToutesLesRegions(): Observable<ImportAllResponse> {
         return this.placesClient
             .send<ImportRegionResponse[]>(
-                { cmd: 'places.import.all' },
+                {
+                    cmd:
+                        'places.import.all',
+                },
                 {},
             )
-            .pipe(map((bilans) => this.agregerBilans(bilans)));
+            .pipe(
+                map((bilans) =>
+                    this.agregerBilans(
+                        bilans,
+                    ),
+                ),
+            );
     }
 
     private agregerBilans(
         bilans: ImportRegionResponse[],
     ): ImportAllResponse {
         return {
-            regions: bilans.length,
-            lieuxCrees: bilans.reduce(
-                (total, bilan) => total + bilan.crees,
-                0,
-            ),
-            lieuxMisAJour: bilans.reduce(
-                (total, bilan) => total + bilan.misAJour,
-                0,
-            ),
-            lieuxIgnores: bilans.reduce(
-                (total, bilan) => total + bilan.ignores,
-                0,
-            ),
-            erreurs: bilans.flatMap((bilan) => bilan.erreurs),
+            regions:
+                bilans.length,
+
+            lieuxCrees:
+                bilans.reduce(
+                    (
+                        total,
+                        bilan,
+                    ) =>
+                        total +
+                        bilan.crees,
+                    0,
+                ),
+
+            lieuxMisAJour:
+                bilans.reduce(
+                    (
+                        total,
+                        bilan,
+                    ) =>
+                        total +
+                        bilan.misAJour,
+                    0,
+                ),
+
+            lieuxIgnores:
+                bilans.reduce(
+                    (
+                        total,
+                        bilan,
+                    ) =>
+                        total +
+                        bilan.ignores,
+                    0,
+                ),
+
+            erreurs:
+                bilans.flatMap(
+                    (bilan) =>
+                        bilan.erreurs,
+                ),
         };
     }
 
     @ApiTags('Lieux')
     @ApiOperation({
-        summary: 'Récupérer la liste paginée des lieux',
+        summary:
+            'Récupérer la liste paginée des lieux',
         description:
             'Retourne les lieux avec filtres de recherche, région, catégorie, pagination et tri.',
     })
     @ApiOkResponse({
         description:
             'Liste paginée des lieux récupérée avec succès',
-        type: PlacesResponseDto,
+        type:
+            PlacesResponseDto,
     })
     @Get('places')
     getPlaces(
-        @Query() filters: PlaceFiltersDto,
+        @Query()
+        filters: PlaceFiltersDto,
     ): Observable<PlacesResponseDto> {
-        const normalizedFilters: PlaceFiltersDto = {
-            recherche: filters.recherche?.trim() || undefined,
-            province: filters.province?.trim() || undefined,
-            region: filters.region?.trim() || undefined,
-            categorie: filters.categorie?.trim() || undefined,
-            activite: filters.activite?.trim() || undefined,
-            ville: filters.ville?.trim() || undefined,
-            estVedette: filters.estVedette,
-            page: filters.page ?? 1,
-            limit: filters.limit ?? 10,
-            tri: filters.tri ?? 'nom',
-            ordre: filters.ordre ?? 'asc',
+        const normalizedFilters: PlaceFiltersDto =
+        {
+            recherche:
+                filters.recherche
+                    ?.trim() ||
+                undefined,
+
+            province:
+                filters.province
+                    ?.trim() ||
+                undefined,
+
+            region:
+                filters.region
+                    ?.trim() ||
+                undefined,
+
+            categorie:
+                filters.categorie
+                    ?.trim() ||
+                undefined,
+
+            activite:
+                filters.activite
+                    ?.trim() ||
+                undefined,
+
+            ville:
+                filters.ville
+                    ?.trim() ||
+                undefined,
+
+            estVedette:
+                filters.estVedette,
+
+            page:
+                filters.page ??
+                1,
+
+            limit:
+                filters.limit ??
+                10,
+
+            tri:
+                filters.tri ??
+                'nom',
+
+            ordre:
+                filters.ordre ??
+                'asc',
         };
 
         return this.placesClient.send<PlacesResponseDto>(
-            { cmd: 'places.findAll' },
+            {
+                cmd:
+                    'places.findAll',
+            },
             normalizedFilters,
         );
     }
 
     @ApiTags('Lieux')
     @ApiOperation({
-        summary: 'Récupérer un lieu par son identifiant',
+        summary:
+            'Récupérer un lieu par son identifiant',
         description:
             'Retourne les informations détaillées d’un lieu, incluant sa région et sa catégorie.',
     })
@@ -297,22 +475,30 @@ export class ApiGatewayController {
         required: true,
         type: Number,
         example: 1,
-        description: 'Identifiant numérique du lieu',
+        description:
+            'Identifiant numérique du lieu',
     })
     @ApiOkResponse({
-        description: 'Lieu récupéré avec succès',
-        type: PlaceResponseDto,
+        description:
+            'Lieu récupéré avec succès',
+        type:
+            PlaceResponseDto,
     })
     @ApiBadRequestResponse({
         description:
             'Identifiant invalide ou inférieur ou égal à zéro',
     })
     @ApiNotFoundResponse({
-        description: 'Lieu introuvable',
+        description:
+            'Lieu introuvable',
     })
     @Get('places/:id')
     async getPlaceById(
-        @Param('id', ParseIntPipe) id: number,
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
     ): Promise<PlaceResponseDto> {
         if (id <= 0) {
             throw new BadRequestException(
@@ -320,12 +506,21 @@ export class ApiGatewayController {
             );
         }
 
-        const place = await firstValueFrom(
-            this.placesClient.send<PlaceResponseDto | null>(
-                { cmd: 'places.findOne' },
-                { id },
-            ),
-        );
+        const place =
+            await firstValueFrom(
+                this.placesClient.send<
+                    PlaceResponseDto |
+                    null
+                >(
+                    {
+                        cmd:
+                            'places.findOne',
+                    },
+                    {
+                        id,
+                    },
+                ),
+            );
 
         if (!place) {
             throw new NotFoundException(
@@ -338,35 +533,55 @@ export class ApiGatewayController {
 
     @ApiTags('Lieux')
     @ApiOperation({
-        summary: 'Récupérer un lieu par son slug',
+        summary:
+            'Récupérer un lieu par son slug',
         description:
             'Retourne les informations détaillées d’un lieu à partir de son slug.',
     })
     @ApiParam({
         name: 'slug',
         type: String,
-        example: 'chute-montmorency',
-        description: 'Slug du lieu',
+        example:
+            'chute-montmorency',
+        description:
+            'Slug du lieu',
     })
     @ApiOkResponse({
-        description: 'Lieu récupéré avec succès',
-        type: PlaceResponseDto,
+        description:
+            'Lieu récupéré avec succès',
+        type:
+            PlaceResponseDto,
     })
     @ApiNotFoundResponse({
-        description: 'Lieu introuvable',
+        description:
+            'Lieu introuvable',
     })
     @Get('places/slug/:slug')
     async getPlaceBySlug(
-        @Param('slug') slug: string,
+        @Param('slug')
+        slug: string,
     ): Promise<PlaceResponseDto> {
-        const normalizedSlug = slug.trim().toLowerCase();
+        const normalizedSlug =
+            slug
+                .trim()
+                .toLowerCase();
 
-        const place = await firstValueFrom(
-            this.placesClient.send<PlaceResponseDto | null>(
-                { cmd: 'places.findBySlug' },
-                { slug: normalizedSlug },
-            ),
-        );
+        const place =
+            await firstValueFrom(
+                this.placesClient.send<
+                    PlaceResponseDto |
+                    null
+                >(
+                    {
+                        cmd:
+                            'places.findBySlug',
+                    },
+                    {
+                        slug:
+                            normalizedSlug,
+                    },
+                ),
+            );
 
         if (!place) {
             throw new NotFoundException(
@@ -383,67 +598,100 @@ export class ApiGatewayController {
             'Vérifier l’état du service des régions',
     })
     @ApiOkResponse({
-        description: 'Regions Service fonctionnel',
+        description:
+            'Regions Service fonctionnel',
     })
     @Get('regions/health')
     getRegionsHealth(): Observable<ServiceHealth> {
         return this.regionsClient.send<ServiceHealth>(
-            { cmd: 'regions.health' },
+            {
+                cmd:
+                    'regions.health',
+            },
             {},
         );
     }
 
     @ApiTags('Régions')
     @ApiOperation({
-        summary: 'Récupérer toutes les régions',
+        summary:
+            'Récupérer toutes les régions',
         description:
             'Retourne les régions avec le nombre de lieux associés.',
     })
     @ApiOkResponse({
         description:
             'Liste des régions récupérée avec succès',
-        type: RegionCountResponseDto,
+        type:
+            RegionCountResponseDto,
         isArray: true,
     })
     @Get('regions')
-    getRegions(): Observable<RegionCountResponseDto[]> {
-        return this.regionsClient.send<RegionCountResponseDto[]>(
-            { cmd: 'regions.findAll' },
+    getRegions(): Observable<
+        RegionCountResponseDto[]
+    > {
+        return this.regionsClient.send<
+            RegionCountResponseDto[]
+        >(
+            {
+                cmd:
+                    'regions.findAll',
+            },
             {},
         );
     }
 
     @ApiTags('Régions')
     @ApiOperation({
-        summary: 'Récupérer une région par son slug',
+        summary:
+            'Récupérer une région par son slug',
         description:
             'Retourne une région et tous les lieux qui lui sont associés.',
     })
     @ApiParam({
         name: 'slug',
         type: String,
-        example: 'capitale-nationale',
-        description: 'Slug de la région',
+        example:
+            'capitale-nationale',
+        description:
+            'Slug de la région',
     })
     @ApiOkResponse({
-        description: 'Région récupérée avec succès',
-        type: RegionDetailsResponseDto,
+        description:
+            'Région récupérée avec succès',
+        type:
+            RegionDetailsResponseDto,
     })
     @ApiNotFoundResponse({
-        description: 'Région introuvable',
+        description:
+            'Région introuvable',
     })
     @Get('regions/slug/:slug')
     async getRegionBySlug(
-        @Param('slug') slug: string,
+        @Param('slug')
+        slug: string,
     ): Promise<RegionDetailsResponseDto> {
-        const normalizedSlug = slug.trim().toLowerCase();
+        const normalizedSlug =
+            slug
+                .trim()
+                .toLowerCase();
 
-        const region = await firstValueFrom(
-            this.regionsClient.send<RegionDetailsResponseDto | null>(
-                { cmd: 'regions.findBySlug' },
-                { slug: normalizedSlug },
-            ),
-        );
+        const region =
+            await firstValueFrom(
+                this.regionsClient.send<
+                    RegionDetailsResponseDto |
+                    null
+                >(
+                    {
+                        cmd:
+                            'regions.findBySlug',
+                    },
+                    {
+                        slug:
+                            normalizedSlug,
+                    },
+                ),
+            );
 
         if (!region) {
             throw new NotFoundException(
@@ -467,19 +715,26 @@ export class ApiGatewayController {
             'Identifiant numérique de la région',
     })
     @ApiOkResponse({
-        description: 'Région récupérée avec succès',
-        type: RegionCountResponseDto,
+        description:
+            'Région récupérée avec succès',
+        type:
+            RegionCountResponseDto,
     })
     @ApiBadRequestResponse({
         description:
             'Identifiant invalide ou inférieur ou égal à zéro',
     })
     @ApiNotFoundResponse({
-        description: 'Région introuvable',
+        description:
+            'Région introuvable',
     })
     @Get('regions/:id')
     async getRegionById(
-        @Param('id', ParseIntPipe) id: number,
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
     ): Promise<RegionCountResponseDto> {
         if (id <= 0) {
             throw new BadRequestException(
@@ -487,12 +742,21 @@ export class ApiGatewayController {
             );
         }
 
-        const region = await firstValueFrom(
-            this.regionsClient.send<RegionCountResponseDto | null>(
-                { cmd: 'regions.findOne' },
-                { id },
-            ),
-        );
+        const region =
+            await firstValueFrom(
+                this.regionsClient.send<
+                    RegionCountResponseDto |
+                    null
+                >(
+                    {
+                        cmd:
+                            'regions.findOne',
+                    },
+                    {
+                        id,
+                    },
+                ),
+            );
 
         if (!region) {
             throw new NotFoundException(
@@ -501,5 +765,237 @@ export class ApiGatewayController {
         }
 
         return region;
+    }
+
+    @ApiTags('Météo')
+    @ApiOperation({
+        summary:
+            'Vérifier l’état du service météo',
+    })
+    @ApiOkResponse({
+        description:
+            'Weather Service fonctionnel',
+    })
+    @Get('weather/health')
+    getWeatherHealth(): Observable<ServiceHealth> {
+        return this.weatherClient.send<ServiceHealth>(
+            {
+                cmd: 'weather.health',
+            },
+            {},
+        );
+    }
+
+    @ApiTags('Météo')
+    @ApiOperation({
+        summary:
+            'Récupérer la météo actuelle pour des coordonnées',
+        description:
+            'Retourne la température, l’humidité, le vent et les conditions actuelles pour la position donnée.',
+    })
+    @ApiQuery({
+        name: 'latitude',
+        type: Number,
+        example: 46.8139,
+        description: 'Latitude du lieu (-90 à 90)',
+    })
+    @ApiQuery({
+        name: 'longitude',
+        type: Number,
+        example: -71.208,
+        description: 'Longitude du lieu (-180 à 180)',
+    })
+    @ApiOkResponse({
+        description:
+            'Météo actuelle récupérée avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Latitude ou longitude manquante ou invalide',
+    })
+    @Get('weather/current')
+    getWeatherCurrent(
+        @Query('latitude')
+        latitude?: string,
+
+        @Query('longitude')
+        longitude?: string,
+    ) {
+        const coordonnees =
+            this.validerCoordonneesMeteo(
+                latitude,
+                longitude,
+            );
+
+        return this.weatherClient.send(
+            {
+                cmd: 'weather.current',
+            },
+            coordonnees,
+        );
+    }
+
+    @ApiTags('Météo')
+    @ApiOperation({
+        summary:
+            'Récupérer les prévisions météo sur 7 jours',
+        description:
+            'Retourne un tableau de prévisions quotidiennes pour la position donnée.',
+    })
+    @ApiQuery({
+        name: 'latitude',
+        type: Number,
+        example: 46.8139,
+        description: 'Latitude du lieu (-90 à 90)',
+    })
+    @ApiQuery({
+        name: 'longitude',
+        type: Number,
+        example: -71.208,
+        description: 'Longitude du lieu (-180 à 180)',
+    })
+    @ApiOkResponse({
+        description:
+            'Prévisions météo récupérées avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Latitude ou longitude manquante ou invalide',
+    })
+    @Get('weather/forecast')
+    getWeatherForecast(
+        @Query('latitude')
+        latitude?: string,
+
+        @Query('longitude')
+        longitude?: string,
+    ) {
+        const coordonnees =
+            this.validerCoordonneesMeteo(
+                latitude,
+                longitude,
+            );
+
+        return this.weatherClient.send(
+            {
+                cmd: 'weather.forecast',
+            },
+            coordonnees,
+        );
+    }
+
+    @ApiTags('Météo')
+    @ApiOperation({
+        summary:
+            'Récupérer la météo complète (actuelle + prévisions)',
+        description:
+            'Retourne en une seule réponse la météo actuelle et les prévisions sur 7 jours pour la position donnée. Utilisée notamment par la fiche détaillée d’un lieu.',
+    })
+    @ApiQuery({
+        name: 'latitude',
+        type: Number,
+        example: 46.8139,
+        description: 'Latitude du lieu (-90 à 90)',
+    })
+    @ApiQuery({
+        name: 'longitude',
+        type: Number,
+        example: -71.208,
+        description: 'Longitude du lieu (-180 à 180)',
+    })
+    @ApiOkResponse({
+        description:
+            'Météo complète récupérée avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Latitude ou longitude manquante ou invalide',
+    })
+    @Get('weather/complete')
+    getWeatherComplete(
+        @Query('latitude')
+        latitude?: string,
+
+        @Query('longitude')
+        longitude?: string,
+    ) {
+        const coordonnees =
+            this.validerCoordonneesMeteo(
+                latitude,
+                longitude,
+            );
+
+        return this.weatherClient.send(
+            {
+                cmd: 'weather.complete',
+            },
+            coordonnees,
+        );
+    }
+
+    private validerCoordonneesMeteo(
+        latitude?: string,
+        longitude?: string,
+    ): WeatherCoordinatesPayload {
+        const latitudeNormalisee =
+            latitude?.trim();
+
+        const longitudeNormalisee =
+            longitude?.trim();
+
+        if (!latitudeNormalisee) {
+            throw new BadRequestException(
+                'Le paramètre latitude est obligatoire.',
+            );
+        }
+
+        if (!longitudeNormalisee) {
+            throw new BadRequestException(
+                'Le paramètre longitude est obligatoire.',
+            );
+        }
+
+        const latitudeNombre =
+            Number(
+                latitudeNormalisee,
+            );
+
+        const longitudeNombre =
+            Number(
+                longitudeNormalisee,
+            );
+
+        if (
+            !Number.isFinite(
+                latitudeNombre,
+            ) ||
+            latitudeNombre < -90 ||
+            latitudeNombre > 90
+        ) {
+            throw new BadRequestException(
+                'La latitude doit être comprise entre -90 et 90.',
+            );
+        }
+
+        if (
+            !Number.isFinite(
+                longitudeNombre,
+            ) ||
+            longitudeNombre <
+            -180 ||
+            longitudeNombre >
+            180
+        ) {
+            throw new BadRequestException(
+                'La longitude doit être comprise entre -180 et 180.',
+            );
+        }
+
+        return {
+            latitude:
+                latitudeNombre,
+            longitude:
+                longitudeNombre,
+        };
     }
 }

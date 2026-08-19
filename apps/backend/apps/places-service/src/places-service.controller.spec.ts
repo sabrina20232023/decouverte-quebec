@@ -1,6 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-
 import { GeoapifyService } from './geoapify/geoapify.service';
+import { ImageService } from './images/image.service';
 import { ImportService } from './import/import.service';
 import { PlacesServiceController } from './places-service.controller';
 import { PlacesServiceService } from './places-service.service';
@@ -24,32 +23,17 @@ describe('PlacesServiceController', () => {
         importerRegionsActives: jest.fn(),
     };
 
-    beforeEach(async () => {
-        const module: TestingModule =
-            await Test.createTestingModule({
-                controllers: [
-                    PlacesServiceController,
-                ],
-                providers: [
-                    {
-                        provide: PlacesServiceService,
-                        useValue: placesServiceMock,
-                    },
-                    {
-                        provide: GeoapifyService,
-                        useValue: geoapifyServiceMock,
-                    },
-                    {
-                        provide: ImportService,
-                        useValue: importServiceMock,
-                    },
-                ],
-            }).compile();
+    const imageServiceMock = {
+        rechercherImagePourLieu: jest.fn(),
+    };
 
-        controller =
-            module.get<PlacesServiceController>(
-                PlacesServiceController,
-            );
+    beforeEach(() => {
+        controller = new PlacesServiceController(
+            placesServiceMock as unknown as PlacesServiceService,
+            geoapifyServiceMock as unknown as GeoapifyService,
+            importServiceMock as unknown as ImportService,
+            imageServiceMock as unknown as ImageService,
+        );
 
         jest.clearAllMocks();
     });
@@ -325,6 +309,44 @@ describe('PlacesServiceController', () => {
             ).toHaveBeenCalledTimes(1);
 
             expect(result).toEqual(bilans);
+        });
+    });
+
+    describe('testerRechercheImage', () => {
+        it('doit rechercher une image Wikimedia pour un lieu', async () => {
+            const image = {
+                url: 'https://upload.wikimedia.org/image.jpg',
+                thumbnailUrl:
+                    'https://upload.wikimedia.org/thumb/image.jpg',
+                titre: 'Chute Montmorency.jpg',
+                altText: 'Chute Montmorency',
+                source: 'Wikimedia Commons',
+                sourceUrl:
+                    'https://commons.wikimedia.org/wiki/File:Chute_Montmorency.jpg',
+                auteur: 'Auteur',
+                licence: 'CC BY-SA 4.0',
+            };
+
+            imageServiceMock.rechercherImagePourLieu
+                .mockResolvedValue(image);
+
+            const result =
+                await controller.testerRechercheImage({
+                    nom: 'Chute Montmorency',
+                    ville: 'Québec',
+                    province: 'Québec',
+                });
+
+            expect(
+                imageServiceMock.rechercherImagePourLieu,
+            ).toHaveBeenCalledWith(
+                'Chute Montmorency',
+                'Québec',
+                'Québec',
+            );
+
+            expect(result.trouvee).toBe(true);
+            expect(result.image).toEqual(image);
         });
     });
 });
