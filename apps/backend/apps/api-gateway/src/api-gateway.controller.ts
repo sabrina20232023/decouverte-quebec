@@ -73,6 +73,12 @@ interface ImportAllResponse {
 interface WeatherCoordinatesPayload {
     latitude: number;
     longitude: number;
+    placeId?: number;
+}
+
+interface PlaceDetailResponse {
+    place: PlaceResponseDto;
+    meteo: unknown | null;
 }
 
 @ApiTags('Lieux', 'Régions')
@@ -506,6 +512,113 @@ export class ApiGatewayController {
             );
         }
 
+        return this.recupererLieuParId(id);
+    }
+
+    @ApiTags('Lieux')
+    @ApiOperation({
+        summary:
+            'Récupérer la fiche enrichie d’un lieu (lieu + météo)',
+        description:
+            'Combine en un seul appel les informations du lieu (Places Service) et sa météo complète (Weather Service, avec cache Prisma activé via placeId). Évite au frontend de faire deux requêtes séparées.',
+    })
+    @ApiParam({
+        name: 'id',
+        required: true,
+        type: Number,
+        example: 1,
+        description: 'Identifiant numérique du lieu',
+    })
+    @ApiOkResponse({
+        description:
+            'Fiche enrichie récupérée avec succès',
+        schema: {
+            example: {
+                place: {
+                    id: 1,
+                    nom: 'Chute Montmorency',
+                    latitude: 46.8878,
+                    longitude: -71.1497,
+                },
+                meteo: {
+                    fournisseur: 'OpenWeather',
+                    actuelle: {},
+                    previsions: [],
+                },
+            },
+        },
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Identifiant invalide ou inférieur ou égal à zéro',
+    })
+    @ApiNotFoundResponse({
+        description: 'Lieu introuvable',
+    })
+    @Get('places/:id/detail')
+    async getPlaceDetail(
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
+    ): Promise<PlaceDetailResponse> {
+        if (id <= 0) {
+            throw new BadRequestException(
+                'L’identifiant du lieu doit être supérieur à zéro.',
+            );
+        }
+
+        const place =
+            await this.recupererLieuParId(id);
+
+        if (
+            place.latitude == null ||
+            place.longitude == null
+        ) {
+            return {
+                place,
+                meteo: null,
+            };
+        }
+
+        let meteo: unknown | null = null;
+
+        try {
+            meteo =
+                await firstValueFrom(
+                    this.weatherClient.send(
+                        {
+                            cmd: 'weather.complete',
+                        },
+                        {
+                            latitude:
+                                place.latitude,
+                            longitude:
+                                place.longitude,
+                            placeId:
+                                place.id,
+                        },
+                    ),
+                );
+        } catch {
+            meteo = null;
+        }
+
+        return {
+            place,
+            meteo,
+        };
+    }
+
+    /**
+     * Récupère un lieu par son identifiant auprès du Places
+     * Service, ou lève NotFoundException s'il n'existe pas.
+     * Factorisé car utilisé par getPlaceById() et getPlaceDetail().
+     */
+    private async recupererLieuParId(
+        id: number,
+    ): Promise<PlaceResponseDto> {
         const place =
             await firstValueFrom(
                 this.placesClient.send<
@@ -838,9 +951,9 @@ export class ApiGatewayController {
     @ApiTags('Météo')
     @ApiOperation({
         summary:
-            'Récupérer les prévisions météo sur 7 jours',
+            'Récupérer les prévisions météo (jusqu’à 5 jours)',
         description:
-            'Retourne un tableau de prévisions quotidiennes pour la position donnée.',
+            'Retourne un tableau de prévisions quotidiennes pour la position donnée. Si placeId est fourni, la réponse passe par le cache Prisma du Weather Service.',
     })
     @ApiQuery({
         name: 'latitude',
@@ -854,13 +967,21 @@ export class ApiGatewayController {
         example: -71.208,
         description: 'Longitude du lieu (-180 à 180)',
     })
+    @ApiQuery({
+        name: 'placeId',
+        type: Number,
+        required: false,
+        example: 1,
+        description:
+            'Identifiant du lieu, optionnel. Active le cache Prisma des prévisions quand fourni.',
+    })
     @ApiOkResponse({
         description:
             'Prévisions météo récupérées avec succès',
     })
     @ApiBadRequestResponse({
         description:
-            'Latitude ou longitude manquante ou invalide',
+            'Latitude, longitude ou placeId manquant ou invalide',
     })
     @Get('weather/forecast')
     getWeatherForecast(
@@ -869,6 +990,9 @@ export class ApiGatewayController {
 
         @Query('longitude')
         longitude?: string,
+
+        @Query('placeId')
+        placeId?: string,
     ) {
         const coordonnees =
             this.validerCoordonneesMeteo(
@@ -876,11 +1000,19 @@ export class ApiGatewayController {
                 longitude,
             );
 
+        const placeIdValide =
+            this.validerPlaceId(
+                placeId,
+            );
+
         return this.weatherClient.send(
             {
                 cmd: 'weather.forecast',
             },
-            coordonnees,
+            {
+                ...coordonnees,
+                placeId: placeIdValide,
+            },
         );
     }
 
@@ -889,7 +1021,7 @@ export class ApiGatewayController {
         summary:
             'Récupérer la météo complète (actuelle + prévisions)',
         description:
-            'Retourne en une seule réponse la météo actuelle et les prévisions sur 7 jours pour la position donnée. Utilisée notamment par la fiche détaillée d’un lieu.',
+            'Retourne en une seule réponse la météo actuelle et les prévisions pour la position donnée. Utilisée notamment par la fiche détaillée d’un lieu. Si placeId est fourni, les prévisions passent par le cache Prisma du Weather Service.',
     })
     @ApiQuery({
         name: 'latitude',
@@ -903,13 +1035,21 @@ export class ApiGatewayController {
         example: -71.208,
         description: 'Longitude du lieu (-180 à 180)',
     })
+    @ApiQuery({
+        name: 'placeId',
+        type: Number,
+        required: false,
+        example: 1,
+        description:
+            'Identifiant du lieu, optionnel. Active le cache Prisma des prévisions quand fourni.',
+    })
     @ApiOkResponse({
         description:
             'Météo complète récupérée avec succès',
     })
     @ApiBadRequestResponse({
         description:
-            'Latitude ou longitude manquante ou invalide',
+            'Latitude, longitude ou placeId manquant ou invalide',
     })
     @Get('weather/complete')
     getWeatherComplete(
@@ -918,6 +1058,9 @@ export class ApiGatewayController {
 
         @Query('longitude')
         longitude?: string,
+
+        @Query('placeId')
+        placeId?: string,
     ) {
         const coordonnees =
             this.validerCoordonneesMeteo(
@@ -925,11 +1068,19 @@ export class ApiGatewayController {
                 longitude,
             );
 
+        const placeIdValide =
+            this.validerPlaceId(
+                placeId,
+            );
+
         return this.weatherClient.send(
             {
                 cmd: 'weather.complete',
             },
-            coordonnees,
+            {
+                ...coordonnees,
+                placeId: placeIdValide,
+            },
         );
     }
 
@@ -997,5 +1148,38 @@ export class ApiGatewayController {
             longitude:
                 longitudeNombre,
         };
+    }
+
+    /**
+     * placeId est optionnel — il n'active que le cache Prisma des
+     * prévisions côté Weather Service. Retourne undefined quand il
+     * est absent (le microservice fonctionne alors sans cache), et
+     * lève une erreur seulement s'il est fourni mais invalide.
+     */
+    private validerPlaceId(
+        placeId?: string,
+    ): number | undefined {
+        const placeIdNormalise =
+            placeId?.trim();
+
+        if (!placeIdNormalise) {
+            return undefined;
+        }
+
+        const placeIdNombre =
+            Number(placeIdNormalise);
+
+        if (
+            !Number.isInteger(
+                placeIdNombre,
+            ) ||
+            placeIdNombre <= 0
+        ) {
+            throw new BadRequestException(
+                'Le paramètre placeId doit être un entier positif.',
+            );
+        }
+
+        return placeIdNombre;
     }
 }

@@ -6,6 +6,7 @@ import { WeatherServiceService } from './weather-service.service';
 interface WeatherCoordinatesPayload {
     latitude: number;
     longitude: number;
+    placeId?: number;
 }
 
 @Controller()
@@ -40,6 +41,7 @@ export class WeatherServiceController {
         return this.weatherService.obtenirPrevisions(
             payload.latitude,
             payload.longitude,
+            payload.placeId,
         );
     }
 
@@ -50,6 +52,7 @@ export class WeatherServiceController {
         return this.weatherService.obtenirMeteoComplete(
             payload.latitude,
             payload.longitude,
+            payload.placeId,
         );
     }
 }
