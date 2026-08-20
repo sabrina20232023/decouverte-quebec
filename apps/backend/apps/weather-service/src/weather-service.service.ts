@@ -65,6 +65,16 @@ import { Prisma } from '../../common/generated/prisma/client';
  *   PrevisionJournaliereResponse. JSON.parse(JSON.stringify(...))
  *   convertit le DTO typé en valeur JSON brute avant de la caster
  *   en Prisma.InputJsonValue, ce qui satisfait le compilateur.
+ *
+ * LOGS (Weather 1) :
+ * - [CACHE BYPASS] : placeId absent/invalide, appel direct.
+ * - [CACHE CHECK]  : recherche en cache lancée pour un placeId valide.
+ * - [CACHE HIT]    : prévisions trouvées et servies depuis Prisma.
+ * - [CACHE MISS]   : rien en cache (absent ou expiré) pour ce placeId.
+ * - [OPENWEATHER]  : appel sortant vers l'API OpenWeather.
+ * - [CACHE SAVE]   : début de l'écriture du cache.
+ * - [CACHE SAVE END] : fin du traitement d'écriture (que chaque
+ *   upsert individuel ait réussi ou non — voir sauvegarderPrevisionsEnCache).
  * ------------------------------------------------------------------
  */
 
@@ -489,12 +499,23 @@ export class WeatherServiceService {
          * donc typeof seul ne suffit pas.
          */
         const cacheActif =
-            typeof placeId ===
-            'number' &&
+            typeof placeId === 'number' &&
             Number.isInteger(placeId) &&
             placeId > 0;
 
+        if (!cacheActif) {
+            this.logger.log(
+                '[CACHE BYPASS] Prévisions sans placeId valide. ' +
+                'Appel direct à OpenWeather.',
+            );
+        }
+
         if (cacheActif) {
+            this.logger.debug(
+                `[CACHE CHECK] Recherche des prévisions ` +
+                `pour placeId=${placeId}.`,
+            );
+
             const previsionsEnCache =
                 await this.rechercherPrevisionsEnCache(
                     placeId,
@@ -505,9 +526,9 @@ export class WeatherServiceService {
                 0
             ) {
                 this.logger.log(
-                    `Prévisions servies depuis le cache ` +
-                    `pour placeId=${placeId} ` +
-                    `(${previsionsEnCache.length} jour(s)).`,
+                    `[CACHE HIT] placeId=${placeId} - ` +
+                    `${previsionsEnCache.length} jour(s) ` +
+                    `récupéré(s) depuis Prisma.`,
                 );
 
                 return previsionsEnCache.map(
@@ -517,7 +538,18 @@ export class WeatherServiceService {
                         ),
                 );
             }
+
+            this.logger.log(
+                `[CACHE MISS] Aucune prévision valide ` +
+                `pour placeId=${placeId}.`,
+            );
         }
+
+        this.logger.log(
+            `[OPENWEATHER] Récupération des prévisions ` +
+            `pour latitude=${latitudeValide}, ` +
+            `longitude=${longitudeValide}.`,
+        );
 
         const donneesBrutes =
             await this.appelerPrevisions(
@@ -529,6 +561,11 @@ export class WeatherServiceService {
             this.transformerPrevisions(
                 donneesBrutes,
             );
+
+        this.logger.log(
+            `[OPENWEATHER SUCCESS] ${previsions.length} ` +
+            `jour(s) de prévisions récupéré(s).`,
+        );
 
         if (cacheActif) {
             await this.sauvegarderPrevisionsEnCache(
@@ -597,6 +634,11 @@ export class WeatherServiceService {
                 this.dureeCacheMinutes *
                 60_000,
             );
+
+        this.logger.debug(
+            `[CACHE SAVE] Sauvegarde de ${previsions.length} ` +
+            `jour(s) pour placeId=${placeId}.`,
+        );
 
         /*
          * Les upsert sont indépendants.
@@ -787,6 +829,12 @@ export class WeatherServiceService {
                     }
                 },
             ),
+        );
+
+        this.logger.log(
+            `[CACHE SAVE END] Traitement de mise en cache terminé ` +
+            `pour placeId=${placeId}. Expiration prévue : ` +
+            `${expiresAt.toISOString()}.`,
         );
     }
 
@@ -1047,6 +1095,11 @@ export class WeatherServiceService {
         longitude: number,
     ): Promise<OpenWeatherCurrentWeatherResponse> {
         try {
+            this.logger.debug(
+                `[OPENWEATHER CURRENT] Appel de /weather ` +
+                `pour latitude=${latitude}, longitude=${longitude}.`,
+            );
+
             const response =
                 await firstValueFrom(
                     this.httpService.get<OpenWeatherCurrentWeatherResponse>(
@@ -1086,6 +1139,11 @@ export class WeatherServiceService {
                 );
             }
 
+            this.logger.debug(
+                '[OPENWEATHER CURRENT SUCCESS] ' +
+                'Météo actuelle récupérée.',
+            );
+
             return response.data;
         } catch (
         error: unknown
@@ -1105,6 +1163,11 @@ export class WeatherServiceService {
         longitude: number,
     ): Promise<OpenWeatherForecastResponse> {
         try {
+            this.logger.debug(
+                `[OPENWEATHER FORECAST] Appel de /forecast ` +
+                `pour latitude=${latitude}, longitude=${longitude}.`,
+            );
+
             const response =
                 await firstValueFrom(
                     this.httpService.get<OpenWeatherForecastResponse>(
@@ -1146,6 +1209,11 @@ export class WeatherServiceService {
                     'OpenWeather a retourné une réponse vide pour les prévisions.',
                 );
             }
+
+            this.logger.debug(
+                `[OPENWEATHER FORECAST SUCCESS] ` +
+                `${response.data.list.length} point(s) de prévision reçus.`,
+            );
 
             return response.data;
         } catch (
