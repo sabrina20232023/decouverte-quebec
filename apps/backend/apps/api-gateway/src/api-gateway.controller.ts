@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Delete,
     Get,
     Inject,
     NotFoundException,
@@ -81,6 +82,11 @@ interface PlaceDetailResponse {
     meteo: unknown | null;
 }
 
+interface AjouterFavoriBody {
+    userId: number;
+    placeId: number;
+}
+
 @ApiTags('Lieux', 'Régions')
 @Controller('api')
 export class ApiGatewayController {
@@ -93,6 +99,9 @@ export class ApiGatewayController {
 
         @Inject('WEATHER_SERVICE')
         private readonly weatherClient: ClientProxy,
+
+        @Inject('FAVORITES_SERVICE')
+        private readonly favoritesClient: ClientProxy,
     ) { }
 
     @ApiTags('Santé')
@@ -1181,5 +1190,299 @@ export class ApiGatewayController {
         }
 
         return placeIdNombre;
+    }
+
+    @ApiTags('Favoris')
+    @ApiOperation({
+        summary:
+            'Vérifier l’état du service des favoris',
+    })
+    @ApiOkResponse({
+        description:
+            'Favorites Service fonctionnel',
+    })
+    @Get('favorites/health')
+    getFavoritesHealth(): Observable<ServiceHealth> {
+        return this.favoritesClient.send<ServiceHealth>(
+            {
+                cmd: 'favorites.health',
+            },
+            {},
+        );
+    }
+
+    @ApiTags('Favoris')
+    @ApiOperation({
+        summary:
+            'Ajouter un lieu aux favoris',
+        description:
+            'Ajoute un lieu aux favoris d’un utilisateur. Sans effet si le lieu y figure déjà (dejaFavori: true dans la réponse).',
+    })
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: ['userId', 'placeId'],
+            properties: {
+                userId: {
+                    type: 'number',
+                    example: 1,
+                },
+                placeId: {
+                    type: 'number',
+                    example: 1,
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description:
+            'Favori ajouté (ou déjà présent) avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'userId ou placeId manquant ou invalide',
+    })
+    @Post('favorites')
+    ajouterFavori(
+        @Body()
+        body: AjouterFavoriBody,
+    ) {
+        const userId =
+            this.validerIdRequis(
+                body?.userId,
+                'userId',
+            );
+
+        const placeId =
+            this.validerIdRequis(
+                body?.placeId,
+                'placeId',
+            );
+
+        return this.favoritesClient.send(
+            {
+                cmd: 'favorites.add',
+            },
+            {
+                userId,
+                placeId,
+            },
+        );
+    }
+
+    @ApiTags('Favoris')
+    @ApiOperation({
+        summary:
+            'Lister les favoris d’un utilisateur',
+    })
+    @ApiQuery({
+        name: 'userId',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiOkResponse({
+        description:
+            'Liste des favoris récupérée avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'userId manquant ou invalide',
+    })
+    @Get('favorites')
+    listerFavoris(
+        @Query('userId')
+        userId?: string,
+    ) {
+        const userIdValide =
+            this.validerIdRequisChaine(
+                userId,
+                'userId',
+            );
+
+        return this.favoritesClient.send(
+            {
+                cmd: 'favorites.list',
+            },
+            {
+                userId: userIdValide,
+            },
+        );
+    }
+
+    @ApiTags('Favoris')
+    @ApiOperation({
+        summary:
+            'Vérifier si un lieu est dans les favoris d’un utilisateur',
+    })
+    @ApiQuery({
+        name: 'userId',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiQuery({
+        name: 'placeId',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique du lieu',
+    })
+    @ApiOkResponse({
+        description:
+            'Statut du favori récupéré avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'userId ou placeId manquant ou invalide',
+    })
+    @Get('favorites/exists')
+    estFavori(
+        @Query('userId')
+        userId?: string,
+
+        @Query('placeId')
+        placeId?: string,
+    ) {
+        const userIdValide =
+            this.validerIdRequisChaine(
+                userId,
+                'userId',
+            );
+
+        const placeIdValide =
+            this.validerIdRequisChaine(
+                placeId,
+                'placeId',
+            );
+
+        return this.favoritesClient.send(
+            {
+                cmd: 'favorites.exists',
+            },
+            {
+                userId: userIdValide,
+                placeId: placeIdValide,
+            },
+        );
+    }
+
+    @ApiTags('Favoris')
+    @ApiOperation({
+        summary:
+            'Retirer un lieu des favoris',
+    })
+    @ApiParam({
+        name: 'placeId',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique du lieu à retirer des favoris',
+    })
+    @ApiQuery({
+        name: 'userId',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiOkResponse({
+        description:
+            'Favori supprimé (ou déjà absent) avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'userId ou placeId manquant ou invalide',
+    })
+    @Delete('favorites/:placeId')
+    supprimerFavori(
+        @Param(
+            'placeId',
+            ParseIntPipe,
+        )
+        placeId: number,
+
+        @Query('userId')
+        userId?: string,
+    ) {
+        if (placeId <= 0) {
+            throw new BadRequestException(
+                'Le paramètre placeId doit être un entier positif.',
+            );
+        }
+
+        const userIdValide =
+            this.validerIdRequisChaine(
+                userId,
+                'userId',
+            );
+
+        return this.favoritesClient.send(
+            {
+                cmd: 'favorites.remove',
+            },
+            {
+                userId: userIdValide,
+                placeId,
+            },
+        );
+    }
+
+    /**
+     * Valide un identifiant numérique requis provenant d'un body
+     * JSON (déjà de type number, mais potentiellement absent).
+     */
+    private validerIdRequis(
+        valeur: number | undefined,
+        nomParametre: string,
+    ): number {
+        if (
+            valeur === undefined ||
+            valeur === null ||
+            !Number.isInteger(valeur) ||
+            valeur <= 0
+        ) {
+            throw new BadRequestException(
+                `Le paramètre ${nomParametre} doit être un entier positif.`,
+            );
+        }
+
+        return valeur;
+    }
+
+    /**
+     * Valide un identifiant numérique requis provenant d'un
+     * paramètre de requête (query string, donc reçu en chaîne).
+     */
+    private validerIdRequisChaine(
+        valeur: string | undefined,
+        nomParametre: string,
+    ): number {
+        const valeurNormalisee =
+            valeur?.trim();
+
+        if (!valeurNormalisee) {
+            throw new BadRequestException(
+                `Le paramètre ${nomParametre} est obligatoire.`,
+            );
+        }
+
+        const valeurNombre =
+            Number(valeurNormalisee);
+
+        if (
+            !Number.isInteger(
+                valeurNombre,
+            ) ||
+            valeurNombre <= 0
+        ) {
+            throw new BadRequestException(
+                `Le paramètre ${nomParametre} doit être un entier positif.`,
+            );
+        }
+
+        return valeurNombre;
     }
 }
