@@ -4,7 +4,8 @@ $ports = @(
     4001, # Places Service
     4002, # Users Service
     4004, # Weather Service
-    4005  # Favorites Service
+    4005, # Favorites Service
+    4006  # Auth Service
 )
 
 Write-Host ""

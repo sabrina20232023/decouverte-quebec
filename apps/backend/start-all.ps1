@@ -6,7 +6,8 @@ $services = @(
     "regions-service",
     "weather-service",
     "favorites-service",
-    "users-service"
+    "users-service",
+    "auth-service"
 )
 
 foreach ($service in $services) {
@@ -17,10 +18,11 @@ foreach ($service in $services) {
 Write-Host ""
 Write-Host "Tous les services NestJS ont été lancés." -ForegroundColor Green
 Write-Host ""
-Write-Host "API Gateway     : http://localhost:3001"
-Write-Host "Swagger         : http://localhost:3001/api/docs"
-Write-Host "Places Service  : 4001"
-Write-Host "Regions Service : 3003"
-Write-Host "Weather Service : 4004"
-Write-Host "Favorites       : 4005"
-Write-Host "Users           : 4002"
+Write-Host "API Gateway       : http://localhost:3001"
+Write-Host "Swagger           : http://localhost:3001/api/docs"
+Write-Host "Places Service    : 4001"
+Write-Host "Regions Service   : 3003"
+Write-Host "Users Service     : 4002"
+Write-Host "Weather Service   : 4004"
+Write-Host "Favorites Service : 4005"
+Write-Host "Auth Service      : 4006"
