@@ -661,30 +661,43 @@ export class WeatherServiceService {
             0,
         );
 
-        return this.prisma
-            .weatherForecast
-            .findMany({
-                where: {
-                    placeId,
+        try {
+            return await this.prisma
+                .weatherForecast
+                .findMany({
+                    where: {
+                        placeId,
 
-                    datePrevision: {
-                        gte:
-                            debutAujourdhui,
+                        datePrevision: {
+                            gte:
+                                debutAujourdhui,
+                        },
+
+                        expiresAt: {
+                            lte:
+                                new Date(),
+                        },
                     },
 
-                    expiresAt: {
-                        lte:
-                            new Date(),
+                    orderBy: {
+                        datePrevision:
+                            'asc',
                     },
-                },
 
-                orderBy: {
-                    datePrevision:
-                        'asc',
-                },
+                    take: 5,
+                });
+        } catch (error: unknown) {
+            this.logger.warn(
+                `[CACHE FALLBACK ERROR] Impossible de lire le cache expiré ` +
+                `pour placeId=${placeId}. ` +
+                `Erreur : ${error instanceof Error
+                    ? error.message
+                    : String(error)
+                }`,
+            );
 
-                take: 5,
-            });
+            return [];
+        }
     }
 
     // ==================================================
@@ -704,30 +717,44 @@ export class WeatherServiceService {
             0,
         );
 
-        return this.prisma
-            .weatherForecast
-            .findMany({
-                where: {
-                    placeId,
+        try {
+            return await this.prisma
+                .weatherForecast
+                .findMany({
+                    where: {
+                        placeId,
 
-                    datePrevision: {
-                        gte:
-                            debutAujourdhui,
+                        datePrevision: {
+                            gte:
+                                debutAujourdhui,
+                        },
+
+                        expiresAt: {
+                            gt:
+                                new Date(),
+                        },
                     },
 
-                    expiresAt: {
-                        gt:
-                            new Date(),
+                    orderBy: {
+                        datePrevision:
+                            'asc',
                     },
-                },
 
-                orderBy: {
-                    datePrevision:
-                        'asc',
-                },
+                    take: 5,
+                });
+        } catch (error: unknown) {
+            this.logger.warn(
+                `[CACHE READ ERROR] Impossible de lire le cache valide ` +
+                `pour placeId=${placeId}. ` +
+                `La requête continuera avec OpenWeather. ` +
+                `Erreur : ${error instanceof Error
+                    ? error.message
+                    : String(error)
+                }`,
+            );
 
-                take: 5,
-            });
+            return [];
+        }
     }
 
     private async sauvegarderPrevisionsEnCache(
@@ -2178,6 +2205,52 @@ export class WeatherServiceService {
                 error.response
                     ?.data;
 
+            // ==============================================
+            // PAS DE RÉPONSE HTTP : TIMEOUT OU RÉSEAU
+            // ==============================================
+
+            if (!error.response) {
+                if (error.code === 'ECONNABORTED') {
+                    this.logger.error(
+                        `[OPENWEATHER ERROR] Timeout dépassé lors de ` +
+                        `l'appel OpenWeather.`,
+                    );
+
+                    throw new BadGatewayException({
+                        message:
+                            'Le service OpenWeather met trop de temps à répondre.',
+
+                        fournisseur:
+                            'OpenWeather',
+
+                        type:
+                            'TIMEOUT',
+
+                        statutExterne:
+                            null,
+                    });
+                }
+
+                this.logger.error(
+                    `[OPENWEATHER ERROR] Erreur réseau lors de l'appel ` +
+                    `OpenWeather : ${error.code ?? 'inconnu'}.`,
+                );
+
+                throw new BadGatewayException({
+                    message:
+                        'Impossible de joindre le service OpenWeather (problème réseau).',
+
+                    fournisseur:
+                        'OpenWeather',
+
+                    type:
+                        'NETWORK_ERROR',
+
+                    statutExterne:
+                        null,
+                });
+            }
+
             this.logger.error(
                 `Échec de l'appel OpenWeather. Statut HTTP : ${statut ??
                 'inconnu'
@@ -2191,76 +2264,105 @@ export class WeatherServiceService {
                     ),
             );
 
-            if (
-                statut ===
-                401
-            ) {
-                throw new BadGatewayException(
-                    {
-                        message:
-                            'La clé OpenWeather est invalide ou n\'a pas accès à cette API.',
+            // ==============================================
+            // CLÉ INVALIDE
+            // ==============================================
 
-                        fournisseur:
-                            'OpenWeather',
-
-                        statutExterne:
-                            statut,
-                    },
-                );
-            }
-
-            if (
-                statut ===
-                429
-            ) {
-                throw new BadGatewayException(
-                    {
-                        message:
-                            'La limite de requêtes OpenWeather a été atteinte.',
-
-                        fournisseur:
-                            'OpenWeather',
-
-                        statutExterne:
-                            statut,
-                    },
-                );
-            }
-
-            throw new BadGatewayException(
-                {
+            if (statut === 401) {
+                throw new BadGatewayException({
                     message:
-                        'Impossible de récupérer les données météo.',
+                        'La clé OpenWeather est invalide ou n\'a pas accès à cette API.',
 
                     fournisseur:
                         'OpenWeather',
 
+                    type:
+                        'AUTHENTICATION_ERROR',
+
                     statutExterne:
-                        statut ??
-                        null,
-                },
-            );
-        }
+                        statut,
+                });
+            }
 
-        this.logger.error(
-            'Erreur inattendue pendant l\'appel OpenWeather.',
+            // ==============================================
+            // LIMITE API
+            // ==============================================
 
-            error instanceof
-                Error
-                ? error.stack
-                : String(
-                    error,
-                ),
-        );
+            if (statut === 429) {
+                throw new BadGatewayException({
+                    message:
+                        'La limite de requêtes OpenWeather a été atteinte.',
 
-        throw new BadGatewayException(
-            {
+                    fournisseur:
+                        'OpenWeather',
+
+                    type:
+                        'RATE_LIMIT',
+
+                    statutExterne:
+                        statut,
+                });
+            }
+
+            // ==============================================
+            // OPENWEATHER 5XX
+            // ==============================================
+
+            if (
+                typeof statut === 'number' &&
+                statut >= 500
+            ) {
+                throw new BadGatewayException({
+                    message:
+                        'Le service OpenWeather est temporairement indisponible.',
+
+                    fournisseur:
+                        'OpenWeather',
+
+                    type:
+                        'PROVIDER_UNAVAILABLE',
+
+                    statutExterne:
+                        statut,
+                });
+            }
+
+            // ==============================================
+            // AUTRE ERREUR HTTP
+            // ==============================================
+
+            throw new BadGatewayException({
                 message:
                     'Impossible de récupérer les données météo.',
 
                 fournisseur:
                     'OpenWeather',
-            },
+
+                type:
+                    'EXTERNAL_API_ERROR',
+
+                statutExterne:
+                    statut ?? null,
+            });
+        }
+
+        this.logger.error(
+            '[OPENWEATHER ERROR] Erreur inattendue pendant l’appel OpenWeather.',
+
+            error instanceof Error
+                ? error.stack
+                : String(error),
         );
+
+        throw new BadGatewayException({
+            message:
+                'Une erreur inattendue est survenue pendant la récupération des données météo.',
+
+            fournisseur:
+                'OpenWeather',
+
+            type:
+                'UNKNOWN_ERROR',
+        });
     }
 }
