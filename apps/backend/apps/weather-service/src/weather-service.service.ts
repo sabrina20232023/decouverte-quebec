@@ -75,6 +75,20 @@ import { Prisma } from '../../common/generated/prisma/client';
  * - [CACHE SAVE]   : début de l'écriture du cache.
  * - [CACHE SAVE END] : fin du traitement d'écriture (que chaque
  *   upsert individuel ait réussi ou non — voir sauvegarderPrevisionsEnCache).
+ *
+ * LOGS (Weather 2 — fallback sur cache expiré) :
+ * - [OPENWEATHER FAILURE]    : l'appel OpenWeather a échoué, tentative
+ *   de repli sur un ancien cache (uniquement si placeId valide).
+ * - [CACHE FALLBACK CHECK]   : recherche d'un ancien cache expiré lancée.
+ * - [CACHE FALLBACK HIT]     : ancien cache expiré trouvé et utilisé
+ *   en secours (mieux qu'aucune donnée).
+ * - [CACHE FALLBACK MISS]    : aucun ancien cache disponible ; l'erreur
+ *   OpenWeather d'origine est propagée telle quelle.
+ *
+ *   Important : un cache expiré n'est JAMAIS considéré comme valide
+ *   dans le chemin normal (rechercherPrevisionsEnCache filtre
+ *   `expiresAt: { gt: now }`) — il n'est lu que dans ce chemin de
+ *   secours, quand OpenWeather est indisponible.
  * ------------------------------------------------------------------
  */
 
@@ -551,11 +565,60 @@ export class WeatherServiceService {
             `longitude=${longitudeValide}.`,
         );
 
-        const donneesBrutes =
-            await this.appelerPrevisions(
-                latitudeValide,
-                longitudeValide,
-            );
+        let donneesBrutes: OpenWeatherForecastResponse;
+
+        try {
+            donneesBrutes =
+                await this.appelerPrevisions(
+                    latitudeValide,
+                    longitudeValide,
+                );
+        } catch (error: unknown) {
+            if (cacheActif) {
+                this.logger.warn(
+                    `[OPENWEATHER FAILURE] Échec de l'appel OpenWeather ` +
+                    `pour placeId=${placeId}, tentative de repli sur ` +
+                    `le cache expiré.`,
+                );
+
+                this.logger.debug(
+                    `[CACHE FALLBACK CHECK] Recherche d'un ancien cache ` +
+                    `expiré pour placeId=${placeId}.`,
+                );
+
+                const previsionsExpirees =
+                    await this.rechercherPrevisionsExpirees(
+                        placeId,
+                    );
+
+                if (previsionsExpirees.length > 0) {
+                    this.logger.log(
+                        `[CACHE FALLBACK HIT] placeId=${placeId} - ` +
+                        `${previsionsExpirees.length} jour(s) ` +
+                        `récupéré(s) depuis un cache expiré, en secours.`,
+                    );
+
+                    return previsionsExpirees.map(
+                        (ligne) =>
+                            this.convertirLigneEnPrevision(
+                                ligne,
+                            ),
+                    );
+                }
+
+                this.logger.warn(
+                    `[CACHE FALLBACK MISS] Aucun ancien cache disponible ` +
+                    `pour placeId=${placeId}. Propagation de l'erreur ` +
+                    `OpenWeather d'origine.`,
+                );
+            }
+
+            // Pas de placeId (donc pas de repli possible), ou repli
+            // épuisé : on propage l'erreur OpenWeather d'origine
+            // (déjà une BadGatewayException levée par
+            // gererErreurOpenWeather via appelerPrevisions).
+            throw error;
+        }
 
         const previsions =
             this.transformerPrevisions(
@@ -575,6 +638,53 @@ export class WeatherServiceService {
         }
 
         return previsions;
+    }
+
+    /**
+     * Recherche un ancien cache (potentiellement expiré) pour
+     * placeId, utilisé UNIQUEMENT en solution de secours quand
+     * OpenWeather est indisponible (Weather 2 — fallback). Le cache
+     * expiré n'est jamais considéré comme valide dans le chemin
+     * normal (voir rechercherPrevisionsEnCache, qui filtre
+     * `expiresAt: { gt: now }`).
+     */
+    private async rechercherPrevisionsExpirees(
+        placeId: number,
+    ) {
+        const debutAujourdhui =
+            new Date();
+
+        debutAujourdhui.setHours(
+            0,
+            0,
+            0,
+            0,
+        );
+
+        return this.prisma
+            .weatherForecast
+            .findMany({
+                where: {
+                    placeId,
+
+                    datePrevision: {
+                        gte:
+                            debutAujourdhui,
+                    },
+
+                    expiresAt: {
+                        lte:
+                            new Date(),
+                    },
+                },
+
+                orderBy: {
+                    datePrevision:
+                        'asc',
+                },
+
+                take: 5,
+            });
     }
 
     // ==================================================
