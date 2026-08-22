@@ -1,200 +1,259 @@
+import { Test, TestingModule } from '@nestjs/testing';
+
 import { WeatherServiceController } from './weather-service.controller';
 import { WeatherServiceService } from './weather-service.service';
 
 describe('WeatherServiceController', () => {
     let controller: WeatherServiceController;
 
-    const weatherServiceMock = {
-        obtenirMeteoActuelle: jest.fn(),
-        obtenirPrevisions: jest.fn(),
-        obtenirMeteoComplete: jest.fn(),
+    let weatherService: {
+        obtenirMeteoActuelle: jest.Mock;
+        obtenirPrevisions: jest.Mock;
+        obtenirMeteoComplete: jest.Mock;
     };
 
-    beforeEach(() => {
-        controller = new WeatherServiceController(
-            weatherServiceMock as unknown as WeatherServiceService,
-        );
+    beforeEach(async () => {
+        weatherService = {
+            obtenirMeteoActuelle:
+                jest.fn(),
 
+            obtenirPrevisions:
+                jest.fn(),
+
+            obtenirMeteoComplete:
+                jest.fn(),
+        };
+
+        const module: TestingModule =
+            await Test.createTestingModule({
+                controllers: [
+                    WeatherServiceController,
+                ],
+
+                providers: [
+                    {
+                        provide:
+                            WeatherServiceService,
+
+                        useValue:
+                            weatherService,
+                    },
+                ],
+            }).compile();
+
+        controller =
+            module.get<WeatherServiceController>(
+                WeatherServiceController,
+            );
+    });
+
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
-    describe('getHealth', () => {
-        it('doit retourner l’état du service météo', () => {
-            const result = controller.getHealth();
+    // ==================================================
+    // HEALTH
+    // ==================================================
 
-            expect(result.service).toBe(
+    it(
+        'retourne le statut du Weather Service',
+        () => {
+            const resultat =
+                controller.getHealth();
+
+            expect(
+                resultat.service,
+            ).toBe(
                 'weather-service',
             );
 
-            expect(result.status).toBe('ok');
-
-            expect(result.timestamp).toBeDefined();
-        });
-    });
-
-    describe('obtenirMeteoActuelle', () => {
-        it('doit transmettre les coordonnées au service', async () => {
-            const meteo = {
-                latitude: 46.8139,
-                longitude: -71.208,
-                fuseauHoraire:
-                    'America/Toronto',
-                dateObservation:
-                    '2026-08-04 14:00:00',
-                temperature: 24,
-                temperatureRessentie: 25,
-                condition: 'Clouds',
-                description:
-                    'partiellement nuageux',
-                icone: '02d',
-                iconeUrl:
-                    'https://openweathermap.org/img/wn/02d@2x.png',
-                humidite: 62,
-                pression: 1012,
-                nuages: 40,
-                visibiliteMetres: 10000,
-                vent: {
-                    vitesseMetresSeconde: 4,
-                    vitesseKmHeure: 14.4,
-                    directionDegres: 210,
-                    rafalesMetresSeconde: null,
-                    rafalesKmHeure: null,
-                },
-                leverSoleil:
-                    '2026-08-04 05:30:00',
-                coucherSoleil:
-                    '2026-08-04 20:15:00',
-                indiceUV: 5,
-            };
-
-            weatherServiceMock
-                .obtenirMeteoActuelle
-                .mockResolvedValue(meteo);
-
-            const result =
-                await controller.obtenirMeteoActuelle({
-                    latitude: 46.8139,
-                    longitude: -71.208,
-                });
+            expect(
+                resultat.status,
+            ).toBe('ok');
 
             expect(
-                weatherServiceMock
+                resultat.timestamp,
+            ).toBeDefined();
+        },
+    );
+
+    // ==================================================
+    // MÉTÉO ACTUELLE
+    // ==================================================
+
+    it(
+        'transmet les coordonnées au service pour la météo actuelle',
+        async () => {
+            const reponse = {
+                temperature: 20,
+                condition: 'Clear',
+            };
+
+            weatherService
+                .obtenirMeteoActuelle
+                .mockResolvedValue(
+                    reponse,
+                );
+
+            const resultat =
+                await controller
+                    .obtenirMeteoActuelle({
+                        latitude:
+                            46.8139,
+
+                        longitude:
+                            -71.208,
+                    });
+
+            expect(
+                weatherService
                     .obtenirMeteoActuelle,
             ).toHaveBeenCalledWith(
                 46.8139,
                 -71.208,
             );
 
-            expect(result).toEqual(meteo);
-        });
-    });
+            expect(
+                resultat,
+            ).toEqual(
+                reponse,
+            );
+        },
+    );
 
-    describe('obtenirPrevisions', () => {
-        it('doit transmettre les coordonnées au service', async () => {
-            const previsions = [
+    // ==================================================
+    // PRÉVISIONS AVEC PLACE ID
+    // ==================================================
+
+    it(
+        'transmet latitude, longitude et placeId pour les prévisions',
+        async () => {
+            const reponse = [
                 {
                     date:
-                        '2026-08-05 12:00:00',
-                    resume:
-                        'Ciel variable',
-                    temperature: {
-                        matin: 16,
-                        jour: 24,
-                        soir: 21,
-                        nuit: 17,
-                        minimum: 15,
-                        maximum: 25,
-                    },
-                    temperatureRessentie: {
-                        matin: 16,
-                        jour: 25,
-                        soir: 22,
-                        nuit: 17,
-                    },
-                    condition: 'Clouds',
-                    description:
-                        'nuageux',
-                    icone: '03d',
-                    iconeUrl:
-                        'https://openweathermap.org/img/wn/03d@2x.png',
-                    probabilitePrecipitation: 20,
-                    pluieMillimetres: 0,
-                    neigeMillimetres: 0,
-                    humidite: 60,
-                    pression: 1013,
-                    nuages: 50,
-                    vent: {
-                        vitesseMetresSeconde: 3,
-                        vitesseKmHeure: 10.8,
-                        directionDegres: 180,
-                        rafalesMetresSeconde: null,
-                        rafalesKmHeure: null,
-                    },
-                    leverSoleil:
-                        '2026-08-05 05:31:00',
-                    coucherSoleil:
-                        '2026-08-05 20:14:00',
-                    indiceUV: 4,
+                        '2026-08-22',
+
+                    condition:
+                        'Clear',
                 },
             ];
 
-            weatherServiceMock
+            weatherService
                 .obtenirPrevisions
-                .mockResolvedValue(previsions);
+                .mockResolvedValue(
+                    reponse,
+                );
 
-            const result =
-                await controller.obtenirPrevisions({
-                    latitude: 46.8139,
-                    longitude: -71.208,
-                });
+            const resultat =
+                await controller
+                    .obtenirPrevisions({
+                        latitude:
+                            46.8139,
+
+                        longitude:
+                            -71.208,
+
+                        placeId: 1,
+                    });
 
             expect(
-                weatherServiceMock
+                weatherService
                     .obtenirPrevisions,
             ).toHaveBeenCalledWith(
                 46.8139,
                 -71.208,
+                1,
             );
 
-            expect(result).toEqual(previsions);
-        });
-    });
+            expect(
+                resultat,
+            ).toEqual(
+                reponse,
+            );
+        },
+    );
 
-    describe('obtenirMeteoComplete', () => {
-        it('doit transmettre les coordonnées au service', async () => {
-            const meteoComplete = {
-                fournisseur: 'OpenWeather',
-                latitude: 46.8139,
-                longitude: -71.208,
-                fuseauHoraire:
-                    'America/Toronto',
-                actuelle: {
-                    temperature: 24,
-                },
-                previsions: [],
-            };
+    // ==================================================
+    // PRÉVISIONS SANS PLACE ID
+    // ==================================================
 
-            weatherServiceMock
-                .obtenirMeteoComplete
-                .mockResolvedValue(meteoComplete);
+    it(
+        'accepte une demande de prévisions sans placeId',
+        async () => {
+            weatherService
+                .obtenirPrevisions
+                .mockResolvedValue(
+                    [],
+                );
 
-            const result =
-                await controller.obtenirMeteoComplete({
-                    latitude: 46.8139,
-                    longitude: -71.208,
+            await controller
+                .obtenirPrevisions({
+                    latitude:
+                        46.8139,
+
+                    longitude:
+                        -71.208,
                 });
 
             expect(
-                weatherServiceMock
+                weatherService
+                    .obtenirPrevisions,
+            ).toHaveBeenCalledWith(
+                46.8139,
+                -71.208,
+                undefined,
+            );
+        },
+    );
+
+    // ==================================================
+    // MÉTÉO COMPLÈTE
+    // ==================================================
+
+    it(
+        'transmet les coordonnées et placeId pour la météo complète',
+        async () => {
+            const reponse = {
+                actuelle: {
+                    temperature:
+                        20,
+                },
+
+                previsions: [],
+            };
+
+            weatherService
+                .obtenirMeteoComplete
+                .mockResolvedValue(
+                    reponse,
+                );
+
+            const resultat =
+                await controller
+                    .obtenirMeteoComplete({
+                        latitude:
+                            46.8139,
+
+                        longitude:
+                            -71.208,
+
+                        placeId: 5,
+                    });
+
+            expect(
+                weatherService
                     .obtenirMeteoComplete,
             ).toHaveBeenCalledWith(
                 46.8139,
                 -71.208,
+                5,
             );
 
-            expect(result).toEqual(
-                meteoComplete,
+            expect(
+                resultat,
+            ).toEqual(
+                reponse,
             );
-        });
-    });
+        },
+    );
 });
