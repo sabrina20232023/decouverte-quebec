@@ -3,7 +3,6 @@ import {
     ClientsModule,
     Transport,
 } from '@nestjs/microservices';
-
 import { ApiGatewayController } from './api-gateway.controller';
 
 @Module({
@@ -16,14 +15,12 @@ import { ApiGatewayController } from './api-gateway.controller';
                     host:
                         process.env.PLACES_SERVICE_HOST ??
                         '127.0.0.1',
-
                     port: Number(
                         process.env.PLACES_SERVICE_PORT ??
                         4001,
                     ),
                 },
             },
-
             {
                 name: 'REGIONS_SERVICE',
                 transport: Transport.TCP,
@@ -31,14 +28,12 @@ import { ApiGatewayController } from './api-gateway.controller';
                     host:
                         process.env.REGIONS_SERVICE_HOST ??
                         '127.0.0.1',
-
                     port: Number(
                         process.env.REGIONS_SERVICE_PORT ??
                         3003,
                     ),
                 },
             },
-
             {
                 name: 'WEATHER_SERVICE',
                 transport: Transport.TCP,
@@ -46,14 +41,12 @@ import { ApiGatewayController } from './api-gateway.controller';
                     host:
                         process.env.WEATHER_SERVICE_HOST ??
                         '127.0.0.1',
-
                     port: Number(
                         process.env.WEATHER_SERVICE_PORT ??
                         4004,
                     ),
                 },
             },
-
             {
                 name: 'FAVORITES_SERVICE',
                 transport: Transport.TCP,
@@ -61,16 +54,27 @@ import { ApiGatewayController } from './api-gateway.controller';
                     host:
                         process.env.FAVORITES_SERVICE_HOST ??
                         '127.0.0.1',
-
                     port: Number(
                         process.env.FAVORITES_SERVICE_PORT ??
                         4005,
                     ),
                 },
             },
+            {
+                name: 'USERS_SERVICE',
+                transport: Transport.TCP,
+                options: {
+                    host:
+                        process.env.USERS_SERVICE_HOST ??
+                        '127.0.0.1',
+                    port: Number(
+                        process.env.USERS_SERVICE_PORT ??
+                        4002,
+                    ),
+                },
+            },
         ]),
     ],
-
     controllers: [
         ApiGatewayController,
     ],

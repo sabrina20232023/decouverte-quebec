@@ -8,6 +8,7 @@ import {
     NotFoundException,
     Param,
     ParseIntPipe,
+    Patch,
     Post,
     Query,
 } from '@nestjs/common';
@@ -87,6 +88,25 @@ interface AjouterFavoriBody {
     placeId: number;
 }
 
+interface CreerUtilisateurBody {
+    email: string;
+    prenom: string;
+    nom: string;
+    passwordHash: string;
+    displayName?: string;
+}
+
+interface ModifierUtilisateurBody {
+    prenom?: string;
+    nom?: string;
+    displayName?: string;
+    avatarUrl?: string | null;
+}
+
+interface ModifierStatutUtilisateurBody {
+    estActif: boolean;
+}
+
 @ApiTags('Lieux', 'Régions')
 @Controller('api')
 export class ApiGatewayController {
@@ -102,6 +122,9 @@ export class ApiGatewayController {
 
         @Inject('FAVORITES_SERVICE')
         private readonly favoritesClient: ClientProxy,
+
+        @Inject('USERS_SERVICE')
+        private readonly usersClient: ClientProxy,
     ) { }
 
     @ApiTags('Santé')
@@ -1190,6 +1213,339 @@ export class ApiGatewayController {
         }
 
         return placeIdNombre;
+    }
+
+    // ======================================================
+    // UTILISATEURS
+    // ======================================================
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Vérifier l’état du service des utilisateurs',
+    })
+    @ApiOkResponse({
+        description:
+            'Users Service fonctionnel',
+    })
+    @Get('users/health')
+    getUsersHealth(): Observable<ServiceHealth> {
+        return this.usersClient.send<ServiceHealth>(
+            {
+                cmd: 'users.health',
+            },
+            {},
+        );
+    }
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Créer un utilisateur',
+        description:
+            'Crée un compte utilisateur. passwordHash est temporaire : une fois l’authentification en place, le backend calculera lui-même le hash à partir d’un mot de passe en clair reçu du frontend.',
+    })
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: [
+                'email',
+                'prenom',
+                'nom',
+                'passwordHash',
+            ],
+            properties: {
+                email: {
+                    type: 'string',
+                    example: 'sabrina@example.com',
+                },
+                prenom: {
+                    type: 'string',
+                    example: 'Sabrina',
+                },
+                nom: {
+                    type: 'string',
+                    example: 'Ouali',
+                },
+                passwordHash: {
+                    type: 'string',
+                    example: 'hash-temporaire',
+                },
+                displayName: {
+                    type: 'string',
+                    example: 'Sabrina O.',
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description:
+            'Utilisateur créé avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Un champ obligatoire est manquant ou invalide',
+    })
+    @Post('users')
+    creerUtilisateur(
+        @Body()
+        body: CreerUtilisateurBody,
+    ) {
+        return this.usersClient.send(
+            {
+                cmd: 'users.create',
+            },
+            {
+                email: body?.email,
+                prenom: body?.prenom,
+                nom: body?.nom,
+                passwordHash:
+                    body?.passwordHash,
+                displayName:
+                    body?.displayName,
+            },
+        );
+    }
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Récupérer un utilisateur par son adresse courriel',
+    })
+    @ApiQuery({
+        name: 'email',
+        type: String,
+        example: 'sabrina@example.com',
+        description:
+            'Adresse courriel de l’utilisateur',
+    })
+    @ApiOkResponse({
+        description:
+            'Utilisateur récupéré avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Le paramètre email est absent',
+    })
+    @Get('users/by-email')
+    trouverUtilisateurParEmail(
+        @Query('email')
+        email?: string,
+    ) {
+        const emailNormalise =
+            email?.trim();
+
+        if (!emailNormalise) {
+            throw new BadRequestException(
+                'Le paramètre email est obligatoire.',
+            );
+        }
+
+        return this.usersClient.send(
+            {
+                cmd: 'users.findByEmail',
+            },
+            {
+                email: emailNormalise,
+            },
+        );
+    }
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Récupérer un utilisateur par son identifiant',
+    })
+    @ApiParam({
+        name: 'id',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiOkResponse({
+        description:
+            'Utilisateur récupéré avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Identifiant invalide ou inférieur ou égal à zéro',
+    })
+    @Get('users/:id')
+    trouverUtilisateurParId(
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
+    ) {
+        if (id <= 0) {
+            throw new BadRequestException(
+                'L’identifiant utilisateur doit être supérieur à zéro.',
+            );
+        }
+
+        return this.usersClient.send(
+            {
+                cmd: 'users.findOne',
+            },
+            {
+                id,
+            },
+        );
+    }
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Modifier le profil d’un utilisateur',
+        description:
+            'Met à jour les champs fournis du profil (prénom, nom, nom d’affichage, avatar). Les champs absents ne sont pas modifiés.',
+    })
+    @ApiParam({
+        name: 'id',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                prenom: {
+                    type: 'string',
+                    example: 'Sabrina',
+                },
+                nom: {
+                    type: 'string',
+                    example: 'Ouali',
+                },
+                displayName: {
+                    type: 'string',
+                    example: 'Sabrina O.',
+                },
+                avatarUrl: {
+                    type: 'string',
+                    example:
+                        'https://example.com/avatar.png',
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description:
+            'Profil mis à jour avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Identifiant invalide ou aucune donnée à modifier',
+    })
+    @Patch('users/:id')
+    modifierUtilisateur(
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
+
+        @Body()
+        body: ModifierUtilisateurBody,
+    ) {
+        if (id <= 0) {
+            throw new BadRequestException(
+                'L’identifiant utilisateur doit être supérieur à zéro.',
+            );
+        }
+
+        return this.usersClient.send(
+            {
+                cmd: 'users.update',
+            },
+            {
+                id,
+                prenom:
+                    body.prenom,
+                nom:
+                    body.nom,
+                displayName:
+                    body.displayName,
+                avatarUrl:
+                    body.avatarUrl,
+            },
+        );
+    }
+
+    @ApiTags('Utilisateurs')
+    @ApiOperation({
+        summary:
+            'Activer ou désactiver un utilisateur',
+    })
+    @ApiParam({
+        name: 'id',
+        type: Number,
+        example: 1,
+        description:
+            'Identifiant numérique de l’utilisateur',
+    })
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: [
+                'estActif',
+            ],
+            properties: {
+                estActif: {
+                    type: 'boolean',
+                    example: false,
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description:
+            'Statut utilisateur modifié avec succès',
+    })
+    @ApiBadRequestResponse({
+        description:
+            'Identifiant ou statut invalide',
+    })
+    @Patch('users/:id/status')
+    modifierStatutUtilisateur(
+        @Param(
+            'id',
+            ParseIntPipe,
+        )
+        id: number,
+
+        @Body()
+        body: ModifierStatutUtilisateurBody,
+    ) {
+        if (id <= 0) {
+            throw new BadRequestException(
+                'L’identifiant utilisateur doit être supérieur à zéro.',
+            );
+        }
+
+        if (
+            typeof body?.estActif !==
+            'boolean'
+        ) {
+            throw new BadRequestException(
+                'Le paramètre estActif doit être un booléen.',
+            );
+        }
+
+        return this.usersClient.send(
+            {
+                cmd: 'users.setActive',
+            },
+            {
+                id,
+                estActif:
+                    body.estActif,
+            },
+        );
     }
 
     @ApiTags('Favoris')
